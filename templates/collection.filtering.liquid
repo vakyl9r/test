@@ -1,0 +1,146 @@
+  {%- layout none -%}
+  {%- assign size_label = 'size,taille,größe,tamanho,tamaño,koko,サイズ' | split: ',' -%}
+{%comment%} Variante mit Array
+  {% paginate collection.products by 1000 %}
+    {"products":[
+		{% for p in collection.products %}
+		{
+			"title": "{{p.title}}"
+			,"price": {{p.price}}
+			{%- if p.compare_at_price -%},"compare_at_price": {{p.compare_at_price}} {%- endif -%}
+			,"tags": [
+				{%- assign firstitem = true -%}
+				{%- for tag in p.tags -%}
+					{%- if tag contains "_" -%}
+						{% unless firstitem %}, {%endunless%}	
+						{%- assign firstitem = false -%}"{{tag}}"
+					{%- endif -%}	
+				{%- endfor -%}
+			]
+		}{%unless forloop.last%}, {%endunless%}			
+		{% endfor %}
+	]}			
+	{% endpaginate %}
+{%endcomment%}
+{%- assign groups = '' -%}
+
+{%- for tag in collection.all_tags -%}
+{%- assign tag_parts = tag | split: '_' -%}
+
+{%- if tag_parts.size != 2 -%}
+  {%- continue -%}
+{%- endif -%}
+
+{%- assign groups = groups | append: tag_parts.first | append: ',' -%}
+{%- endfor -%}
+
+{%- assign groups = groups | split: ',' | compact | uniq -%}
+	  {%- paginate collection.products by 1000 -%}
+    {"products":[
+		{%- for p in collection.products -%}
+			{%- capture labels -%}
+			{%- for tag in p.tags -%}
+	          {%- if tag contains '__label' -%}
+	            ,"{{- tag | split: '__label:' | last -}}"
+	          {%- endif -%}
+	        {%- endfor -%}
+	        {%- endcapture -%}
+	        {%- assign labels = labels | remove_first: ',' -%}
+
+	        {%comment%} AVAILABLE SIZES {% endcomment%}
+	        {%- assign available_sizes= "" -%}
+	        {%- for option in p.options_with_values -%}
+		        {%- assign downcase_option = option.name | downcase -%}
+		        {%- capture option_index -%}option{{ option.position }}{%- endcapture -%}
+			        {%- if size_label contains downcase_option -%}
+				        {%- for value in option.values -%}
+	                        {%- for variant in p.variants -%}
+	                            {%- if variant[option_index] == value and variant.available -%}
+	                              {%- assign available_sizes = available_sizes | append: ',' | append: value -%}
+	                            {%- endif -%}
+	                        {%- endfor -%}
+		                {%- endfor -%}
+			        {%- endif -%}
+			{%- endfor -%}
+			{%- assign available_sizes = available_sizes | remove_first: ',' | split: ',' | uniq | join: ',' -%}
+			{%- capture sizes_tags -%} "Size":[{{available_sizes}}] {%- endcapture -%}
+
+
+			{%- if settings.product_show_secondary_image and p.images[1] != blank and use_horizontal != true -%}
+		      {%- assign has_alternate_image = true -%}
+		    {%- else -%}
+		      {%- assign has_alternate_image = false -%}
+		    {%- endif -%}
+
+		    {%- assign max_width = p.featured_image.width -%}
+		    {% assign image_padding_bottom = 100.0 | divided_by: p.featured_image.aspect_ratio %}
+		    {% assign aspect_ratio = p.featured_image.aspect_ratio %}
+
+			{%- if has_alternate_image -%}
+			    {%- include 'image-size', sizes: '200,300,400,600,800,900,1000,1200', image: p.images[1] -%}
+			    {%- assign image_url = p.images[1] | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+			    {%- assign supported_sizes_alt_image = supported_sizes -%}
+			{%- endif -%}
+
+	        {%- include 'image-size', sizes: '200,400,600,700,800,900,1000,1200', image: p.featured_image -%}
+	        {%- assign image_url_featured = p.featured_image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+	        {%- assign supported_sizes_featured_image = supported_sizes -%}
+
+
+		{
+			"title": "{{- p.title -}}",
+			"id": "{{- p.id -}}",
+			"available": {{- p.available -}},
+			"onSale": {%- if p.compare_at_price > p.price -%}true {%- else -%}false {%- endif -%},
+			"saleLabel": "{%- if p.compare_at_price > p.price -%}{{ p.compare_at_price | minus: p.price | times: 100 | divided_by: p.compare_at_price | round }} {%- endif -%}",
+			"first_variant_id": {{- p.variants.first.id -}},
+			"price": "{{- p.price | money_without_trailing_zeros -}}",
+			"price_min":"{{- p.price_min | money_without_trailing_zeros -}}",
+			"price_max":"{{- p.price_max | money_without_trailing_zeros -}}",
+			{%- if p.compare_at_price -%}"compare_at_price": "{{- p.compare_at_price | money_without_trailing_zeros -}}", {%- endif -%}
+			"handle": "{{- p.handle -}}",
+			"url" : "{{- p.url | within: collection -}}",
+			"images":{
+				"featured_image": "{{- image_url_featured -}}",
+				"featured_image_alt": "{{- p.featured_image.alt | escape -}}",
+				"featured_image_id": "{{p.featured_image.id}}",
+				"supported_sizes_featured": "{{- supported_sizes_featured_image -}}",
+				"alt_image": "{{- image_url -}}",
+				"alt_image_alt": "{{- p.images[1].alt | escape -}}",
+				"alt_image_id": "{{p.images[1].id}}",
+				"supported_sizes_alt": "{{- supported_sizes_alt_image -}}",
+				"max_width": "{{- max_width -}}",
+				"aspect_ratio": "{{- aspect_ratio -}}",
+				"image_padding_bottom": "{{- image_padding_bottom -}}",
+				"has_alternate_image": {{- has_alternate_image -}}
+			},
+			"labels": [{{- labels -}}],
+			"tags": {
+				{%- assign first_group = true -%}
+				{%- for group in groups -%}
+				{%- assign group_values = "" -%}
+
+					{%- for tag in p.tags -%}
+						{%- if tag contains "_" -%}
+							{%- assign parts = tag | split: "_" -%}
+							{%- if parts.first != group -%}
+	                          {%- continue -%}
+	                        {%- endif -%}
+							{%- assign group_values = group_values | append: "," | append: '"' | append: parts.last | append: '"' -%}
+						{%- endif -%}	
+					{%- endfor -%}
+					{%- assign group_values = group_values | remove_first: ',' -%}
+					
+					{%- if group_values != "" -%}
+					{%- unless first_group -%},{%- endunless -%}
+						"{{group}}":[{{group_values}}]
+						{%- assign first_group = false -%}
+					{%- endif -%}
+					
+				{%- endfor -%}
+				{%- unless first_group -%},{%- endunless -%}{{sizes_tags}}
+			}
+		}{%- unless forloop.last -%}, {%- endunless -%}		
+		{%- endfor -%}
+	]}			
+	{%- endpaginate -%}

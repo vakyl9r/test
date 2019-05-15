@@ -1,0 +1,261 @@
+{%- if template.name == 'page' or template.name == 'blog' or template == 'customers/account' or template == 'customers/order' or template == 'customers/addresses' -%}
+  {%- assign add_top_margin = true -%}
+{%- else -%}
+  {%- assign add_top_margin = false -%}
+{%- endif -%}
+
+<footer id="section-{{ section.id }}" class="Footer {% if section.blocks.size <= 2 %}Footer--center{% endif %} {% if add_top_margin %}Footer--withMargin{% endif %}" role="contentinfo">
+  <div class="Container">
+    {%- if section.blocks.size > 0 -%}
+      <div class="Footer__Inner">
+        {%- for block in section.blocks -%}
+          <div class="Footer__Block Footer__Block--{{ block.type }}" {{ block.shopify_attributes }}>
+            {%- case block.type -%}
+              {%- when 'text' -%}
+                {%- if block.settings.title != blank -%}
+                  <h2 class="Footer__Title Heading u-h6">{{ block.settings.title | escape }}</h2>
+                {%- endif -%}
+
+                {%- if block.settings.content != blank -%}
+                  <div class="Footer__Content Rte">
+                    {{ block.settings.content }}
+                  </div>
+                {%- endif -%}
+
+                {%- if block.settings.show_social_media -%}
+                  {% include 'social-media', class: 'Footer__Social', spacing: 'loose' %}
+                {%- endif -%}
+
+              {%- when 'links' -%}
+                {%- assign linklist = linklists[block.settings.menu] -%}
+
+                {%- if linklist != empty -%}
+                  <h2 class="Footer__Title Heading u-h6">{{ linklist.title | escape }}</h2>
+
+                  <ul class="Linklist">
+                    {%- for link in linklist.links -%}
+                      <li class="Linklist__Item">
+                        <a href="{{ link.url }}" class="Link Link--primary"><span>{{ link.title | escape }}</span></a>
+                      </li>
+                    {%- endfor -%}
+                  </ul>
+                {%- endif -%}
+
+              {%- when 'newsletter' -%}
+                {%- if block.settings.title != blank -%}
+                  <h2 class="Footer__Title Heading u-h6">{{ block.settings.title | escape }}</h2>
+                {%- endif -%}
+
+                {%- if block.settings.content != blank -%}
+                  <div class="Footer__Content Rte">
+                    {{ block.settings.content }}
+                  </div>
+                {%- endif -%}
+
+                {%- form 'customer', id: 'footer-newsletter', class: 'Footer__Newsletter Form' -%}
+                  <div class="Js-Footer-SectionHeader"></div>
+                  {%- if form.posted_successfully? -%}
+                    <p class="Form__Alert Alert Alert--success">{{ 'footer.newsletter.success' | t }}</p>
+                  {%- else -%}
+                    {%- if form.errors -%}
+                      <p class="Form__Alert Alert Alert--error">{{ form.errors.messages['email'] }}</p>
+                    {%- endif -%}
+ 
+                    <div class="Js-Footer-Newsletter">
+                    <input type="hidden" name="contact[tags]" value="newsletter">
+                    <input type="email" name="contact[email]" class="Form__Input" aria-label="{{ 'footer.newsletter.input' | t }}" placeholder="{{ 'footer.newsletter.input' | t }}" required>
+                    <button type="submit" class="Form__Submit Button Button--primary">{{ 'footer.newsletter.submit' | t }}</button>
+                    </div>
+                  {%- endif -%}
+                {%- endform -%}
+               <script>
+                  window.addEventListener("load", function(){
+                  if (window.jQuery) {
+                    (function ($) {
+                      var mc_url = '{{settings.mailchimp_url}}post-json?u={{settings.mailchimp_userid}}&id={{block.settings.mailchimp_list_id}}&c=?';
+
+                      var successMsg = '<p class="Form__Alert Alert Alert--success">{{ 'footer.newsletter.success' | t }}</p>';
+                      var errorAlreadySubscribed = '<p class="Form__Alert Alert Alert--error">{{ 'home_page.newsletter.already_subscribed' | t }}</p>';
+                      var errorContactSupport = '<p class="Form__Alert Alert Alert--error">{{ 'home_page.newsletter.error' | t }}</p>';
+                      var errorEmailRequired = '<p class="Form__Alert Alert Alert--error">{{ 'home_page.newsletter.email_required' | t }}</p>';
+
+                      $("#footer-newsletter").on('submit', function (e) {
+                        e.preventDefault();
+                        var form = $(this);
+                        var EMAIL = form.find('input[name="contact[email]"]').val();
+                        form.find('input[name="contact[email]"]').val('');
+
+                        if (!EMAIL) {
+                              $("#footer-newsletter .SectionHeader__Description").html(errorEmailRequired);
+                              return false;
+                        }
+
+                        $.ajax({
+                          url: mc_url,
+                          method: 'get',
+                          type: 'get',
+                          cache: false,
+                          dataType: 'json',
+                          data: {
+                                EMAIL: EMAIL
+                          },
+                          success: function (response) {
+                            if (typeof response == 'object' && response.hasOwnProperty('result') && response.result == 'success') {
+                              $("#footer-newsletter .Js-Footer-SectionHeader").html(successMsg);
+                              $("#footer-newsletter .Js-Footer-Newsletter").hide();
+                              // OAKIFY-198 Implement Data Layer for LeRoi GA
+                              //9- user signs up for the newsletter HOME
+                              dataLayer.push({
+                                'eventCategory': 'newsletter',
+                                'eventAction': 'sign-up',
+                                'eventLabel': 'home',
+                                'eventValue': '',
+                                'eventNonInteraction': false,
+                                'event': 'gtmEvent'
+                              });
+                            } else if (typeof response == 'object' && response.hasOwnProperty('result') && response.result == 'error' && response.hasOwnProperty('msg') && response.msg.match(/^.*is already subscribed to list.*$/g)) {
+                              $("#footer-newsletter .Js-Footer-SectionHeader").html(errorAlreadySubscribed);
+                            } else {
+                              $("#footer-newsletter .Js-Footer-SectionHeader").html(errorContactSupport);
+                            }
+                          },
+                          error: function (response) {
+                            $("#footer-newsletter .Js-Footer-SectionHeader").html(errorContactSupport);
+                          }
+                        })
+                        return false;
+                      });
+                    })(jQuery);
+                  }
+            });
+      </script>
+            {%- endcase -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    <div class="Footer__Aside">
+      <div class="Footer__Copyright">
+      
+      </div>
+
+      {%- if section.settings.show_payment_methods -%}
+        {%- capture payment_methods -%}
+          {%- for type in shop.enabled_payment_types -%}
+            <li class="HorizontalList__Item">{{ type | payment_type_svg_tag }}</li>
+          {%- endfor -%}
+        {%- endcapture -%}
+
+        {%- if payment_methods != blank -%}
+          <ul class="Footer__PaymentList HorizontalList">
+            {{ payment_methods }}
+          </ul>
+        {%- endif -%}
+      {%- endif -%}
+    </div>
+  </div>
+</footer>
+
+
+{% schema %}
+{
+  "name": "Footer",
+  "class": "shopify-section--footer",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_payment_methods",
+      "label": "Show payment methods",
+      "info": "Payment method icons are automatically displayed based on your Shopify payment methods.",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "text",
+      "name": "Text",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "About the shop"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Text",
+          "default": "<p>Use this text area to tell your customers about your brand and vision. You can change it in the theme settings.</p>"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_social_media",
+          "label": "Show social media",
+          "info": "Make sure to have properly configured your social media in the theme settings.",
+          "default": true
+        }
+      ]
+    },
+    {
+      "type": "links",
+      "name": "Links",
+      "settings": [
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Menu",
+          "info": "This menu won't show dropdown items."
+        }
+      ]
+    },
+    {
+      "type": "newsletter",
+      "name": "Newsletter",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "mailchimp_list_id",
+          "label": "MailChimp List ID",
+          "info": "Enter MailChimp List ID"
+        },
+        {
+          "type": "paragraph",
+          "content": "Customers who subscribe will have their email address added to the \"accepts marketing\" [customer list](/admin/customers?query=&accepts_marketing=1)."
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Newsletter"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Text",
+          "default": "<p>A short sentence describing what someone will receive by subscribing</p>"
+        }
+      ]
+    }
+  ],
+  "default": {
+    "blocks": [
+      {
+        "type": "text",
+        "settings": {}
+      },
+      {
+        "type": "links",
+        "settings": {
+          "menu": "footer"
+        }
+      },
+      {
+        "type": "newsletter",
+        "settings": {}
+      }
+    ]
+  }
+}
+{% endschema %}

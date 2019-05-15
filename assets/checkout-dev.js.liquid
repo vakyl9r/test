@@ -1,0 +1,109 @@
+//<script>
+// DEVELOPMENT CHECKOUT JS FILE
+
+// Waiting until the page is loaded
+window.addEventListener('load', () => {
+	if (Shopify.Checkout.step === 'payment_method'){
+		/*COUNTRY Payment Methods*/
+		payment_exceptions = {
+			"Austria":[16915431539,16118448246],
+			"Belgium":[16915431539,16118448246],
+			"Bulgaria":[16915431539,16118448246],
+			"Croatia":[16915431539,16118448246],
+			"Cyprus":[16915431539,16118448246],
+			"Czech Republic":[16915431539,16118448246],
+			"Denmark":[16915431539,16118448246],
+			"Estonia":[16915431539,16118448246],
+			"Finland":[16917528691,16917495923],
+			"France":[16915431539,16118448246],
+			"Germany":[16915431539],
+			"Greece":[16915431539,16118448246],
+			"Hungary":[16915431539,16118448246],
+			"Ireland":[16915431539,16118448246],
+			"Italy":[16915431539,16118448246],
+			"Latvia":[16915431539,16118448246],
+			"Lithuania":[16915431539,16118448246],
+			"Luxembourg":[16915431539,16118448246],
+			"Malta":[16915431539,16118448246],
+			"Netherlands":[16118448246],
+			"Poland":[16915431539,16118448246],
+			"Portugal":[16915431539,16118448246],
+			"Romania":[16915431539,16118448246],
+			"Slovakia":[16915431539,16118448246],
+			"Slovenia":[16915431539,16118448246],
+			"Spain":[16915431539,16118448246],
+			"Sweden":[16915431539,16118448246],
+			"United Kingdom":[16915431539,16118448246],
+			"Belgien":[16915431539,16915497075],
+			"Bulgarien":[16915431539,16915497075],
+			"Dänemark":[16915431539,16915497075],
+			"Deutschland":[16915431539],
+			"Estland":[16915431539,16915497075],
+			"Finnland":[16915431539,16915497075],
+			"Frankreich":[16915431539,16915497075],
+			"Griechenland":[16915431539,16915497075],
+			"Irland":[16915431539,16915497075],
+			"Italien":[16915431539,16915497075],
+			"Kroatien":[16915431539,16915497075],
+			"Lettlan":[16915431539,16915497075],
+			"Litauen":[16915431539,16915497075],
+			"Luxemburg":[16915431539,16915497075],
+			"Malta":[16915431539,16915497075],
+			"Österreich":[16915431539,16915497075],
+			"Polen":[16915431539,16915497075],
+			"Portugal":[16915431539,16915497075],
+			"Rumänien":[16915431539,16915497075],
+			"Schweden":[16915431539,16915497075],
+			"Slowakei":[16915431539,16915497075],
+			"Spanien":[16915431539,16915497075],
+			"Tschechische Republik":[16915431539,16915497075],
+			"Ungarn":[16915431539,16915497075],
+			"Vereinigtes Königreich":[16915431539,16915497075],
+			"Zypern":[16915431539,16915497075],
+			"Niederlande":[16915497075]
+		}
+		//Hide payment method under certain cart value
+		hideShowPayments(400, 16235757686, payment_exceptions)
+
+		/**** OAKIFY-177 JS error on checkout buttons ****/
+		const gatewayList = {
+			16118939766:'Paypal',
+			8364163190:'Creditcard',
+			16118448246:'Klarna Invoice',
+			16235757686:'Invoice',
+		}
+		GACheckoutButton(gatewayList)
+
+		// checking if need to be hidden or not the invoice
+		const hideInvoiceUserJSON = sessionStorage.getItem('hideInvoiceUser')
+		if(hideInvoiceUserJSON){
+			JSON.parse(hideInvoiceUserJSON) ? hideShowPayments(5, 16235757686, payment_exceptions, true) : null
+		}
+		
+		const radioButtons = $('.radio__label__primary')
+
+		for (let i = 0; i < radioButtons.length; i++) {
+			const result = radioButtons[i].htmlFor.split('_').pop();
+			const description = $(`#payment-gateway-subfields-${result}`).find('p')
+			//if you are logged with paypal express
+			const text = gatewayList[result] === 'Paypal' ? null : description[0].textContent; 
+			switch (gatewayList[result]){
+				case 'Creditcard':
+					radioButtons[i].textContent = 'Credit Card DEVMODE';
+					description[0].textContent = text.replace('Kreditkarte', 'our partner Wallee DEVMODE');
+					break;
+				case 'Klarna Invoice':
+					radioButtons[i].textContent = 'Invoice with Klarna DEVMODE';
+					description[0].textContent = text.replace('Rechnung mit Klarna', 'our partner Klarna DEVMODE');
+					break;
+				case 'Invoice':
+					radioButtons[i].textContent = 'Invoice DEVMODE';
+					description[0].textContent = text.replace('Rechnung / Facture / Invoice', 'our partner Wallee DEVMODE');
+					break;
+				case 'Paypal':
+					radioButtons[i].nextElementSibling.style.display = "none"
+					break;
+			}
+		}
+	}
+})

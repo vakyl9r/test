@@ -1,0 +1,52 @@
+{% comment %}
+** Divider - homepage partial **
+- Draggable section
+{% endcomment %}
+
+{% include 'include-divider' %}
+
+{% schema %}
+
+{
+  "name": "Divider",
+  "class": "divider-section",
+  "settings": [
+    {
+      "type": "range",
+      "id": "divider_spacing",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Space",
+      "default": 20
+    },
+     {
+      "type": "range",
+      "id": "mobile_divider_spacing",
+      "min": 0,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "label": "Mobile Space",
+      "default": 10
+    },
+    {
+      "type": "checkbox",
+      "id": "divider_border",
+      "label": "Show border",
+      "default": false
+    }
+  ],
+  "presets": [
+    {
+      "name": "Divider",
+      "category": "Layout",
+      "settings": {
+
+      }
+    }
+  ]
+}
+
+{% endschema %}

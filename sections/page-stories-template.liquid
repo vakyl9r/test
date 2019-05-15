@@ -1,0 +1,96 @@
+<div class="Container">
+  <header class="PageHeader">
+    <div class="SectionHeader SectionHeader--center">
+      <h1 class="SectionHeader__Heading Heading u-h1">{{ section.settings.section_title }}</h1>
+      <h2>{{ section.settings.subheading | escape }}</h2>
+    </div>
+  </header>
+
+  <div class="PageContent">
+    {{ page.content }}
+
+<div class="page-width"><div class="instagram-section-wrap">
+   <div id="instafeed" class="Grid"></div>
+</div>
+</div>
+
+ 
+  </div>
+</div>
+{{ 'instafeed.min.js' | asset_url | script_tag }}
+{% assign instafeed_template = '<div class="Grid__Cell 1/3--tablet-and-up" style="position:relative"><a href="{{link}}"><img src="{{image}}" /><div class="insta-overlay"><div class="action_links"><ul class="action_links_list"><li><i class="fa fa-heart"></i>{{likes}}</li><li><i class="fa fa-comments"></i>{{comments}}</li></ul></div><div class="share_stories"><a class="share_btn" href="#">share</a><div class="share_links"><ul><li><a href="https://www.facebook.com/sharer/sharer.php?u={{link}}" target="_blank">Facebook</a></li><li><a href="https://pinterest.com/pin/create/button/?url=a&amp;media={{image}}&amp;description={{caption}}" target="_blank">Pinterest</a></li></ul></div></div></div></a></div>' %}
+
+
+
+<script type="text/javascript">
+  window.getDevicePixelRatio = function () {
+    var ratio = 1;
+    // To account for zoom, change to use deviceXDPI instead of systemXDPI
+    if (window.screen.systemXDPI !== undefined && window.screen.logicalXDPI       !== undefined && window.screen.systemXDPI > window.screen.logicalXDPI) {
+        // Only allow for values > 1
+        ratio = window.screen.systemXDPI / window.screen.logicalXDPI;
+    }
+    else if (window.devicePixelRatio !== undefined) {
+        ratio = window.devicePixelRatio;
+    }
+    return ratio;
+};
+
+  var accesstoken = "{{ section.settings.access_token | escape }}";
+    var index = accesstoken.indexOf(".");
+    var user_id = accesstoken.substr(0, index);
+
+   var isRetina =  getDevicePixelRatio() > 1;
+  
+   var resolution = isRetina? "standard_resolution":"low_resolution";
+   
+   var userFeed = new Instafeed({
+        get: 'user',
+        userId: user_id,
+        limit:33,
+        resolution:  resolution,
+        accessToken:'{{ section.settings.access_token | escape }}',
+        template: '{{instafeed_template}}',
+        sortBy: 'most-recent'
+    });
+  userFeed.run();
+     
+  
+</script>
+
+
+{% schema %}
+  {
+    "name": "Instagram",
+    "class": "index-section instagram-section",
+    "settings": [
+    {
+    "type":"paragraph",
+    "content":"The account details for which the feed is to be shown can be set in instafeed app."
+
+    },
+    {
+        "type": "text",
+        "id": "access_token",
+        "label": "Access Token"
+        },
+      {
+        "type": "text",
+        "id": "section_title",
+        "label": "Heading",
+        "default": "Instagram"
+      },
+      {
+        "type": "text",
+        "id": "subheading",
+        "label": "Subheading",
+        "default": "A short sentence for subheading for your insta feed."
+      }
+
+    ],
+    "presets": [{
+      "name": "Instagram",
+      "category": "Promotional"
+    }]
+  }
+{% endschema %}

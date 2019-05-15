@@ -1,0 +1,76 @@
+//<script>
+// DE SHOP CHECKOUT JS FILE
+
+// Waiting until the page is loaded
+window.addEventListener('load', () => {
+	/*COUNTRY Payment Methods*/
+	if (Shopify.Checkout.step == 'payment_method') {
+		let payment_exceptions = {
+			"Belgien":[16915431539,16915497075],
+			"Bulgarien":[16915431539,16915497075],
+			"Dänemark":[16915431539,16915497075],
+			"Deutschland":[16915431539],
+			"Estland":[16915431539,16915497075],
+			"Finnland":[16915431539,16915497075],
+			"Frankreich":[16915431539,16915497075],
+			"Griechenland":[16915431539,16915497075],
+			"Irland":[16915431539,16915497075],
+			"Italien":[16915431539,16915497075],
+			"Kroatien":[16915431539,16915497075],
+			"Lettlan":[16915431539,16915497075],
+			"Litauen":[16915431539,16915497075],
+			"Luxemburg":[16915431539,16915497075],
+			"Malta":[16915431539,16915497075],
+			"Österreich":[16915431539,16915497075],
+			"Polen":[16915431539,16915497075],
+			"Portugal":[16915431539,16915497075],
+			"Rumänien":[16915431539,16915497075],
+			"Schweden":[16915431539,16915497075],
+			"Slowakei":[16915431539,16915497075],
+			"Spanien":[16915431539,16915497075],
+			"Tschechische Republik":[16915431539,16915497075],
+			"Ungarn":[16915431539,16915497075],
+			"Vereinigtes Königreich":[16915431539,16915497075],
+			"Zypern":[16915431539,16915497075],
+			"Niederlande":[16915497075]
+		}
+		//Hide payment method under certain cart value
+		hideShowPayments(400, 16915497075, payment_exceptions)
+
+		const gatewayList = {
+			16915431539:'iDeal',
+			16915529843:'Paypal',
+			16915497075:'Ratepay',
+			16915464307:'Creditcard',
+		}
+		GACheckoutButton(gatewayList)
+
+		// checking if need to be hidden or not the invoice
+		const hideInvoiceUserJSON = sessionStorage.getItem('hideInvoiceUser')
+		if(hideInvoiceUserJSON){
+			JSON.parse(hideInvoiceUserJSON) ? hideShowPayments(5, 16915497075, payment_exceptions) : null
+		}
+
+		const radioButtons = $('.radio__label__primary')
+
+		for (let i = 0; i < radioButtons.length; i++) {
+			const result = radioButtons[i].htmlFor.split('_').pop();
+			const description = $(`#payment-gateway-subfields-${result}`).find('p')
+			//if you are logged with paypal express
+			const text = gatewayList[result] === 'Paypal' ? null : description[0].textContent; 
+			switch (gatewayList[result]){
+				case 'Creditcard':
+					radioButtons[i].textContent = 'Kreditkarte';
+					description[0].textContent = text.replace('Kreditkarte', 'unserem Dienstleister Wallee');
+					break;
+				case 'Ratepay':
+					radioButtons[i].textContent = 'Rechnung';
+					description[0].textContent = text.replace('Rechnung / Facture / Invoice', 'unserem Dienstleister Wallee');
+					break;
+				case 'Paypal':
+					radioButtons[i].nextElementSibling.style.display = "none"
+					break;
+			}
+		}
+	}
+})

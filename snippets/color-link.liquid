@@ -1,0 +1,122 @@
+
+{%- capture popover_id -%}popover-{{ product.id }}-{{ section.id }}-{{ "color-link" | handle }}{%- endcapture -%}
+
+{%comment%}
+GET COLOR LINK TAG
+{%endcomment%}
+{%assign color_link_tag = ''%}
+{%assign color_name = ''%}
+{% for tag in product.tags %}
+	{% if tag contains 'productColorLinkId'%}
+		{% assign color_link_tag = tag %}
+		{%break%}
+	{% endif %}
+{% endfor %}
+
+<!-- COLOR LINK  -->
+{%unless color_link_tag == blank%}
+{% assign colorNames = ''%}
+{% assign imageURLs = ''%}
+{% assign productHandles = ''%}
+
+	{% paginate collections.all.products by 1000 %}
+		{% for p in collections.all.products %}
+			{% if p.tags contains color_link_tag %}
+				{% assign color_name = '' %}
+				{% for tag in p.tags %}
+					{% if tag contains 'productColor:'%}
+						{% assign color_name = tag |split:':'|last %}
+						{% assign colorNames = colorNames | append: ',' | append: color_name  %}
+					{% endif %}
+				{%endfor%}
+				{% assign productHandles = productHandles | append: ',' | append: p.handle %}
+
+				{%comment%}
+					OAKIFY - 202
+					If last image has the alt text 'sizereco', then show second last image
+					else show last image
+				{%endcomment%}
+
+				{% if p.images.last.alt contains 'sizereco' and p.images.size > 1 %}
+					{%assign img_index = p.images | size | minus: 2 %}
+					{%assign imageURL = p.images[img_index].src | product_img_url: '64x'%}
+					{% assign imageURLs = imageURLs | append: ',' | append: imageURL %}
+				{% else %}
+				
+					{%assign imageURL = p.images.last.src | product_img_url: '64x'%}
+					{% assign imageURLs = imageURLs | append: ',' | append: imageURL %}
+				{% endif %}
+
+				
+
+			{% endif %}
+		{% endfor %}
+				<!-- {{productHandles}} --> <!-- {{colornames}}--> <!-- {{imageURLs}}-->
+	{% endpaginate %}
+
+{% assign AR_colorNames = colorNames | remove_first: ',' | split : ',' %}
+{% assign AR_imageURLs = imageURLs | remove_first: ',' | split : ',' %}
+{% assign AR_productHandles = productHandles | remove_first: ',' | split : ',' %}
+
+{% assign current_product_index = 0 %}
+{% for handle in AR_productHandles %}
+	{% if handle == product.handle%}
+	{% assign current_product_index = forloop.index0%}
+	{% endif %}
+{% endfor %}
+<!-- CURRENTHANDLE: {{AR_productHandles[current_product_index]}} --> 
+<!-- CURRENTIMAGE: {{AR_imageURLs[current_product_index]}} --> 
+<!-- CURRENTCOLORNAME: {{AR_colorNames[current_product_index]}} --> 
+
+{% if AR_colorNames.size > 0%}
+{%assign current_color_name = AR_colorNames[current_product_index]%}
+{%assign current_image_url = AR_imageURLs[current_product_index]%}
+
+
+{%- capture popover_html -%}
+ <div id="{{ popover_id }}" class="OptionSelector Popover Popover--withMinWidth" aria-hidden="true">
+	<header class="Popover__Header">
+	  <button type="button" class="Popover__Close Icon-Wrapper--clickable" data-action="close-popover">{% include 'icon' with 'close' %}</button>
+	  <span class="Popover__Title Heading u-h4">{{ "product.form.color" | t }}</span>
+	</header>
+
+	<div class="Popover__Content">
+	  <div class="Popover__ValueList" data-scrollable>
+	    {%- for link_color in AR_colorNames -%}
+	    {%assign link_product_handle = AR_productHandles[forloop.index0]%}
+		{%assign link_image_url = AR_imageURLs[forloop.index0]%}
+	      <a type="button" class="Popover__Value {% if current_color_name == link_color %}is-selected{% endif %} Heading Link Link--primary u-h6 ColorLink"
+	              data-value="{{ value | escape }}"
+	              data-option-position="{{ option.position }}"
+	              data-background-image="{{ link_image_url }}"
+	              data-action="select-value"
+	              href="/products/{{link_product_handle}}"
+	              style="background-image: url({{link_image_url}});">
+	        {{- link_color -}}
+	      </a>
+	    {%- endfor -%}
+	  </div>
+
+	</div>
+</div>
+
+{%- endcapture -%}
+
+<div class="ProductForm__Option ProductForm__Option--color">
+	{{popover_html}}
+          <button type="button" class="ProductForm__Item" aria-expanded="false" aria-controls="{{ popover_id }}">
+          
+              {%- assign downcase_value = current_color_name | downcase -%}
+
+              <span class="ProductForm__ColorSwatch {% if downcase_value == 'white' %}ProductForm__ColorSwatch--white{% endif %}" style="background-color: {{ option.selected_value | replace: ' ', '' }}; background-image: url({{current_image_url}})"></span>
+              <span class="ProductForm__SelectedValue">{{ current_color_name }}</span>
+              <span class="ProductForm__OptionCount Text--subdued">{{ 'product.form.colors_count' | t: count: AR_colorNames.size }}</span>
+
+            {%- include 'icon' with 'select-arrow' -%}
+          </button>
+
+</div>
+
+{%comment%}{%- assign product_popovers = product_popovers | append: popover_html -%}{%endcomment%}
+{% endif %}
+{% endunless %}

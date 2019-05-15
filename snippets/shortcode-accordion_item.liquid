@@ -1,0 +1,13 @@
+{% capture accordion_title %}{% include 'shortcode-render' render:'title' %}{% endcapture %}
+{% capture the_accordion_type %}{% include 'shortcode-render' render:'accordion_type' %}{% endcapture %}
+{% capture is_active %}{% include 'shortcode-render' render:'active' %}{% endcapture %}
+{% capture is_hidden %}{% include 'shortcode-render' render:'hidden' %}{% endcapture %}
+<div {% if is_hidden  == 'true' %} class="Collapsible hidden" {% else %} class="Collapsible" {% endif %}>
+    <button  class="Collapsible__Button Heading u-h6" data-action="toggle-collapsible" {% if is_active  == 'true' %} aria-expanded="true" {% else %} aria-expanded="false" {% endif %} >{{accordion_title}}<span class="Collapsible__Plus"></span>
+     </button>
+   <div class="Collapsible__Inner" {% if is_active == 'true' %} style="height: auto;" {% else %} style="height: 0px;" {% endif %}>
+      <div class="Collapsible__Content">
+        {% if the_accordion_type %} <div class="Rte {{the_accordion_type}}" > {% else %} <div class="Rte"> {% endif %}
+              
+              
+

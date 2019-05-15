@@ -1,0 +1,64 @@
+{%-  if settings.currency_conversion_enabled and  section.settings.popup -%}
+
+      {% capture section_settings %}
+        {
+          "included_countries" : {{ section.settings.included_countries | json }}
+        }
+      {% endcapture %}
+
+      <aside class="CurrencySwitchPopup" data-section-id="{{ section.id }}" data-section-type="StoreSwitch-popup" data-section-settings='{{ section_settings }}' aria-hidden="true">
+        <button class="CurrencySwitchPopup__Close" data-action="close-popup">{% include 'icon' with 'close' %}</button>
+
+        {%- if section.settings.title != blank -%}
+          <h2 class="CurrencySwitchPopup__Heading Heading u-h2">{{ section.settings.title | escape }}</h2>
+        {%- endif -%}
+
+        {%- if section.settings.content != blank -%}
+          <div class="CurrencySwitchPopup__Content">
+            {{ section.settings.content }}
+          </div>
+        {%- endif -%}
+
+        {%- capture codes -%}USD,EUR,GBP,CAD,ARS,AUD,BBD,BDT,BSD,BHD,BRL,BOB,BND,BGN,MMK,KYD,CLP,CNY,COP,CRC,HRK,CZK,DKK,DOP,XCD,EGP,XPF,FJD,GHS,GTQ,GYD,GEL,HKD,HUF,ISK,INR,IDR,NIS,JMD,JPY,JOD,KZT,KES,KWD,LVL,LTL,MXN,MYR,MUR,MDL,MAD,MNT,MZN,ANG,NZD,NGN,NOK,OMR,PKR,PYG,PEN,PHP,PLN,QAR,RON,RUB,SAR,RSD,SCR,SGD,SYP,ZAR,KRW,LKR,SEK,CHF,TWD,THB,TZS,TTD,TRY,UAH,AED,UYU,VEB,VND,ZMK{%- endcapture -%}
+        {%- assign supported_codes = settings.currency_conversion_supported_currencies | upcase | split: ' ' | uniq -%}
+        
+         {% for code in supported_codes %}
+            <a class="popup-currency-block" href="#" data-currency="{{ code }}">{{ code }}</a>
+         {%- endfor -%}
+
+      </aside>
+
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Currency Switch Popup",
+     "settings": [
+      {
+        "type": "checkbox",
+        "id": "popup",
+        "label": "Enable the Checkbox to show Curreny Switcher Popup",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading",
+        "default": "Popup"
+      },
+      {
+        "type": "richtext",
+        "id": "content",
+        "label": "Text",
+        "default": "<p>You can use this popup to display some useful information to your customers.</p>"
+      },
+      {
+        "type": "text",
+        "id": "included_countries",
+        "label": "Show only for these countries",
+        "info": "Comma separated list of country codes, e.g. DK,SE",
+        "default": "DK,SE"
+      }
+    ]
+}
+{% endschema %}

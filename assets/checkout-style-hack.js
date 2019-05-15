@@ -1,0 +1,1 @@
+//EMPTY code inside theme.liquid & checkout.liquid

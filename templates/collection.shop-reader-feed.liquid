@@ -1,0 +1,74 @@
+{% layout none %}{% paginate collection.products by 350 %}{
+"products": [{% for product in collection.products %}
+{
+  "available": {{ product.available }},
+  "body_html": "{{ product.description | replace: '[accordion_item title="Größe &amp; Passform"]','' | replace: '[accordion][accordion_item title="Details" active="true"]', '' | replace: '[accordion_item title="Material &amp; Pflegehinweise"]','' | replace: '[accordion_item title="Passform"]','' | replace: '[accordion_end]','' | replace: '[accordion_item_end]','|' | replace: '"','' | replace: '</p>','|' | strip_html | strip_newlines }}",
+    "categories": {% assign t = product.metafields.product.type | split: ',' %}[{% for type in t %}"{{type | strip}}"{% unless forloop.last %},{% endunless %}{% endfor %}],
+    "color": "{{product.metafields.product.color}}",
+    "currency": "{{shop.currency}}",
+    "id": {{ product.id }},
+    "images": [{% for image in product.images %}
+    {
+      "position": {{ image.position }},
+      "url": "https:{{ image.src | img_url: '1200x' }}"
+    }{% unless forloop.last %},{% endunless %}{% endfor %}
+    ],
+    "price": {{ product.price }},
+    {% if product.price < product.compare_at_price %}"sale": true,
+    "original_price": {{product.compare_at_price_min}},{% endif %}
+    "title": "{{product.title}}",
+    "url": "{{shop.url}}{{ product.url }}",
+    "variants": [{% for variant in product.variants %}
+    {
+      {% if variant.image %}"image_id": {{ variant.image.id }},{% endif %}
+      "available": {{ variant.available }},
+      "id": {{ variant.id }},
+      "inventory_quantity": {{ variant.inventory_quantity }},
+      "position": {{ forloop.index }},
+      "price": "{{ variant.price }}",
+      "sku": "{{ variant.sku }}",
+      "title": "{{variant.title}}",
+      "weight": {{ variant.weight_in_unit }},
+      "weight_unit": "{{ variant.weight_unit }}"
+    }{% unless forloop.last %},{% endunless %}{% endfor %}
+    ]
+  }{% unless forloop.last %},{% endunless %}{% endfor %}
+  ]{% endpaginate %},
+  "sale_products":[{% paginate collection.products by 350 %}{% for product in collections.sale.products %}
+  {
+    "available": {{ product.available }},
+    "body_html": "{{ product.description | replace: '[accordion_item title="Größe &amp; Passform"]','' | replace: '[accordion][accordion_item title="Details" active="true"]', '' | replace: '[accordion_item title="Material &amp; Pflegehinweise"]','' | replace: '[accordion_item title="Passform"]','' | replace: '[accordion_end]','' | replace: '[accordion_item_end]','|' | replace: '"','' | replace: '</p>','.' | strip_html | strip_newlines }}",
+      "categories": {% assign t = product.metafields.product.type | split: ',' %}[{% for type in t %}"{{type | strip}}"{% unless forloop.last %},{% endunless %}{% endfor %}],
+      "color": "{{product.metafields.product.color}}",
+      "currency": "{{shop.currency}}",
+      "id": {{ product.id }},
+      "images": [{% for image in product.images %}
+      {
+        "position": {{ image.position }},
+        "url": "https:{{ image.src | img_url: '1200x' }}"
+      }{% unless forloop.last %},{% endunless %}{% endfor %}
+      ],
+      "price": {{ product.price }},
+      {% if product.price < product.compare_at_price %}"sale": true,
+      "original_price": {{product.compare_at_price_min}},{% endif %}
+      "title": "{{product.title}}",
+      "url": "{{shop.url}}{{ product.url }}",
+      "variants": [{% for variant in product.variants %}
+      {
+        {% if variant.image %}"image_id": {{ variant.image.id }},{% endif %}
+        "available": {{ variant.available }},
+        "id": {{ variant.id }},
+        "inventory_quantity": {{ variant.inventory_quantity }},
+        "position": {{ forloop.index }},
+        "price": "{{ variant.price }}",
+        "sku": "{{ variant.sku }}",
+        "title": "{{variant.title}}",
+        "weight": {{ variant.weight_in_unit }},
+        "weight_unit": "{{ variant.weight_unit }}"
+      }{% unless forloop.last %},{% endunless %}{% endfor %}
+      ]
+    }{% unless forloop.last %},{% endunless %}{% endfor %}
+    ]{% endpaginate %},
+    {% paginate collections.all.products by 500 %}"products_count": {{paginate.items}},{% endpaginate %}
+    {% paginate collections.sale.products by 500 %}"sale_products_count": {{paginate.items}}{% endpaginate %}
+  }

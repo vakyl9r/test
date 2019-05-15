@@ -1,0 +1,18 @@
+<div class="Collapsible hidden-pocket">
+  <button class="Collapsible__Button Heading u-h6" data-action="open-modal" aria-controls="modal-{{ size_chart_page.handle }}">
+    {{"product.form.size_chart" | t }} <span class="Collapsible__Plus"></span>
+  </button>
+</div>
+{%- if product.selected_or_first_available_variant.available -%}
+  <div class="Collapsible">
+   <button class="Collapsible__Button Heading u-h6" data-action="toggle-collapsible" aria-expanded="false">
+     {{"product.form.shipping" | t }} <span class="Collapsible__Plus"></span>
+   </button>
+   <div class="Collapsible__Inner">
+     <div class="Collapsible__Content">
+       {{- USPs -}}
+     </div>
+   </div>
+ </div>
+{%- endif -%}
+</div>

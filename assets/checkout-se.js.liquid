@@ -1,0 +1,49 @@
+//<script>
+// SE SHOP CHECKOUT JS FILE
+
+// Waiting until the page is loaded
+window.addEventListener('load', () => {
+	if(Shopify.Checkout.step === 'payment_method'){
+		//Hide payment method under certain cart value
+		hideShowPayments(4200, 24976457797, false)
+
+		const gatewayList = {
+			24290689093:'Paypal',
+			25431113797:'Creditcard',
+			24976457797:'Klarna Invoice',
+		}
+		GACheckoutButton(gatewayList)
+		
+		// checking if need to be hidden or not the invoice
+		const hideInvoiceUserJSON = sessionStorage.getItem('hideInvoiceUser')
+		if(hideInvoiceUserJSON){
+			JSON.parse(hideInvoiceUserJSON) ? hideShowPayments(5, 24976457797, false) : null
+		}
+
+		const radioButtons = $('.radio__label__primary')
+
+		for (let i = 0; i < radioButtons.length; i++) {
+			const result = radioButtons[i].htmlFor.split('_').pop();
+			const description = $(`#payment-gateway-subfields-${result}`).find('p')
+			//if you are logged with paypal express
+			const text = gatewayList[result] === 'Paypal' ? null : description[0].textContent; 
+			switch (gatewayList[result]){
+				case 'Creditcard':
+					radioButtons[i].textContent = 'Kreditkort';
+					description[0].textContent = text.replace('Credit and Debit Cards', 'vår partner Wallee');
+					break;
+				case 'Klarna Invoice':
+					radioButtons[i].textContent = 'Faktura med Klarna';
+					description[0].textContent = text.replace('Rechnung mit Klarna', 'vår partner Klarna');
+					break;
+				case 'Invoice':
+					radioButtons[i].textContent = 'Faktura';
+					description[0].textContent = text.replace('Rechnung / Facture / Invoice', 'vår partner Wallee');
+					break;
+				case 'Paypal':
+					radioButtons[i].nextElementSibling.style.display = "none"
+					break;
+			}
+		}
+	}
+})

@@ -1,0 +1,77 @@
+{%- if section.settings.enable_bar -%}
+  {%- unless section.settings.home_page_only and template != 'index' -%}
+    <section id="section-{{ section.id }}" data-section-id="{{ section.id }}" data-section-type="GDPR-bar" aria-hidden="true">
+      <div class="GDPRBar" >
+        <button class="GDPRBar__Close" data-action="close-GDPRBar">{% include 'icon' with 'close' %}</button>
+        <div class="GDPRBar__Wrapper">
+          <div class="GDPRBar__Content Heading">
+              {{ section.settings.content }}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <style>
+      #section-{{ section.id }} {
+        background: {{ section.settings.background }};
+        color: {{ section.settings.text_color }};
+      }
+      #section-{{ section.id }} .GDPRBar__Content{
+        font-family: {{section.settings.GDPR_font.family}};
+      }
+
+     #section-{{ section.id }} .GDPRBar__Content a {
+        border-bottom: 1px solid {{ section.settings.text_color }};
+      }
+    </style>
+
+    <script>
+      document.documentElement.style.setProperty('--gdpr-bar-height', document.getElementById('shopify-section-gdpr-bar').offsetHeight + 'px');
+    </script>
+  {%- endunless -%}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "GDPR bar",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable_bar",
+      "label": "Enable bar",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "home_page_only",
+      "label": "Home page only",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "richtext",
+      "id": "content",
+      "label": "Text",
+      "default": "<p>GDPR Text Here<p>"
+    },
+    {
+        "type": "font_picker",
+        "id": "GDPR_font",
+        "label": "Font",
+        "default": "helvetica_n4"
+    }
+  ]
+}
+{% endschema %}
+

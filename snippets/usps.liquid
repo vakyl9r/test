@@ -1,0 +1,55 @@
+    {% if settings.show_usps %}
+      <div class="usp_wrapper{% unless no_bg %} usp_wrapper--background{%endunless%}">
+      
+      {% if settings.usp_title_1 != blank%}
+      <div class="usp_group">
+        <div class="usp_block">{{settings.usp_title_1}}</div>
+      {% endif %}  
+
+      {% if settings.usp_1_text != blank%}
+        <div {% if settings.usp_1_image != blank %} class="usp_block with_icon" style="background-image: url('{{settings.usp_1_image | remove: "files/" | file_img_url: '32x' }}')" {% else %} class="usp_block" {% endif %}>
+          {{settings.usp_1_text}} 
+        </div>
+      {% endif %}
+       {% if settings.usp_2_text != blank%}
+        <div {% if settings.usp_2_image != blank %} class="usp_block with_icon" style="background-image: url('{{settings.usp_2_image | remove: "files/" | file_img_url: '32x' }}')" {% else %} class="usp_block" {% endif %}>
+          {{settings.usp_2_text}}
+        </div>
+      {% endif %}
+       {% if settings.usp_3_text != blank%}
+        <div {% if settings.usp_3_image != blank %} class="usp_block with_icon" style="background-image: url('{{settings.usp_3_image | remove: "files/" | file_img_url: '32x' }}')" {% else %} class="usp_block" {% endif %}>
+          {{settings.usp_3_text}}
+        </div>
+      {% endif %}
+
+      {% if settings.usp_title_1 != blank%}
+        </div>
+      {% endif %}  
+
+        {% if settings.usp_title_2 != blank%}
+      <div class="usp_group">
+        <div class="usp_block">{{settings.usp_title_2}}</div>
+      {% endif %}  
+
+      {% if settings.usp_4_text != blank%}
+        <div {% if settings.usp_4_image != blank %} class="usp_block with_icon" style="background-image: url('{{settings.usp_4_image | remove: "files/" | file_img_url: '32x' }}')" {% else %} class="usp_block" {% endif %}>
+          {{settings.usp_4_text}} 
+        </div>
+      {% endif %}
+       {% if settings.usp_5_text != blank%}
+        <div {% if settings.usp_5_image != blank %} class="usp_block with_icon" style="background-image: url('{{settings.usp_5_image | remove: "files/" | file_img_url: '32x' }}')" {% else %} class="usp_block" {% endif %}>
+          {{settings.usp_5_text}}
+        </div>
+      {% endif %}
+       {% if settings.usp_6_text != blank%}
+        <div {% if settings.usp_6_image != blank %} class="usp_block with_icon" style="background-image: url('{{settings.usp_6_image | remove: "files/" | file_img_url: '32x' }}')" {% else %} class="usp_block" {% endif %}>
+           {{settings.usp_6_text}}
+        </div>
+      {% endif %}
+
+      {% if settings.usp_title_2 != blank%}
+        </div>
+      {% endif %}  
+
+     </div>
+    {% endif %}

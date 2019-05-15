@@ -1,0 +1,45 @@
+<script>
+  cookies = {};
+  cookies.getCookie = function(name) {
+      var v = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
+      return v ? v[2] : null;
+  }
+
+  cookies.setCookie = function(name, value, days, gaCrossDomain = false) {
+    var d = new Date;
+    d.setTime(d.getTime() + 24*60*60*1000*days);
+    let domain = window.location.hostname
+    if(domain.includes('.myshopify.com'))
+    {
+      domain = 'myshopify.com'
+    }
+    document.cookie = `${name}=${value};Domain=.${domain};path=/;expires=${d.toGMTString()}`;
+  }
+
+  cookies.deleteCookie = function(name, gaCrossDomain = false) { 
+    cookies.setCookie(name, '', -1, gaCrossDomain ? true : false);
+  }
+
+  cookies.setFromParams = function(){
+    var url = new URL(window.location);
+    //gdpr
+    var GDPRbar_dismissed = url.searchParams.get('gdpr_consent');
+    if(GDPRbar_dismissed){
+      cookies.setCookie('GDPRbar_dismissed',true,30);
+    }
+
+    var store_switcher_popup_dismissed = url.searchParams.get('store_switcher_popup_dismissed');
+    if(store_switcher_popup_dismissed){
+      localStorage.setItem('store_switcher_popup_dismissed', true);
+    }
+    /* OAKIFY-229 Fixing Cross-Domain Tracking In Google Analytics */
+    const ga_crossDomain = url.searchParams.get('_ga');
+    if(ga_crossDomain){
+      //delete old cookie
+      //cookies.deleteCookie('_ga', true)
+      //create the one that the user bring
+      cookies.setCookie('_ga', ga_crossDomain,30);
+    }
+  }
+  cookies.setFromParams();
+</script>

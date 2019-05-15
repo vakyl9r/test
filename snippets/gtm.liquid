@@ -1,0 +1,155 @@
+<script>
+    const ajaxRequestWithPromise = url => {
+      return new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.addEventListener('load', () => { // a listener which executes when the xhr request succeeds
+          resolve(xhr.responseText);
+        });
+        xhr.addEventListener('error', () => { // a listener which executes when the xhr request fails
+          reject(new Error(xhr.statusText));
+        })
+        xhr.open('GET', url);
+        xhr.send();
+      });
+    }
+    const request = async () => { // async function always returns a promise
+      const clientIP = await ajaxRequestWithPromise('https://api.ipify.org'); // await can be only used inside async functions
+      if(clientIP){
+        getVariables(clientIP);
+      } else {
+        getVariables(false)
+      }
+    }
+    request().catch((error) => { console.log('FAIL',error) }); // catch rejected promise
+    const getVariables = clientIP => {
+      const isInternalIp = clientIP === '87.138.195.51' || clientIP === '88.13.79.165' ? true : false;
+      const windowSize = document.documentElement.clientWidth
+      let device = 'tablet' //default
+      if(windowSize <= 640){
+        device = 'mobile';
+      } else if (windowSize >= 1025){
+        device = 'desktop';
+      }
+      //1.4 Page type
+      let pageType;
+      const dashes = window.location.pathname.split('/')
+      pageType = 'Homepage' //default
+      if(dashes[1] === ''){
+      } else if ( dashes[1] === 'collections' ){
+        if(dashes.length === 3){
+          pageType = 'Category'
+        } else {
+          pageType = 'Product'
+        }
+      } else if ( dashes[1] === 'search' ){
+        pageType = 'Search'
+      } else if ( dashes[1] === 'products' ){
+        pageType = 'Product'
+      } else if ( dashes[1] === 'challenge'){
+        pageType = 'captcha page'
+      } else if (dashes[1] === 'pages'){
+        //All the /pages
+        switch (dashes[2]) {
+        //All the information
+          case 'customer-care':
+          case 'kundenservice':
+          case 'contact':
+          case 'kontakt':
+          case 'jobs':
+          case 'about-us':
+          case 'ueber-uns':
+          case 'stories':
+          case 'transparency':
+            pageType = 'Information'
+            break;
+          //All the legal
+          case 'terms-and-conditions':
+          case 'agb':
+          case 'privacy-policy':
+          case 'datenschutzbestimmung':
+          case 'imprint':
+          case 'impressum':
+            pageType = 'Legal'
+            break;
+          default:
+            pageType = 'Non defined Page'
+        }
+      } else if (dashes[1] === 'cart'){
+        pageType = 'Cart'
+      } else if (dashes[1] === 'account'){
+        if(dashes.length === 3){
+          pageType = 'Account'
+        } else {
+          dashes.length === 2 ? pageType = 'Account' : pageType = 'Purchase'	
+        }
+      } else if (window.location.pathname.includes('wishlist')){
+        pageType = 'Wishlist'
+      } else if (window.location.pathname.includes('checkouts')){
+        pageType = 'Checkout'
+      } else if (window.location.pathname.includes('orders')){
+        pageType = 'Checkout'
+      }
+      //1.6 & 1.7 userLoginStatus
+      //Item 'userLoginStatus' & 'customerID' is save in commonTheme.js.liquid in function 'eshop.datalayerVariables' and in checkout.liquid under comment 'userLoginStatus'
+      let userLoginStatus = localStorage.getItem('userLoginStatus')
+      let userId = localStorage.getItem('customerID')
+      userLoginStatus ? window.userLoginStatus = JSON.parse(userLoginStatus) : userLoginStatus = false ;
+      if(!JSON.parse(userLoginStatus)){
+        localStorage.setItem('userLoginStatus', false);
+      }
+
+      //variables to send with the GA if is not there just will be not displayed (undefined)
+      const environment = { device }
+
+      //Logic for theme.liquid
+      let page = {}
+      if(typeof infoObj !== 'undefined'){
+        page = {
+          pageType,
+          'product_ids': infoObj.product_ids.length > 0 ? infoObj.product_ids : undefined,
+          'collection_id': infoObj.collection_id ? parseInt(infoObj.collection_id) : undefined,
+          'collection_name': infoObj.collection_name ? infoObj.collection_name : undefined,
+          'search_term': infoObj.search_term ? infoObj.search_term.slice(0,-1) : undefined,
+        }
+      } else {
+        page = {
+          pageType,
+        }
+      }
+      const user = {
+        'userLoginStatus':`${userLoginStatus}`,
+        'isInternalIp':`${isInternalIp}`,
+        'userId': userLoginStatus ? `${userId}` : undefined
+      }
+
+      //send variables to GTM DataLayer
+      dataLayer = [{ environment, page, user }]
+
+      //SELECT THE GTM DEV or GTM PROD
+      if(window.location.host === 'ivy-oak-de.myshopify.com' || window.location.host.includes('shopifypreview')){
+        //GTM DEV
+        <!-- Google Tag Manager -->
+          (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0], j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl+'&gtm_auth=lqqASDOnpe2ki71UtcgcMw&gtm_preview=env-5&gtm_cookies_win=x';
+          /* START GTM says when is loaded */
+          j.addEventListener('load', function() {
+            var _ge = new CustomEvent('gtm_loaded', { bubbles: true });
+            d.dispatchEvent(_ge);
+          });
+          /* END GTM says when is loaded */
+          f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-K6RSXGC');
+        <!-- End Google Tag Manager -->
+      } else {
+        //GTM PROD
+        <!-- Google Tag Manager -->
+          (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0], j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl+ '&gtm_auth=NY8AVraYYn8SPelusj9XXQ&gtm_preview=env-2&gtm_cookies_win=x';
+          /* START GTM says when is loaded */
+          j.addEventListener('load', function() {
+            var _ge = new CustomEvent('gtm_loaded', { bubbles: true });
+            d.dispatchEvent(_ge);
+          });
+          /* END GTM says when is loaded */
+          f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-K6RSXGC');
+        <!-- End Google Tag Manager -->
+      }
+    }
+    </script>

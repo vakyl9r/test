@@ -1,0 +1,83 @@
+//<script>
+// EN SHOP CHECKOUT JS FILE
+// Waiting until the page is loaded
+window.addEventListener('load', () => {
+/*COUNTRY Payment Methods*/
+	if (Shopify.Checkout.step == 'payment_method') {
+		let payment_exceptions = {
+			"Austria":[16917528691,16917495923,16932831347],
+			"Belgium":[16917528691,16917495923,16932831347],
+			"Bulgaria":[16917528691,16917495923,16932831347],
+			"Croatia":[16917528691,16917495923,16932831347],
+			"Cyprus":[16917528691,16917495923,16932831347],
+			"Czech Republic":[16917528691,16917495923,16932831347],
+			"Denmark":[16917528691,16917495923,16932831347],
+			"Estonia":[16917528691,16917495923,16932831347],
+			"Finland":[16917528691,16917495923],
+			"France":[16917528691,16917495923,16932831347],
+			"Germany":[16917495923,16932831347],
+			"Greece":[16917528691,16917495923,16932831347],
+			"Hungary":[16917528691,16917495923,16932831347],
+			"Ireland":[16917528691,16917495923,16932831347],
+			"Italy":[16917528691,16917495923,16932831347],
+			"Latvia":[16917528691,16917495923,16932831347],
+			"Lithuania":[16917528691,16917495923,16932831347],
+			"Luxembourg":[16917528691,16917495923,16932831347],
+			"Malta":[16917528691,16917495923,16932831347],
+			"Netherlands":[16917528691,16932831347],
+			"Poland":[16917528691,16917495923,16932831347],
+			"Portugal":[16917528691,16917495923,16932831347],
+			"Romania":[16917528691,16917495923,16932831347],
+			"Slovakia":[16917528691,16917495923,16932831347],
+			"Slovenia":[16917528691,16917495923,16932831347],
+			"Spain":[16917528691,16917495923,16932831347],
+			"Sweden":[16917528691,16917495923,16932831347],
+			"United Kingdom":[16917528691,16917495923,16932831347]
+		}
+		//Hide payment method under certain cart value
+		hideShowPayments(400, 16932831347, payment_exceptions)
+		hideShowPayments(400, 16917528691, payment_exceptions)
+
+		const gatewayList = {
+			16917626995:'Paypal',
+			16917528691:'Ratepay',
+			16917463155:'Creditcard',
+			16932831347:'Klarna Invoice',
+			16917495923:'iDeal',
+		}
+		GACheckoutButton(gatewayList)
+
+		// checking if need to be hidden or not the invoice
+		const hideInvoiceUserJSON = sessionStorage.getItem('hideInvoiceUser')
+		if(hideInvoiceUserJSON){
+			JSON.parse(hideInvoiceUserJSON) ? hideShowPayments(5, 16932831347, payment_exceptions) : null
+			JSON.parse(hideInvoiceUserJSON) ? hideShowPayments(5, 16917528691, payment_exceptions) : null
+		}
+
+		const radioButtons = $('.radio__label__primary')
+
+		for (let i = 0; i < radioButtons.length; i++) {
+			const result = radioButtons[i].htmlFor.split('_').pop();
+			const description = $(`#payment-gateway-subfields-${result}`).find('p')
+			//if you are logged with paypal express
+			const text = gatewayList[result] === 'Paypal' ? null : description[0].textContent; 
+			switch (gatewayList[result]){
+				case 'Creditcard':
+					radioButtons[i].textContent = 'Credit Card';
+					description[0].textContent = text.replace('Kreditkarte', 'our partner Wallee');
+					break;
+				case 'Klarna Invoice':
+					radioButtons[i].textContent = 'Invoice with Klarna';
+					description[0].textContent = text.replace('Rechnung mit Klarna', 'our partner Klarna');
+					break;
+				case 'Ratepay':
+					radioButtons[i].textContent = 'Invoice';
+					description[0].textContent = text.replace('Rechnung / Facture / Invoice', 'our partner Wallee');
+					break;
+				case 'Paypal':
+					radioButtons[i].nextElementSibling.style.display = "none"
+					break;
+			}
+		}
+	}
+})

@@ -1,0 +1,139 @@
+//<script>
+window.addEventListener('load', () => {
+try {
+	//check if user has less than 70% return rate to be able to see invoices
+	if(checkoutObj.email.length > 0){
+		returnRateHook();
+	}
+
+	/* OAKIFY-245 Add Static phone number if customer phone not give */
+	expressSendPhoneLogic()
+
+	/* OAKIFY-258 Hiding & naming payment methods breaks after coupon-redemption */
+	//need to reactivate the logic when a cupong is added
+	const applyDiscountBtn = $('button[data-trekkie-id=apply_discount_button]')
+	const clearButton = $('.applied-reduction-code__clear-button')
+	couponRedemption(applyDiscountBtn);
+	couponRedemption(clearButton);
+
+	/* OAKIFY-219 allow-to-jump-to-the-selected Product */
+	const checkoutProducts = $('.product')
+	$.when(checkoutProducts)
+	.then(productImageClickable(checkoutProducts))
+	.catch( error => {
+		notFoundVariables('checkout eeProductClick', error)
+	})
+
+	//1.6 & 1.7 userLoginStatus
+	// add the customerID
+	addCustomerId();	
+
+	//8- user interacts with the account page
+	const isNewAccount = localStorage.getItem('newAccount');
+	if(isNewAccount){
+		localStorage.removeItem('newAccount')
+		sendAccountInfo('register','success')
+	}
+
+	//9- user signs up for the newsletter and complete order
+	const nextStep = document.getElementsByClassName('step__footer__continue-btn')
+	if(nextStep.length > 0){
+		nextStep[0].addEventListener('click', () => {
+			const newLetterCheck = document.getElementsByClassName('input-checkbox')
+			if(newLetterCheck.length > 0 && newLetterCheck[0].checked){
+				if(!sessionStorage.getItem('checkourNewsletterSent')){
+					sessionStorage.setItem('checkourNewsletterSent',true)
+					sendAccountInfo('sign-up','checkout', 'newsletter')
+					dataCheckoutLayer(5)
+				}
+			}
+		})
+	}
+
+	//paypal express && amazon pay
+	const checkingPaypal = setInterval(() => {
+		const elem = document.activeElement;
+		//Checking Paypal Express Button
+		if(elem && elem.tagName === 'IFRAME' && elem.classList[0] === 'zoid-component-frame'){
+			clearInterval(checkingPaypal);
+			dataCheckoutOptions(2,['paypal express'])
+		}
+		//Checking Amazon Pay Button
+		if(elem && elem.tagName === 'A' && elem.classList[0] === 'amazon-payments-pay-button'){
+			clearInterval(checkingPaypal);
+			dataCheckoutOptions(2,['amazon pay express'])
+		}
+	}, 100);
+
+	//LOGIC FOR THE CHECKOUT STEPS
+	const nextButton = $('.step__footer__continue-btn').attr('data-trekkie-id')
+	const userLoginStatus = localStorage.getItem('userLoginStatus')
+	if(Shopify.Checkout.step === 'contact_information'){
+		//On load send the currenct cart
+		const checkoutProducts = $('.product')
+		$.when(checkoutProducts)
+		.then(eeCheckout(checkoutProducts))
+		.catch( error => {
+			notFoundVariables('eeCheckout step 1', error)
+		})
+
+		if(userLoginStatus){
+			//debugConsole('Logged SKIPED')
+		} else {
+			contactInfoEnter()
+		}
+
+		//OAKIFY 252 && 275 Style Express Checkout options
+		modifyCheckoutOptions();
+	} else if (nextButton === 'continue_to_payment_method_button'){
+		checkingPaypal ? clearInterval(checkingPaypal) : null
+		shippingMethodEnter(userLoginStatus)
+	} else if (nextButton === 'complete_order_button'){
+		checkingPaypal ? clearInterval(checkingPaypal) : null
+		dataCheckoutLayer(4)
+	}
+		
+		//When the order has been processed
+		// PROD
+		if(typeof Shopify.Checkout.page !== 'undefined' && Shopify.Checkout.page === 'thank_you' && gtmReady){
+		//DEV
+		//if(typeof Shopify.Checkout.page === 'undefined' && Shopify.Checkout.page !== 'thank_you'){
+			debugConsole('ON TIME')
+			// Only execute once, at final checkout
+			//logic to avoid invoices, just one per hour
+			try {
+				let payedWithInvoiceJSON = localStorage.getItem('invoiceSelected');
+				if(payedWithInvoiceJSON){
+					payedWithInvoice = JSON.parse(payedWithInvoiceJSON)
+					if(payedWithInvoice){
+						localStorage.setItem('invoiceDone',  JSON.stringify({value:true, timeStamp:new Date().getTime()}))
+						localStorage.removeItem('invoiceSelected')
+					}
+				}
+			}
+			catch(error){
+				notFoundVariables('payedWithInvoice checkout', error)
+			}
+			// launch eePurchase
+			sendEEPurchaseToGTM('GTM_OnTime');
+		}
+
+		Checkout.$('#loading-animation').hide();
+		Checkout.$('#content-wrap').slideDown(600);
+
+	}
+	catch(error){
+		notFoundVariables('window.addEventListener load', error)
+	}
+})
+
+{% if settings.checkout_tnc_checkbox %}
+	/*Add Terms and Conditions Field*/
+	if (Shopify.Checkout.step == 'payment_method' && Checkout.$('form.edit_checkout').length ) {
+		termsConditionsCheckBox();
+	}
+{% endif %}
+
+if (typeof Shopify.Checkout.OrderStatus !== 'undefined' && typeof Shopify.Checkout.OrderStatus.addContentBox === "function" && typeof bridalProductFound !== 'undefined' && bridalProductFound===true) {
+	bridalProductSurprise();
+}

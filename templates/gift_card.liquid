@@ -1,0 +1,35 @@
+{%- layout 'gift_card' -%}
+
+{%- capture header_logo -%}
+      <a href="{{ shop.url }}" class="Header__LogoLink">
+        {%- if settings.custom_checkout_logo != blank -%}
+          {%- capture image_size -%}190x{%- endcapture -%}
+          <img class="Header__LogoImage Header__LogoImage--primary"
+               src="{{ settings.custom_checkout_logo | img_url: image_size }}"
+               srcset="{{settings.custom_checkout_logo | img_url: image_size }} 1x, {{ settings.custom_checkout_logo | img_url: image_size, scale: 2 }} 2x"
+               width="190"
+               alt="{{ settings.custom_checkout_logo.alt | default: shop.name | escape }}">
+
+        {%- else -%}
+          <span class="Heading u-h4">{{ shop.name }}</span>
+        {%- endif -%}
+      </a>
+{%- endcapture -%}
+
+<header class="Header Header--sidebar Header--initialized">
+  <div class="Header__Wrapper Header__Wrapper--center">
+    {{ header_logo }}
+  </div>
+</header>
+
+<div class="GiftCard {% if gift_card.expired or gift_card.enabled != true %}GiftCard--disabled{% endif %}" data-section-id="gift-card" data-section-type="gift-card">
+  <div class="Container">
+    <div class="PageContent">
+      {% section 'gift-card' %}
+    </div>
+  </div>
+</div>
+
+<script>
+  //document.documentElement.style.setProperty('--header-height', document.getElementById('shopify-section-header').offsetHeight + 'px');
+</script>

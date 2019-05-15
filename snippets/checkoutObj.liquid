@@ -1,0 +1,36 @@
+<script>
+// New variables
+let product_info = []
+let variant_info = []
+let quantity = []
+let url = []
+let customer_tags = []
+
+//Add the user tags for user RefundRate (Nacho: not ncesary to have it now... checkoutReturnRateHook.js just check the user email)
+{% if customer %}
+  customer_tags = {{ customer.tags | json }}
+{% endif %}
+
+// Loop thru the checkout items
+{% for item in checkout.line_items %}
+product_info = [...product_info, {{ item.product | json }}]
+variant_info = [...variant_info, {{ item.variant | json }}]
+quantity = [...quantity, {{ item.quantity }}]
+url = [...url, '{{ item.variant.url }}']
+{% endfor %}
+
+// Creation of the checkout obj
+const checkoutObj = {
+  product_info,
+  variant_info,
+  quantity,
+  url,
+  email: '{{ checkout.email }}',
+  address: {{ checkout.shipping_address | json }},
+  total_price: {{ checkout.total_price }},
+  customer_tags //Nacho: not ncesary to have it now... checkoutReturnRateHook.js just check the user email
+}
+
+//available globally
+window.checkoutObj = checkoutObj
+</script>

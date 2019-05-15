@@ -1,0 +1,88 @@
+<section data-section-id="send-account-invite-template" data-section-type="send-account-invite-template">
+  <div class="Container">
+    <div class="PageContent PageContent--fitScreen PageContent--extraNarrow">
+      {%- assign is_recover_active = false -%}
+
+      {%- comment -%}
+      --------------------------------------------------------------------------------------------------------------------
+      SEND ACCOUNT INVITE FORM
+      --------------------------------------------------------------------------------------------------------------------
+      {%- endcomment -%}
+
+      {%- if is_recover_active -%}
+        {%- assign login_default_visibility = 'display: none' -%}
+      {%- else -%}
+        {%- assign login_default_visibility = 'display: block' -%}
+      {%- endif -%}
+      <form action="/pages/resend-account-invite" method="get" class="form-example">
+        <div class="Form Form--spacingTight">
+          <header class="Form__Header">
+            <h1 class="Form__Title Heading u-h1">{{ 'send_account_invite.settings.title' | t }}</h1>
+            <p class="Form__Legend">{{ 'send_account_invite.settings.description' | t }}</p>
+          </header>
+          <div class="Form__Item">
+            <input id="user_email" type="email" class="Form__Input" name="customer[email]" required="required" placeholder="{{ 'customer.login.email' | t }}" aria-label="{{ 'customer.login.email' | t }}" autofocus>
+            <label class="Form__FloatingLabel">{{ 'customer.login.email' | t }}</label>
+          </div>
+          <p class="Form__Alert Alert Alert--error hidden">
+            {{ 'send_account_invite.settings.error' | t }}
+          </p>
+          <p class="Form__Alert Alert Alert--error hidden server">
+            {{ 'send_account_invite.settings.server' | t }}
+          </p>
+          <p class="Form__Alert Alert Alert--error hidden empty">
+            {{ 'send_account_invite.settings.empty' | t }}
+          </p>
+          <p class="Form__Alert Alert Alert--success hidden">
+           {{ 'send_account_invite.settings.success' | t }}
+          </p>
+        </div>
+        <button type="submit" class="Form__Submit Button Button--primary Button--full">{{ 'send_account_invite.settings.submit' | t }}</button>
+        <div class="Form__Hint Form__Hint--center">
+          <span class="Text--subdued">{{ 'send_account_invite.settings.login_text' | t }}</span>
+          <a href="/account/login" class="Link Link--secondary">{{ 'send_account_invite.settings.login_link' | t }}</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+
+{% schema %}
+{
+  "name": "send_account_invite",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "German title"
+    },
+    {
+      "type": "text",
+      "id": "description",
+      "label": "Description",
+      "default": "German Description"
+    },
+    {
+      "type": "text",
+      "id": "submit",
+      "label": "Submit Text",
+      "default": "German Send Invite"
+    },
+    {
+      "type": "text",
+      "id": "login_text",
+      "label": "Login Text",
+      "default": "German Login text"
+    },
+    {
+      "type": "text",
+      "id": "login_link",
+      "label": "Login link",
+      "default": "German Login link"
+    }
+
+  ]
+}
+{% endschema %}

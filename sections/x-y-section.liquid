@@ -1,0 +1,303 @@
+{%- capture flickity_options -%}
+{
+  "prevNextButtons": false,
+  "pageDots": {% if section.blocks.size > 1 %}true{% else %}false{% endif %},
+  "setGallerySize": true,
+  "wrapAround": true,
+  "watchCSS": true,
+  "dragThreshold": 8
+}
+{%- endcapture -%}
+
+<section id="section-{{ section.id }}" data-section-id="{{ section.id }}" data-section-type="collection-list">
+  <div class="CarouselWrapper {{section.settings.section_alignment}}">
+    <div class="Carousel Carousel-x-y Carousel--insideDots CollectionList {% if section.settings.add_spacing %}CollectionList--spaced{% endif %}" data-flickity-config='{{ flickity_options }}'>
+      {%- for block in section.blocks -%}
+      {%- assign take_more_space = false -%}
+      {%if forloop.index0 == 0%}
+        {%if section.settings.bigger_image == 'left' %}
+          {%- assign take_more_space = true -%}
+        {%endif%}
+      {%else%} 
+        {%if section.settings.bigger_image == 'right' %}
+          {%- assign take_more_space = true -%}
+        {%endif%}
+      {%endif%}
+      
+
+      {%if section.settings.bigger_image == 'same' %}
+      {%- assign take_more_space = false -%}
+      {% endif %}
+
+        {%- assign collection = collections[block.settings.collection] -%}
+        {%- include 'x-y-section-item', button_link: block.settings.button_link, apply_overlay: block.settings.apply_overlay, take_more_space:take_more_space -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+<style>
+  #section-{{ section.id }} .CollectionItem .Heading,
+  #section-{{ section.id }} .flickity-page-dots {
+    color: {{ section.settings.text_color }};
+  }
+  @media screen and (min-width: 641px){
+    #section-{{ section.id }} .Carousel {
+      width: calc({{ section.settings.section_width }}% - 30px);
+    }
+  }
+
+  #section-{{ section.id }} .CollectionItem__Link {
+    color: {{ section.settings.button_color }};
+    border-color: {{ section.settings.text_color }};
+  }
+  /* TODO: Changing - OAKIFY-92 */
+  #section-{{ section.id }} .CollectionItem__Link {
+    background-color: {{ section.settings.text_color }};
+  }
+
+  @media (-moz-touch-enabled: 0), (hover: hover) {
+    #section-{{ section.id }} .CollectionItem__Link:hover {
+      color: {{ section.settings.text_color }};
+      background-color: transparent;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "X/Y Section",
+  "max_blocks": 2,
+  "settings": [
+    {
+      "type": "select",
+      "id": "image_size",
+      "label": "Image size",
+      "options": [
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "normal",
+          "label": "Normal"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "select",
+      "id": "bigger_image",
+      "label": "Larger Image",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        },
+        {
+          "value": "same",
+          "label": "Same Size"
+        }
+      ],
+      "default": "left"
+    },
+     {
+      "type": "range",
+      "id": "section_width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Section Width",
+      "default": 100
+    },
+    {
+      "type": "select",
+      "id": "section_alignment",
+      "label": "Section alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "checkbox",
+      "id": "add_spacing",
+      "label": "Add spacing",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "button_color",
+      "label": "Button text",
+      "default": "#363636"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "tile",
+      "name": "Image Tile",
+      "settings": [
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Link"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "1120 x 1200px jpg recommended. Leave image empty to use element as layout placeholder."
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_image",
+          "label": "Mobile Image",
+          "info": "Image for display on mobile. Leave emtpy to use desktop image."
+        },
+        {
+          "type": "select",
+          "id": "image_alignment",
+          "label": "Image alignment",
+          "options": [
+            {
+              "value": "top left",
+              "label": "Top left"
+            },
+            {
+              "value": "top center",
+              "label": "Top center"
+            },
+            {
+              "value": "top right",
+              "label": "Top right"
+            },
+            {
+              "value": "center left",
+              "label": "Middle left"
+            },
+            {
+              "value": "center center",
+              "label": "Middle center"
+            },
+            {
+              "value": "center right",
+              "label": "Middle right"
+            },
+            {
+              "value": "bottom left",
+              "label": "Bottom left"
+            },
+            {
+              "value": "bottom center",
+              "label": "Bottom center"
+            },
+            {
+              "value": "bottom right",
+              "label": "Bottom right"
+            }
+          ],
+          "default": "center center"
+        },
+        {
+          "type": "select",
+          "id": "content_position",
+          "label": "Desktop content position",
+          "options": [
+            {
+              "value": "middleLeft",
+              "label": "Middle left"
+            },
+            {
+              "value": "middleRight",
+              "label": "Middle right"
+            },
+            {
+              "value": "middleCenter",
+              "label": "Middle center"
+            },
+            {
+              "value": "bottomLeft",
+              "label": "Bottom left"
+            },
+            {
+              "value": "bottomRight",
+              "label": "Bottom right"
+            },
+            {
+              "value": "bottomCenter",
+              "label": "Bottom center"
+            }
+          ],
+          "default": "bottomLeft"
+        },
+        {
+          "type": "html",
+          "id": "subheading",
+          "label": "Sub-heading",
+          "default": "Sub-heading"
+        },
+        {
+          "type": "html",
+          "id": "title",
+          "label": "Heading",
+          "info": "If none is set, collection title is used."
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button text",
+          "default": "View products"
+        },
+        {
+          "type": "checkbox",
+          "id": "apply_overlay",
+          "label": "Apply overlay on image",
+          "info": "This can improve text visibility.",
+          "default": true
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "category": "Image",
+      "name": "X/Y Section",
+      "settings": {},
+      "blocks": [
+        {
+          "type": "tile"
+        },
+        {
+          "type": "tile"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,59 @@
+<script>
+// New variables for the FB Pixel
+let product_ids = []
+let products = []
+//COLLECTION PAGE
+{% if canonical_url contains 'collections' %}
+  {% paginate collection.products by 200 %}
+    products = {{ collection.products | json }}
+  {% endpaginate %}
+{% endif %}
+//SEARCH PAGE
+{% if canonical_url contains 'search' %}
+  {% paginate search.results by 36 %}
+    products = {{ search.results | json }}
+  {% endpaginate %}
+{% endif %}
+
+products.map(product => {
+  product_ids = [...product_ids , product.id ]
+})
+
+//calculate price & discount price
+const price1 = '{{ product.price }}'
+const price2 = '{{ product.compare_at_price_max }}'
+const isDiscount = (parseFloat(price1) - parseFloat(price2)) === parseFloat(price1) ? false : true
+
+//Get Product SKU
+let sku = false;
+const tags = '{{ product.tags }}';
+/* using regExp
+const regExp = /[I]+.[0-9A-Za-z][\w.]+(?=-)+.[0-9A-Za-z].[0-9A-Za-z]/g
+sku = tags.match(regExp);
+*/
+const skuPos = tags.indexOf('productSKU')
+if(skuPos !== -1){
+  sku = tags.slice(skuPos + 11,skuPos + 26);
+}
+
+//Creation of infoObj
+const infoObj = {
+  cart_product_id : {{ cart.items | json }},
+  product_id : '{{ product.id }}',
+  search_term : '{{ search.terms }}',
+  collection_id : '{{ collection.id }}',
+  collection_name : '{{ collection.title }}',
+  product_ids,
+  product: {
+    name: '{{ product.title }}',
+    original_price: isDiscount ? '{{ product.compare_at_price_max }}' : '{{ product.price }}',
+    discount_price: isDiscount ? '{{ product.price }}' : false,
+    tags,
+    sku,
+    type: '{{ product.type }}',
+  },
+}
+
+//available globally
+window.infoObj = infoObj
+</script>

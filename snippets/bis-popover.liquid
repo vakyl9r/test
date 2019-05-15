@@ -1,0 +1,42 @@
+ <div id="BIS_Popover_Size_{{value}}" class="Popover Popover--withMinWidth OptionSelector BIS_Popover" aria-hidden="true">
+                  <header class="Popover__Header">
+                    <button type="button" class="Popover__Close Icon-Wrapper--clickable" data-action="close-popover">{% include 'icon' with 'close' %}</button>
+                    <span class="Popover__Title Heading u-h4">{{ "product.form.back_in_stock_modal_title" | t }}</span>
+                  </header>
+                  <div class="Popover__Content">
+                  	<div class="Grid">
+	                  <div class="Grid__Cell BIS_product_info 5/12--lap-and-up">
+	                  	<div class="4/12--tablet-and-up 3/12--pocket">
+	                  		<img src="{{ product.featured_image | img_url: '300x' }}" alt="{{ product.featured_image.alt | escape }}">
+	                  	</div>
+	                  	<div class="7/12--lap-and-up 7/12--pocket" style="padding-left:10px">
+	                  		<div>{{product.title}}</div>
+	                  		<div>{{product.options.first}}: {{value}}</div>
+	                  		<div>{{variant.price | money}}</div>
+	                  	</div>
+	                  </div>
+	                  <div class="Grid__Cell bis_form 7/12--tablet-and-up">
+	                  	<form method="post" action="/" id="bis_form_{{value}}" accept-charset="UTF-8" class="">
+		                    <input type="hidden" name="bis[variant]" class="Form__Input" value="{{variant_ref.id}}">
+		                    <input type="hidden" name="bis[product]" class="Form__Input" value="{{product.id}}">            
+		                    <input type="email" name="bis[email]" class="Form__Input" placeholder='{{"product.form.back_in_stock_email" | t }}' aria-label="Enter your email address" required=""{%if customer%} value={{customer.email}} {%endif%}>
+		                    
+												{% if settings.bis_mailchimp_integration %}
+												<br><input type="checkbox" class="input-checkbox" name="bis[accepts_marketing]" {% if settings.bis_mailchimp_integration_prechecked %}checked{% endif %}>&nbsp;{{"product.form.back_in_stock_mailchimp" | t }}
+												{% endif %}
+
+												<div class="BIS_Button_wrapper">
+			                    <button type="submit" class="Form__Submit BIS_Submit Button Button--primary Button--full">{{"product.form.back_in_stock_cta" | t }}</button>
+			                    <span class="BIS_hint_success">{{"product.form.back_in_stock_success" | t }}</span>
+			                    <span class="BIS_hint_error">{{"product.form.back_in_stock_error" | t }}</span>
+		                    </div>
+	                    </form>
+	                  </div>
+                  		
+                  	</div>
+                  	<div class="BIS_hint">{{"product.form.back_in_stock_hint" | t }}</div>
+              
+                  
+                  
+                  </div>  
+                </div>

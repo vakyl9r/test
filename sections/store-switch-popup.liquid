@@ -1,0 +1,93 @@
+{%- if section.settings.show_popup -%}
+  {%- unless section.settings.show_only_on_index and template != 'index' -%}
+    {%- unless section.settings.show_only_for_visitors and customer -%}
+      {% capture section_settings %}
+        {
+          "showOnlyOnce": {{ section.settings.show_only_once | json }},
+          "excluded_countries" : {{ section.settings.excluded_countries | json }}
+        }
+      {% endcapture %}
+
+      <aside class="StoreSwitchPopup" data-section-id="{{ section.id }}" data-section-type="StoreSwitch-popup" data-section-settings='{{ section_settings }}' aria-hidden="true">
+        <button class="StoreSwitchPopup__Close" data-action="close-popup">{% include 'icon' with 'close' %}</button>
+
+        {%- if section.settings.title != blank -%}
+          <h2 class="StoreSwitchPopup__Heading Heading u-h2">{{ section.settings.title | escape }}</h2>
+        {%- endif -%}
+
+        {%- if section.settings.content != blank -%}
+          <div class="StoreSwitchPopup__Content">
+            {{ section.settings.content }}
+          </div>
+        {%- endif -%}
+
+       <a href="{{ section.settings.button_link }}" class="Button Button--primary Button--full StoreSwitchPopup__Button">{{ section.settings.button_title }}</a>
+      </aside>
+    {%- endunless -%}
+  {%- endunless -%}
+{%- endif -%}
+
+
+{% schema %}
+{
+  "name": "Store Switch Popup",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_popup",
+      "label": "Enable",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_only_on_index",
+      "label": "Show only on home page",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_only_for_visitors",
+      "label": "Show only for visitors",
+      "info": "Customers who have created an account on your shop won't see it.",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_only_once",
+      "label": "Show only once per customer",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Popup"
+    },
+    {
+      "type": "richtext",
+      "id": "content",
+      "label": "Text",
+      "default": "<p>You can use this popup to display some useful information to your customers.</p>"
+    },
+    {
+      "type": "text",
+      "id": "button_title",
+      "label": "Button Text",
+      "default": "Let's Go!"
+    },
+    {
+      "type": "text",
+      "id": "button_link",
+      "label": "Button Link",
+      "default": "https://ivy-oak.com"
+    },
+    {
+      "type": "text",
+      "id": "excluded_countries",
+      "label": "Don't show in these countries",
+      "info": "Comma separated list of country codes, e.g. DE,CH,AT",
+      "default": "DE,CH,A"
+    }
+  ]
+}
+{% endschema %}

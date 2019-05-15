@@ -1,0 +1,514 @@
+{
+  "general": {
+    "meta": {
+      "tags": "Tagged \"{{ tags }}\"",
+      "page": "Page {{ page }}"
+    },
+    "announcement_bar": {
+      "close": "Close"
+    },
+    "popup": {
+      "email_placeholder": "Enter your email",
+      "submit": "Subscribe",
+      "success": "You have been subscribed to our newsletter."
+    },
+    "password": {
+      "enter_password": "Enter password",
+      "password_input": "Your password",
+      "password_submit": "Enter",
+      "newsletter_input": "Your email address",
+      "newsletter_submit": "Notify me",
+      "newsletter_success": "Thanks for signing up!",
+      "powered_by_html": "This store will be powered by {{shopify_link}}",
+      "login_title": "Are you the store owner?",
+      "login_link": "Login here"
+    },
+    "pagination": {
+      "previous_page": "Previous page",
+      "next_page": "Next page",
+      "go_to_page": "Navigate to page {{page}}"
+    },
+    "jobs": {
+      "all_jobs": "See all jobs"
+    }
+  },
+  "header": {
+    "navigation": {
+      "title": "Main navigation",
+      "sidebar_title": "Sidebar navigation",
+      "open_sidebar": "Open navigation",
+      "close_sidebar": "Close navigation",
+      "account": "Account",
+      "search": "Search",
+      "cart": "Cart",
+      "open_cart": "Open cart",
+      "close_cart": "Close cart",
+      "skip_to_content": "Skip to content",
+      "wishlist": "Wishlist"
+    }
+  },
+  "footer": {
+    "general": {
+      "credits_html": "Theme by {{maestrooo_link}}"
+    },
+    "newsletter": {
+      "success": "You have been subscribed to our newsletter.",
+      "input": "Enter your email address",
+      "submit": "Subscribe"
+    }
+  },
+  "search": {
+    "general": {
+      "title": "Search",
+      "content": "Enter a word to search our products:",
+      "input_placeholder": "Type to search...",
+      "view_all": "View all",
+      "no_results": "No results could be found",
+      "no_results_with_terms": "No results could be found for {{terms}}",
+      "pages": "Pages",
+      "articles": "Journal",
+      "pages_and_articles": "Pages & Journal",
+      "results_count": {
+        "zero": "Products",
+        "one": "1 result",
+        "other": "{{count}} results"
+      },
+      "results_with_terms_count": {
+        "zero": "0 results for \"{{terms}}\"",
+        "one": "1 result for \"{{terms}}\"",
+        "other": "{{count}} results for \"{{terms}}\""
+      }
+    }
+  },
+  "404": {
+    "general": {
+      "title": "404",
+      "content": "The page you are looking for cannot be found.",
+      "button": "Back to homepage"
+    }
+  },
+  "home_page": {
+    "onboarding": {
+      "vendor_title": "Brand's name",
+      "product_title": "Product's name",
+      "product_description": "A product description can be used to showcase the features and advantages of your product. You can check out Shopify's ecommerce blog for inspiration and advice for properly market your products.",
+      "collection_title": "Collection's name",
+      "article_name": "Post's name",
+      "article_category": "Category",
+      "article_excerpt": "Your store hasn’t published any blog posts yet. A blog can be used to talk about new product launches, tips, or other news you want to share with your customers. You can check out Shopify’s ecommerce blog for inspiration and advice for your own store and blog."
+    },
+    "featured_product": {
+      "view_product": "View product details"
+    },
+    "shop_the_look": {
+      "view_product": "View this product",
+      "view_products": "View products",
+      "popover_title": "Shop the look"
+    },
+    "featured_video": {
+      "play": "Play video"
+    },
+    "newsletter": {
+      "input": "Enter your email",
+      "submit": "Subscribe",
+      "success": "You have been subscribed to our newsletter.",
+      "email_required": "Valid Email is required",
+      "already_subscribed": "This Email address is already subscribed",
+      "error": "Error: please contact support"
+    }
+  },
+  "collection_list": {
+    "general": {
+      "title": "All collections",
+      "empty_title": "No collections",
+      "empty_button": "Back to homepage"
+    }
+  },
+  "collection": {
+    "general": {
+      "all_products": "All products",
+      "no_products": "No products",
+      "empty": "Collection {{collection_title}} is empty",
+      "empty_button": "Back to homepage",
+      "reset": "Reset filters",
+      "view_products": "View products"
+    },
+    "filter": {
+      "title": "Filter",
+      "show_filter": "Show filters",
+      "all": "Filters",
+      "reset": "Reset",
+      "apply": "Apply",
+      "size_filter": "Size"
+    },
+    "sorting": {
+      "title": "Sort",
+      "show_sort": "Show sort by",
+      "manual": "Featured",
+      "best_selling": "Topseller",
+      "title_ascending": "Alphabetically: A-Z",
+      "title_descending": "Alphabetically: Z-A",
+      "price_ascending": "Price -ascending",
+      "price_descending": "Price - descending",
+      "created_ascending": "Oldest first",
+      "created_descending": "Newest first"
+    },
+    "layout": {
+      "show_one_per_row": "Show one product per row",
+      "show_two_per_row": "Show two products per row",
+      "show_four_per_row": "Show four products per row"
+    },
+    "product": {
+      "from_price_html": "From {{min_price}}",
+      "view_product": "View product"
+    }
+  },
+  "customer": {
+    "account": {
+      "title": "My account",
+      "welcome": "Welcome back, {{first_name}}!",
+      "logout": "Logout",
+      "back_to_account": "Back to account",
+      "no_orders_title": "My orders",
+      "no_orders_content": "You haven't placed any orders yet",
+      "no_addresses_title": "No addresses",
+      "no_addresses_content": "No addresses are currently saved",
+      "default_address": "Primary address",
+      "edit_addresses": "Edit addresses",
+      "manage_addresses": "Manage addresses"
+    },
+    "login": {
+      "title": "Login",
+      "description": "Please enter your e-mail and password:",
+      "email": "Email",
+      "password": "Password",
+      "forgot": "Forgot password?",
+      "submit": "Login",
+      "resend_account_invite": "Note: we recently changed our shopsystem. If you had a customer account before you should have received an activation email. Please check your inbox. ",
+      "resend_account_invite_link": "Resend invitation",
+      "register_label": "Don't have an account yet?",
+      "register_link": "Create one"
+    },
+    "orders": {
+      "order_number": "Order",
+      "date": "Date",
+      "payment_status": "Payment status",
+      "fulfillment_status": "Fulfillment status",
+      "total": "Total"
+    },
+    "order": {
+      "title": "Order {{order_number}}",
+      "back_to_account": "Back to account",
+      "cancelled_at": "Order cancelled on {{ date }}",
+      "placed_at": "Order placed on {{ date }}",
+      "fulfillment_html": "Your order has been sent. Track the shipment with number {{tracking_number}} or by clicking here: <a href=\"{{tracking_url}}\" class=\"Link Link--underlineNative\" target=\"_blank\">{{tracking_url}}<\/a>",
+      "line_fulfillment_html": "Your product \"{{product_title}}\" has been sent. Track the shipment with number {{tracking_number}} or by clicking here: <a href=\"{{tracking_url}}\" class=\"Link Link--underlineNative\" target=\"_blank\">{{tracking_url}}<\/a>",
+      "product": "Product",
+      "quantity": "Quantity",
+      "line_price": "Total",
+      "subtotal": "Subtotal",
+      "discount": "Discount",
+      "shipping": "Shipping",
+      "tax": "Tax",
+      "total": "Total",
+      "shipping_address": "Shipping address",
+      "billing_address": "Billing address",
+      "no_shipping_address": "No shipping address was required for this order."
+    },
+    "activate_account": {
+      "title": "Activate account",
+      "description": "Please enter a password to create your account:",
+      "password": "Password",
+      "password_confirmation": "Confirm password",
+      "submit": "Activate",
+      "decline": "Decline"
+    },
+    "recover_password": {
+      "title": "Recover password",
+      "description": "Please enter your email:",
+      "email": "Email",
+      "submit": "Recover",
+      "success": "We have sent you an email with instructions to reset your password.",
+      "login_label": "Remember your password?",
+      "login_link": "Back to login"
+    },
+    "reset_password": {
+      "title": "Reset password",
+      "description": "Please enter a new password:",
+      "password": "Password",
+      "password_confirmation": "Confirm password",
+      "submit": "Reset"
+    },
+    "addresses": {
+      "title": "My addresses",
+      "empty": "No addresses were saved yet",
+      "edit": "Edit",
+      "delete": "Delete",
+      "add_address": "Add a new address",
+      "edit_address": "Edit an address",
+      "form_subtitle": "Please fill in the information below:",
+      "default_address_label": "Default address",
+      "address_label": "Address {{position}}",
+      "first_name": "First name",
+      "last_name": "Last name",
+      "company": "Company",
+      "address1": "Address 1",
+      "address2": "Address 2",
+      "city": "City",
+      "country": "Country",
+      "province": "Province",
+      "zip": "Zip code",
+      "phone": "Phone",
+      "set_default": "Set as default address"
+    },
+    "register": {
+      "title": "Register",
+      "description": "Please fill in the information below:",
+      "first_name": "First name",
+      "last_name": "Last name",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Create my account"
+    }
+  },
+  "cart": {
+    "general": {
+      "title": "Cart",
+      "view_cart": "View Cart",
+      "empty": "Your cart is empty",
+      "empty_button": "Shop our products",
+      "add_note": "Add Order Note",
+      "edit_note": "Edit Order Note",
+      "save_note": "Save",
+      "note_placeholder": "How can we help you?",
+      "free_shipping": "You are eligible to free shipping!",
+      "free_shipping_remaining_html": "Spend {{remaining_amount}} and get free shipping!",
+      "shipping_and_taxes_notice": "SHIPPING: Free",
+      "coupon_notice": "Enter coupons in checkout",
+      "total": "Total",
+      "currency_notice": "All orders are processed in shop's currency, which is {{shop_currency}}. The content of your cart may be displayed in another currency, at the most current exchange rate.",
+      "checkout": "Checkout",
+      "continue_shopping": "Continue Shopping"
+    },
+    "items": {
+      "product": "Product",
+      "quantity": "Quantity",
+      "total": "Total",
+      "set_quantity": "Set quantity to {{new_quantity}}",
+      "remove": "Remove"
+    },
+    "shipping_estimator": {
+      "title": "Estimate shipping",
+      "country": "Country",
+      "province": "Province",
+      "zip_code": "Zip code",
+      "estimate": "Estimate",
+      "one_result_title": "1 option available:",
+      "more_results_title": "{{count}} options available:",
+      "no_results_title": "No shipping could be found"
+    }
+  },
+  "product": {
+    "labels": {
+      "sold_out": "Sold out",
+      "on_sale": "On sale"
+    },
+    "slideshow": {
+      "close": "Close (Esc)",
+      "previous": "Previous (left arrow)",
+      "next": "Next (right arrow)",
+      "image_loading_error": "This image could not be loaded. Please try to reload the page."
+    },
+    "form": {
+      "variant_label": "Variant",
+      "price": "Price",
+      "quantity": "Quantity",
+      "from_price_html": "From {{min_price}}",
+      "select_model": "Select this model",
+      "select_size": "Please select",
+      "size_chart": "Size table",
+      "shipping": "Free Shipping & Returns",
+      "color": "Color",
+      "inventory_quantity_count": {
+        "one": "{{count}} piece in stock.",
+        "other": "{{count}} pieces in stock"
+      },
+      "low_inventory_quantity_count": {
+        "one": "Only {{count}} piece in stock!",
+        "other": "Only {{count}} pieces in stock!"
+      },
+      "colors_count": {
+        "one": "{{count}} color",
+        "other": "{{count}} colors"
+      },
+      "add_to_cart": "Add to cart",
+      "sold_out": "Sold Out",
+      "pre_order": "Pre-order",
+      "unavailable": "Unavailable",
+      "view_info": "More information",
+      "view_images": "View images",
+      "notify_back_in_stock": "Notify me when restocked",
+      "back_in_stock_modal_title": "Send me a notification when my size is back in stock",
+      "back_in_stock_hint": "Unfortunately, not all items will get back in stock. Your request will be saved for threee months and be deleted automatically afterwards.",
+      "back_in_stock_email": "E-Mail address",
+      "back_in_stock_success": "You'll receive an email when your product is back in stock.",
+      "back_in_stock_mailchimp": "Please send me exclusive IVY & OAK offers and news",
+      "back_in_stock_cta": "Notify Me"
+    },
+    "tabs": {
+      "reviews": "Reviews"
+    },
+    "buy_it_with": {
+      "title": "Buy it with"
+    }
+  },
+  "gift_card": {
+    "issued": {
+      "subtext": "Here's your gift card!",
+      "illustration_alt": "Gift card illustration",
+      "disabled": "Your gift card is disabled.",
+      "expired": "Your gift card expired on {{ expiry }}.",
+      "expires_on": "Your gift card expires on {{ expiry }}.",
+      "redeem_html": "Use this code at checkout to redeem your gift card, or {{print_link}} this page.",
+      "shop_link": "Start shopping",
+      "print": "print",
+      "initial_amount_html": "Amount: {{initial_amount}}",
+      "remaining_balance_html": "Balance left: {{balance}}",
+      "add_to_apple_wallet": "Add to Apple Wallet"
+    }
+  },
+  "send_account_invite": {
+    "settings": {
+      "title": "Send account invite",
+      "description": "Please enter your email",
+      "submit": "Send Invite",
+      "login_text": "Back to",
+      "login_link": "Log in",
+      "server": "Our server crash. Please contact our Customer Care and they will help you further",
+      "empty": "Please enter an email-address",
+      "error": "We do not know this email-address. Please contact our Customer Care and they will help you further",
+      "success": "Please check your inbox"
+    }
+  },
+  "transparency": {
+    "story_behind": {
+      "title": "#TheStoryBehind",
+      "phrase_1": "We place a high value on ethics and the environment and have a mission to become more sustainable step by step. We aim to elevate consciousness among our customers, factories and within our own company.",
+      "phrase_2": "We are not yet perfect, but we are working on exciting plans to fulfil our vision: full responsibility for our product, from sustainable raw materials to ethical manufacturing to quality that lasts longer than a season – all at a fair price for the customer.",
+      "phrase_3": "The first step is transparency and understanding. At IVY & OAK, the product is at the core of everything we do. We reveal its true cost, broken down by each aspect of production. And we sell it to you at the price it deserves and should cost – not at what traditional retailers would charge for it.",
+      "phrase_4": "We do things differently – so stay tuned, there is more to come. Together, we believe we can make a difference.",
+      "phrase_5": "",
+      "phrase_6": "",
+      "phrase_7": ""
+    },
+    "infographic_one": {
+      "name": "WEDDING DRESS",
+      "url_desktop": "https:\/\/cdn.shopify.com\/s\/files\/1\/0078\/6278\/0019\/files\/WEDDING_DRESS_DESKTOP_EN.png?8213776643610802420",
+      "url_mobile_up": "https:\/\/cdn.shopify.com\/s\/files\/1\/0078\/6278\/0019\/files\/WEDDING_DRESS_MOBILE_1_EN.png?8213776643610802420",
+      "url_mobile_down": "https:\/\/cdn.shopify.com\/s\/files\/1\/0078\/6278\/0019\/files\/WEDDING_DRESS_MOBILE_2_EN.png?8213776643610802420"
+    },
+    "infographic_two": {
+      "name": "COAT",
+      "url_desktop": "https:\/\/cdn.shopify.com\/s\/files\/1\/0078\/6278\/0019\/files\/COAT_DESKTOP_EN.png?8213776643610802420",
+      "url_mobile_up": "https:\/\/cdn.shopify.com\/s\/files\/1\/0078\/6278\/0019\/files\/COAT_MOBILE_1_EN.png?8213776643610802420",
+      "url_mobile_down": "https:\/\/cdn.shopify.com\/s\/files\/1\/0078\/6278\/0019\/files\/COAT_MOBILE_2_EN.png?8213776643610802420"
+    },
+    "infographic_three": {
+      "name": "EVENING DRESS",
+      "url_desktop": "https:\/\/cdn.shopify.com\/s\/files\/1\/0078\/6278\/0019\/files\/EVENING_DRESS_DESKTOP_EN.png?8213776643610802420",
+      "url_mobile_up": "https:\/\/cdn.shopify.com\/s\/files\/1\/0078\/6278\/0019\/files\/EVENING_DRESS_MOBILE_1_EN.png?8213776643610802420",
+      "url_mobile_down": "https:\/\/cdn.shopify.com\/s\/files\/1\/0078\/6278\/0019\/files\/EVENING_DRESS_MOBILE_2_EN.png?8213776643610802420"
+    },
+    "description": {
+      "title_1": "Retail markup",
+      "phrase_1": "Traditional brands charge you 6-10x  the true cost to go deep on discounts at the end of the season. Our prices are calculated right from the start (just 2-4x the true cost) and we have less promotional activity during the year – a fairer model for everyone.",
+      "title_2": "Other costs",
+      "phrase_2": "Cut out the middlemen: unlike the traditional fashion supply chain, we have direct supplier relationships and cut out all intermediaries. This not only improves transparency but helps us to invest the savings into what matters: the product.",
+      "title_3": "True cost",
+      "phrase_3": "Our garments are made with the same quality materials and manufactured using similar or better quality standards as those of other premium luxury brands."
+    }
+  },
+  "add_express_sending_phone": {
+    "error": "Please enter your phone number when using Express Delivery"
+  },
+  "blog": {
+    "general": {
+      "no_articles": "Blog {{blog_title}} is empty",
+      "empty_button": "Back to homepage",
+      "all_tag": "All"
+    },
+    "article": {
+      "read_more": "Read more",
+      "written_by": "Written by {{author}}",
+      "now_reading": "Now reading:",
+      "share": "Share",
+      "previous": "Prev",
+      "next": "Next",
+      "comments_count": {
+        "zero": "{{count}} comments",
+        "one": "{{count}} comment",
+        "other": "{{count}} comments"
+      }
+    },
+    "comments": {
+      "form_title": "Leave a comment",
+      "name_placeholder": "Name",
+      "email_placeholder": "Email",
+      "comment_placeholder": "Content",
+      "approval_notice": "All comments are moderated before being published",
+      "submit": "Post comment",
+      "success": "Your comment has been published.",
+      "success_moderated": "Your comment has been sent. It will be visible once the shop owner has accepted it!"
+    }
+  },
+  "contact": {
+    "form": {
+      "name": "Your name",
+      "email": "Your email",
+      "message": "Your message",
+      "submit": "Send message",
+      "successfully_sent": "Your message has been successfully sent."
+    }
+  },
+  "date_formats": {
+    "month_day_year": "%B %d, %Y",
+    "month_day_year_short": "%m\/%d\/%Y",
+    "month_day_year_time": "%B %d, %Y at %I:%M%p"
+  },
+  "shopify": {
+    "checkout": {
+      "order_summary": {
+        "shipping_pending_value": "Free"
+      },
+      "alternative_payment_method_banner": {
+        "or": "Paypal Express-Checkout OR normal Checkout"
+      },
+      "customer_account": {
+        "have_an_account_label": "Proceed checkout as guest below or ",
+        "sign_in_link_label": "log in here as customer.",
+        "save_my_information_label": "Save information for next time to checkout faster"
+      },
+      "contact": {
+        "address_title": "Street, Number",
+        "address1_label": "Street, Number",
+        "address1_placeholder": "Street, Number",
+        "optional_phone_label": "Phone (optional but mandatory for Express delivery)",
+        "optional_phone_placeholder": "Phone (optional)"
+      },
+      "tnc_checkbox": {
+        "before": "I accept the ",
+        "after": "I can unsubscribe from product-related news from IVY & OAK at anytime.",
+        "cta": "Terms & Conditions."
+      },
+      "structured_checkout": {
+        "text": "Choose you checkout method",
+        "guest": "Guest",
+        "login": "Login",
+        "more_options": "MORE OPTIONS"
+      },
+      "payment": {
+        "amazon_payments_login_hint": "After clicking “Complete order”, you will be redirected to Amazon to complete your purchase securely."
+      }
+    }
+  }
+}

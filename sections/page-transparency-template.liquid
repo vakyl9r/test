@@ -1,0 +1,247 @@
+<div class="StoryBehindContainer">
+  <h2 class="SectionHeader__Heading Heading u-h1 ">‘When you know better,<br>you choose better’</h2>
+  <img class="StoryBehindPicture" src="https://cdn.shopify.com/s/files/1/0078/6278/0019/files/180822_IVY_OAK_Transparency_Mobile_Mainteaser_1.jpg?2169886718428742356" alt="IVY_OAK_Transparency_Aboutpage1">
+  <div class="SectionHeader__Description Rte StoryBehindText">
+    <h1>{{ 'transparency.story_behind.title' | t }}</h1>
+    <p>{{ 'transparency.story_behind.phrase_1' | t }}</p>
+    <p>{{ 'transparency.story_behind.phrase_2' | t }}</p>
+    <p>{{ 'transparency.story_behind.phrase_3' | t }}</p>
+    <p>{{ 'transparency.story_behind.phrase_4' | t }}</p>
+    <p>{{ 'transparency.story_behind.phrase_5' | t }}</p>
+    <p>{{ 'transparency.story_behind.phrase_6' | t }}</p>
+    <p>{{ 'transparency.story_behind.phrase_7' | t }}</p>
+  </div>
+  <div class="PictureContainer">
+    <div class="ButtonContainer">
+      <button class="Header__Icon Icon-Wrapper Icon-Wrapper--clickable" onClick="selectTransparency('prev')">
+        <svg class="Icon Icon--select-arrow-left" role="presentation" viewBox="0 0 11 18">
+          <path d="M9.5 1.5L1.5 9l8 7.5" stroke-width="2" stroke="currentColor" fill="none" fill-rule="evenodd" stroke-linecap="square"></path>
+        </svg>
+      </button>
+      <div class="SectionHeader__Description Rte text-name" id="Transparency-1"><h4>{{ 'transparency.infographic_one.name' | t }}</h4></div>
+      <div class="SectionHeader__Description Rte text-name hidden" id="Transparency-2"><h4>{{ 'transparency.infographic_two.name' | t }}</h4></div>
+	    <div class="SectionHeader__Description Rte text-name hidden" id="Transparency-3"><h4>{{ 'transparency.infographic_three.name' | t }}</h4></div>
+      <button class="Header__Icon Icon-Wrapper Icon-Wrapper--clickable" onClick="selectTransparency('next')">
+        <svg class="Icon Icon--select-arrow-right" role="presentation" viewBox="0 0 11 18">
+          <path d="M9.5 1.5L1.5 9l8 7.5" stroke-width="2" stroke="currentColor" fill="none" fill-rule="evenodd" stroke-linecap="square"></path>
+        </svg>
+      </button>
+    </div>
+    <div class="PictureBox Transparency-1 desktop">
+      <img class="" src="{{ 'transparency.infographic_one.url_desktop' | t }}">
+    </div>
+    <div class="PictureBox Transparency-2 desktop">
+      <img class="hidden" src="{{ 'transparency.infographic_two.url_desktop' | t }}">
+    </div>
+    <div class="PictureBox Transparency-3 desktop">
+      <img class="hidden" src="{{ 'transparency.infographic_three.url_desktop' | t }}">
+    </div>
+    <div class="PictureBoxMobileUp Transparency-1 mobile">
+      <img class="" src="{{ 'transparency.infographic_one.url_mobile_up' | t }}">
+    </div>
+    <div class="PictureBoxMobileUp Transparency-2 mobile">
+      <img class="hidden" src="{{ 'transparency.infographic_two.url_mobile_up' | t }}">
+    </div>
+    <div class="PictureBoxMobileUp Transparency-3 mobile">
+      <img class="hidden" src="{{ 'transparency.infographic_three.url_mobile_up' | t }}">
+    </div>
+    <div class="bullet-container desktop">
+      <div id="Transparency-1" class="Product__SlideshowNavDot is-selected" onClick="selectTransparency('null',this.id)"></div>
+      <div id="Transparency-2" class="Product__SlideshowNavDot" onClick="selectTransparency(null,this.id)"></div>
+      <div id="Transparency-3" class="Product__SlideshowNavDot" onClick="selectTransparency(null,this.id)"></div>
+    </div>
+    <div class="bullet-container-mobile-up">
+      <div id="Transparency-1" class="mobileBullets is-selected" onClick="selectTransparency(null,this.id)"></div>
+      <div id="Transparency-2" class="mobileBullets" onClick="selectTransparency(null,this.id)"></div>
+      <div id="Transparency-3" class="mobileBullets" onClick="selectTransparency(null,this.id)"></div>
+    </div>
+  </div>
+  <div class="TextContainer">
+    <div class="SectionHeader__Description Rte FirstText">
+      <h4>{{ 'transparency.description.title_1' | t }}</h4>
+      <p>{{ 'transparency.description.phrase_1' | t }}</p>
+    </div>
+    <div class="SectionHeader__Description Rte SecondText">
+      <h4>{{ 'transparency.description.title_2' | t }}</h4>
+      <p>{{ 'transparency.description.phrase_2' | t }}</p>
+    </div>
+    <div class="SectionHeader__Description Rte ThirdText">
+      <h4>{{ 'transparency.description.title_3' | t }}</h4>
+      <p>{{ 'transparency.description.phrase_3' | t }}</p>
+    </div>
+  </div>
+  <div class="MobilePictureContainer">
+    <div class="PictureBoxMobileDown Transparency-1 mobile">
+      <img class="" src="{{ 'transparency.infographic_one.url_mobile_down' | t }}">
+    </div>
+    <div class="PictureBoxMobileDown Transparency-2 mobile">
+      <img class="hidden" src="{{ 'transparency.infographic_two.url_mobile_down' | t }}">
+    </div>
+    <div class="PictureBoxMobileDown Transparency-3 mobile">
+      <img class="hidden" src="{{ 'transparency.infographic_three.url_mobile_down' | t }}">
+    </div>
+    <div class="bullet-container-mobile-down">
+      <div id="Transparency-1" class="mobileBullets is-selected" onClick="selectTransparency(null,this.id)"></div>
+      <div id="Transparency-2" class="mobileBullets" onClick="selectTransparency(null,this.id)"></div>
+      <div id="Transparency-3" class="mobileBullets" onClick="selectTransparency(null,this.id)"></div>
+    </div>
+  </div>
+</div>
+
+
+{% schema %}
+{
+  "name": "Transparency",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "heading",
+      "name": "Heading",
+      "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading",
+        "default": "Default"
+      },
+      {
+      "type": "richtext",
+      "id": "content",
+      "label": "Text",
+      "default": "<p>Add your own custom content to give more information about your store, availability details...</p>"
+      },
+      {
+        "type": "text",
+        "id": "link_text",
+        "label": "Link text"
+      },
+      {
+      "type": "select",
+      "id": "text_position",
+      "label": "Text position",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        }
+      ],
+      "default": "center"
+      },
+      {
+      "type": "select",
+      "id": "text_orientation",
+      "label": "Text orientation",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        }
+      ],
+      "default": "center"
+      },
+      {
+      "type": "range",
+      "id": "text_max_width",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Section Max Width",
+      "default": 100
+      }
+      ]
+    },
+    {
+      "type": "text_with_image",
+      "name": "Text with Image",
+      "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Title"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image",
+      "info": "1200 x 1200px png recommended"
+    },
+    {
+      "type": "richtext",
+      "id": "image_subtitle",
+      "label": "Image Subtitle"
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Image position",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "right"
+    },
+    {
+    "type": "range",
+    "id": "text_image_ratio",
+    "min": 20,
+    "max": 80,
+    "step": 5,
+    "unit": "%",
+    "label": "Text Image Ratio",
+    "default": 50
+    },
+     {
+    "type": "range",
+    "id": "text_image_spacing",
+    "min": 0,
+    "max": 20,
+    "step": 5,
+    "unit": "%",
+    "label": "Text Image Spacing",
+    "default": 0
+    },
+    {
+      "type": "html",
+      "id": "content",
+      "label": "Text (HTML)",
+      "default": "<p>Add your own custom content to give more information about your store, availability details...</p>"
+    },
+    {
+      "type": "text",
+      "id": "link_text",
+      "label": "Link text"
+    },
+    {
+      "type": "url",
+      "id": "link_url",
+      "label": "Link URL"
+    }
+  ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,238 @@
+{
+  "name": "IVY-&-OAK Change Log",
+  "description": "The Change Log for IVY&OAK",
+  "version 1.2.10": {
+    "OAKIFY-319": "TF conversion not fired correctly & send NULL for empty customer info",
+    "OAKIFY-307": "GTM & GA: eeCheckout for contactpage & timing issues on eePurchase"
+  },
+  "version 1.2.9": {
+    "OAKIFY-264.1": "TrueFit design fixes"
+  },
+  "version 1.2.8": {
+    "OAKIFY-294": "Search Icon"
+  },
+  "version 1.2.7": {
+    "OAKIFY-281": "CSS fix for Cart Page"
+  },
+  "version 1.2.6": {
+    "OAKIFY-292": "Aspect ratio fix for background video section",
+    "OAKIFY-288": "Added error monitoring for BIS popups",
+    "OAKIFY-264": "Integrate Truefit into PDP"
+  },
+  "version 1.2.5": {
+    "OAKIFY-285": "BiS Not sending right info",
+    "OAKIFY-283": "Size Selector not opening automatically",
+    "OAKIFY-280": "Add to cart button black",
+    "OAKIFY-279": "Error on payment page when using express checkout options",
+    "OAKIFY-261": "Collection Header Image",
+    "OAKIFY-203.1": "REACTIVATED the actual hiding, updated gateway list to hide",
+    "OAKIFY-191.1": "REWORK: fix size selector scrolling"
+  },
+  "version 1.2.4": {
+    "OAKIFY-276": "Loading animation for checkout"
+  },
+  "version 1.2.3": {
+    "OAKIFY-275": "Style Express Checkout options",
+    "OAKIFY-274": "Ivy and Oak brand video integration"
+  },
+  "version 1.2.2": {
+    "OAKIFY-265.1": "Renaming custom.js => commonTheme.js, adding gulp to concat js files",
+    "OAKIFY-203": "Show Invoice only for customers with low return rate",
+    "OAKIFY-203.1": "PAUSED the actual hiding, set the calculated return-rate as a tag (also when below 70%)",
+    "OAKIFY-191": "fix size selector scrolling"
+  },
+  "version 1.2.1": {
+    "OAKIFY-262": "fix related product reload issue",
+    "OAKIFY-72": "Directly open the size selector when no size selected"
+  },
+  "version 1.2.0": {
+    "OAKIFY-265": "refactor-shopyfy-custom-code",
+    "OAKIFY-266": "Shopify Checkout.liquid update"
+  },
+  "version 1.1.2": {
+    "OAKIFY-259": "Size modal and loading icon fix",
+    "OAKIFY-SPECIAL": "eePurchase fixed (Finally)"
+  },
+  "version 1.1.1": {
+    "OAKIFY-258": "Hiding & naming payment methods breaks after coupon-redemption",
+    "OAKIFY-252": "Make Checkout page more structured",
+    "OAKIFY-252.1": "Centered loading circle on mobile"
+  },
+  "version 1.1.0": {
+    "OAKIFY-257": "Check for js-error on contact-page ",
+    "OAKIFY-245": "Add Static phone number if customer phone not give in Express send",
+    "OAKIFY-249.3": "Fix eePurchase, Rework the way GTM is loaded with a hook, created orderID and shiping from order object",
+    "OAKIFY-SPECIAL": "Full redesign of the way to call snippets: New snippets for checkObj and gtm noscript, Call already made snippets in checkout.liquid",
+    "OAKIFY-SPECIAL-2": "Full redesign of the way to call snippets & Move some execution positions on theme\/checkout",
+    "OAKIFY-SPECIAL-3": "Create function for eePurchase and call it when JS && GTM are ready or when GTM get late and ready"
+  },
+  "version 1.0.29": {
+    "OAKIFY-242": "Show popup if multiple sizes for same product"
+  },
+  "version 1.0.28": {
+    "OAKIFY-249.2": "Fix eePurchase, creating the gtmObject with info from checkoutObj and remove it from checkout.liquid"
+  },
+  "version 1.0.27": {
+    "OAKIFY-251": "Fix transparency in SE",
+    "OAKIFY-249.1": "Fix eePurchase"
+  },
+  "version 1.0.26": {
+    "OAKIFY-249": "Fix eePurchase",
+    "OAKIFY-248": "Not fix made. just little changes made to it to check if get reduce the amount",
+    "OAKIFY-240": "new PDP for mobile mode",
+    "OAKIFY-233.2": "Fix issue with a single align word in german page",
+    "OAKIFY-233.3": "HOTFIX: search keyUp activated at loging page",
+    "OAKIFY-230": "Hide Paypal Payment Icons on payment page",
+    "OAKIFY-216": "Adjust payment method text in checkout for credit cards {SE}",
+    "OAKIFY-SPECIAL": "refactoring and create infoObj",
+    "OAKIFY-SPECIAL-2": "fixing issue with sendCartToDL",
+    "OAKIFY-SPECIAL-3": "Added JSON with SE translation"
+  },
+  "version 1.0.25": {
+    "OAKIFY-198.9": "rebuild Checkout with checkout object",
+    "OAKIFY-198.8": "add product ID for FB pixels into the data layer"
+  },
+  "version 1.0.24": {
+    "OAKIFY-237.3": "FIX: remove conditional in mobile mode for 'eeProductDetail'",
+    "OAKIFY-237.2": "FIX: Coupon-Code statt Coupon-Value, Coats als Category in Event, Numbering of Teasers, Cart 'on load' if only coming from the mini-cart"
+  },
+  "version 1.0.23": {
+    "OAKIFY-SPECIAL": "Fix addCart button & GA Cross Domain",
+    "OAKIFY-SPECIAL-2": "Fixed, issue with scarfs one-size, fixed mix with sorted\/add cart, added fix for undefined 'gtmCheckoutObj' var, remade store switch for regular pages",
+    "OAKIFY-237.1": "Remodelating the final checkout with shopify obj data",
+    "OAKIFY-235.1": "Revert countdown code"
+  },
+  "version 1.0.22": {
+    "OAKIFY-237": "Sync DE with EN+SE pages, minor fixes",
+    "OAKIFY-237.1": "add blocker detector to FS",
+    "OAKIFY-235": "Added countdown time for Black Friday sale"
+  },
+  "version 1.0.21": {
+    "OAKIFY-233": "Adjust Size-Reco Image for .de & .se instance",
+    "OAKIFY-233.1": "Adding error handler for FullStory & header snipped",
+    "OAKIFY-231.1": "InProgress: Add try & Catch into FILTER logic",
+    "OAKIFY-231.4": "Fix bad math in final checkout with coupon",
+    "OAKIFY-231.5": "Fix Cross Domain with an issue in theme.js 'request' func"
+  },
+  "version 1.0.20": {
+    "OAKIFY-SPECIAL": "Move GTM Script (commonCheckout.js & custom.js) into Shopify Admin 'Additional Google Analytics JavaScript'",
+    "OAKIFY-231": "Addapt current GA code to vouchers",
+    "OAKIFY-231.1": "InProgress: Add try & Catch to avoid uncatched errors commonCheckout: DONE",
+    "OAKIFY-231.2": "Remove Dot for slider if is only one pict",
+    "OAKIFY-231.3": "Fixed GTM Cookie & ID, moving it into theme.liquid",
+    "OAKIFY-214": "Custom design for Gift Card page",
+    "OAKIFY-198.7": "HOTFIX: 'you may also like' & 'recently viewed' addapted in click and product impresion"
+  },
+  "version 1.0.19": {
+    "OAKIFY-229": "Fixing Cross-Domain Tracking In Google Analytics",
+    "OAKIFY-228": "Adjust Table formatting and remove accordion title from size & fit page",
+    "OAKIFY-228.1": "Hotfix: Show the header h4 on mobile view",
+    "OAKIFY-198.1": "HOTFIX: case of no taxes in the checkout",
+    "OAKIFY-198.2": "HOTFIX: Deleting old payment dataLayer & added new eeCheckoutOptions(4,payment)",
+    "OAKIFY-198.3": "HOTFIX: Checkout steps logic remade",
+    "OAKIFY-198.4": "HOTFIX: Remade the way to get horizontal products impresions (recently viewed, ...etc)",
+    "OAKIFY-198.5": "HOTFIX: Delete all 'not available' for empty string",
+    "OAKIFY-198.6": "HOTFIX: MAke a first product impresion launch when load the page",
+    "OAKIFY-219.1": "Make the a pointer when hover"
+  },
+  "version 1.0.18": {
+    "OAKIFY-219": "allow-to-jump-to-the-selected",
+    "OAKIFY-198": "Implement Data Layer for LeRoi GA Implementation"
+  },
+  "version 1.0.17": {
+    "OAKIFY-223": "Custom logo for checkout",
+    "OAKIFY-222": "Integrate Shipping Propositions on PDP",
+    "OAKIFY-226": "Make login link underlined on Checkout page"
+  },
+  "version 1.0.16": {
+    "OAKIFY-218": "HOTFIX: with scarves a new size got introduced",
+    "OAKIFY-210": "Include Size-Reco image in accordions and size-picker",
+    "OAKIFY-208.1": "fix invalid settings",
+    "OAKIFY-201.2": "CSS fix for header select"
+  },
+  "version 1.0.15": {
+    "OAKIFY-SPECIAL": "HOTFIX: hide correctly the shop switcher pop up",
+    "OAKIFY-215": "HOTFIX: hide invoice if customer ordered with invoice in the last hour",
+    "OAKIFY-213": "Rechecking BaseCode to addapt it to other instances",
+    "OAKIFY-213.1": "Updated Gateway ID, comented SE invoice hide logic",
+    "OAKIFY-213.2": "HOTFIX: updated the way to identify final checkout page",
+    "OAKIFY-201.1": "Re impemented multi currency using theme functionality"
+  },
+  "version 1.0.14": {
+    "OAKIFY-208": "Added option to ask for wedding date after checkout",
+    "OAKIFY-207.1": "Update account ID to account for both instances"
+  },
+  "version 1.0.13": {
+    "OAKIFY-207": "Added Criteo site ID for EN instance",
+    "OAKIFY-202": "Identify Color Picker Image",
+    "OAKIFY-201": "Multi Currency Support",
+    "OAKIFY-172": "Accept Lower or Uppercase CJEvent"
+  },
+  "version 1.0.12": {
+    "OAKIFY-177": "JS error on checkout buttons",
+    "OAKIFY-177.1": "Remade the code for the diferent instances EN\/DE\/DEV",
+    "OAKIFY-118": "Endless loading for products"
+  },
+  "version 1.0.11": {
+    "OAKIFY-188": "Cart Abandoned Mail in MailChimp",
+    "OAKIFY-188.1": "Auto Subscribe to newsletter handeler in email",
+    "OAKIFY-188.2": "Updated Transparency Locale Files DE\/EN",
+    "OAKIFY-188.3": "Updated Manifest Content-Security-Policy",
+    "OAKIFY-184": "Apply for filter does not work properly",
+    "OAKIFY-183": "TnC Checkbox using Checkout Template via Shopify Plus",
+    "OAKIFY-127": "Hide cookie banner on Mobile if Store switcher popup is shown"
+  },
+  "version 1.0.10": {
+    "OAKIFY-185.1": "Revert the code for Meta field logic for related products",
+    "OAKIFY-185": "Adjust Shop The Look logic using Meta fields",
+    "OAKIFY-182": "Shop The Look alignment issue",
+    "OAKIFY-181.1": "FIX Add extra locales DE\/EN",
+    "OAKIFY-56": "Implement GA events for cross-selling product types"
+  },
+  "version 1.0.9": {
+    "OAKIFY-181": "Translation key for BIS popup",
+    "OAKIFY-180": "Resend account invite: validte empty email field",
+    "OAKIFY-175": "Mailchimp Sync of Subscribtion Status in services.ivy-oak.com",
+    "OAKIFY-115.1": "FIX JS error on shopTheLook alignment"
+  },
+  "version 1.0.8": {
+    "OAKIFY-174": "Added shopreader crawler file",
+    "OAKIFY-173": "Custom MailChimp integration with Back In Stock Popup",
+    "OAKIFY-168": "Build page which allows to resend the account-invite",
+    "OAKIFY-160": "Shop The Look as separate section",
+    "OAKIFY-124": "Not possible to change quantity and remove the first item in mobile mini cart",
+    "OAKIFY-115.1": "Align Recently Viewed Products correctly & shop the look"
+  },
+  "version 1.0.7": {
+    "OAKIFY-149": "GA-custom-event-checkout-paypal"
+  },
+  "version 1.0.6": {
+    "OAKIFY-166": "BIS notification form delete 'Send' button if appear a help text below",
+    "OAKIFY-166.1": "New Content-Security-Policy in manifest.json",
+    "OAKIFY-161": "Integrate CJ tracking",
+    "OAKIFY-149.1": "FIX Implement custom events for Google Tagmanager (Data Layer) Prio1 & Prio2",
+    "OAKIFY-111.1": "Inventory count threshold fix"
+  },
+  "version 1.0.5": {
+    "OAKIFY-171": "Transparency Page II",
+    "OAKIFY-149": "Implement custom events for Google Tagmanager (Data Layer) Prio1 & Prio2",
+    "OAKIFY-132": "Same font size for Number for Wishlist items",
+    "OAKIFY-111": "Inventory count in size dropdown",
+    "OAKIFY-82": "Fix missing translations"
+  },
+  "version 1.0.4": {
+    "OAKIFY-157": "Integrate Shop Reader",
+    "OAKIFY-146": "Make SALE navigation RED",
+    "OAKIFY-82": "Self hosted MailChimp subscribe form"
+  },
+  "version 1.0.3": {
+    "OAKIFY-151": "Sorting Popup is floating wrong"
+  },
+  "version 1.0.2": {
+    "OAKIFY-148": "Death Clicks on some Buttons",
+    "OAKIFY-147": "Enhance PDP back navigation",
+    "OAKIFY-141": "Integrate theme.min.js into repo",
+    "OAKIFY-52": "Allow slider images to be clicked as link"
+  },
+  "version 1.0.1": {}
+}

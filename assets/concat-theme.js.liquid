@@ -1,0 +1,3158 @@
+//<script>
+eshop.eeProductClick = () => {
+	const products = document.getElementsByClassName('ProductItem')
+	for (let i = 0; i < products.length; i++){
+		products[i].addEventListener("click", () => {
+			const sendDataLayerClick = (productInfo, fromMiniPict = false) => {
+				let category
+				if(!fromMiniPict){
+					// get price with symbol
+					const productsLength = products[i].children[0].children.length
+					const priceBox = products[i].children[0].children[productsLength - 1].children[1].children
+					let price, metric1
+					if(priceBox.length === 2){
+						// with discount
+						metric1 = priceBox[0].textContent
+						price = priceBox[1].textContent
+					} else {
+						// normal price
+						price = priceBox[0].textContent
+					}
+					const soldOutPrice = {[productInfo.id]:{price, metric1}}
+					localStorage.setItem('soldOutPrice',JSON.stringify(soldOutPrice))
+				} else {
+					category =  $(products[i]).closest('section').attr('data-section-id').toLowerCase().split('-').join(' ')
+				}
+				dataLayer.push({
+					'event' : 'eeProductClick',
+					'ecommerce': {
+						'click': {
+							'actionField':{
+								'list':productInfo.list,
+							},
+							'products': [{
+								'name': productInfo.name.toLowerCase(),       // Name or ID is required.
+								'id': productInfo.id,
+								'price': productInfo.price,
+								'brand': 'Ivy and Oak',
+								'category': fromMiniPict ? category.toLowerCase() : productInfo.category.toLowerCase(),
+								'position': productInfo.position,
+								'metric1': productInfo.metric1,
+								'dimension1': productInfo.dimension1,
+								'dimension8': infoObj.product_ids[productInfo.position]
+							}]
+						}
+					}
+				});
+			}
+			//bottom carousel products
+			//const pathName = products[i].children[0].children[1].pathname.split('-')
+			//const name = products[i].children[0].children[1].children[0].children[0].alt
+			const name =  $(products[i]).find('img')[0].alt
+			const pathName =  $(products[i]).find('a')[0].pathname.split('-')
+			if(products[i].offsetParent.className.includes('Carousel__Cell')){
+				const productInfo = {
+					list:$(products[i]).closest('section').attr('data-section-id').toLowerCase().split('-').join(' '),
+					name,
+					id: `${pathName[pathName.length - 2]}-${pathName[pathName.length - 1]}`,
+					price: '',
+					category: '',
+					position: i,
+					metric1: '',
+					dimension1: '',
+				}
+				sendDataLayerClick(productInfo,true)
+			} else { //Collection/Product items
+				let discountPrice = false
+				let normalPrice = false
+				const prices = $(products[i]).find('.ProductItem__PriceList')[0].children
+				if(prices.length === 2){
+					discountPrice = prices[0].textContent
+					normalPrice = prices[1].textContent
+				} else {
+					normalPrice = prices[0].textContent
+				}
+				setTimeout(function(){
+					const toReturn = discountCountyLogic(normalPrice,discountPrice)
+					const productInfo = {
+						name,
+						list:window.location.pathname.split('/')[1] === 'search' ? 'search all' : 'category page',
+						id: `${pathName[pathName.length - 2]}-${pathName[pathName.length - 1]}`,
+						price: toReturn.discountPrice ? toReturn.discountPrice : toReturn.normalPrice,
+						category: window.location.pathname.split('/')[2] ?  window.location.pathname.split('/')[2] : '',
+						position: i,
+						metric1: toReturn.normalPrice,
+						dimension1: toReturn.discount ? toReturn.discount : '0',
+					}
+					sendDataLayerClick(productInfo)
+				},200);
+			}
+		})
+	}
+}
+
+//<script>
+eshop.eeProductImpression = () => {
+	let sku;
+	let productsPerLine;
+	let isSearchResult = false;
+	// small than 641 one product per line bigger 2 products
+	$(window).width() < 641 ? productsPerLine = 1 : productsPerLine = 2
+	let productViewed = document.getElementsByClassName('ProductItem');
+	let finalSearchProducts = false
+	let	searchProducts = document.getElementById('Search').getElementsByClassName('ProductItem');
+	if(window.location.pathname === '/search'){
+		//productsPerLine change if is a mobile are 2, tablet 3 & desktop 4
+		//mex products in mobile are 4, tablet 6 & desktop 8
+		$(window).width() < 641 ? productsPerLine = 2 : ($(window).width() > 1024 ? productsPerLine = 4 : productsPerLine = 3)
+		isSearchResult = true;
+		finalSearchProducts = document.getElementById('searchOkify198').getElementsByClassName('ProductItem');
+	}
+
+	//DATALAYER SEND FUNCTION
+	const sendDataLayerEnhanced = (event, currencyCode, impressionsArray, carousel = false) => {
+		dataLayer.push({
+			event,
+			'ecommerce': {
+				currencyCode, // Local currency is optional.
+				'impressions':
+					impressionsArray.map(impression => {
+						return (
+							{
+								'name': impression.name.toLowerCase(), // Name or ID is required.
+								'id': impression.id,                   	// Config SKU
+								'price': impression.price,
+								'brand': 'Ivy and Oak',
+								'category': impression.category,
+								'list': impression.list,
+								'position': impression.position,
+								'metric1': impression.metric1,
+								'dimension1': impression.dimension1,
+								'dimension8': carousel ? '' : infoObj.product_ids[impression.position],
+							}
+						)
+					})
+			}
+		});
+	}
+
+const generateProductInfo = (index, position, currentViewProd) => {
+	//Currency logic
+	let symbol;
+	let isDiscount;
+	let baseURILength;
+	if(position === 'preSearchVal'){
+		// recheck products inside the search page
+		symbol = searchProducts[index].children[0].children[2].children[1].outerText
+		isDiscount = searchProducts[index].children[0].children[2].children[1].children
+		baseURILength = searchProducts[index].children[0].children[2].baseURI.split('/').length
+	} else {
+		symbol = $(productViewed[index]).find('.ProductItem__Price')[0].textContent
+		isDiscount = $(productViewed[index]).find('.ProductItem__Price')
+		if(window.location.pathname === '/search'){
+			baseURILength = false
+		} else {
+			baseURILength = productViewed[index].children[0].children[position].baseURI.split('/').length
+		}
+	}
+
+	const currencyCode = currencySelector(symbol);
+	//discount price logic
+	let discountPrice = false
+	let normalPrice = false
+	let discount = false
+
+	//which products to pick, searched or the normal list
+	let pageWhereItIs;
+	window.location.pathname === '/search' ? pageWhereItIs = 'search all' : pageWhereItIs = 'category page'
+	const currencyDiscountCodeLogic = currencyCode => {
+		if(isDiscount.length === 2){
+			discountPrice = isDiscount[0].textContent
+			normalPrice = isDiscount[1].textContent
+		} else {
+			//check if is a 'FROM €25' item
+			if(isDiscount[0].children.length > 0){
+				normalPrice = isDiscount[0].children[0].textContent
+			} else {
+				normalPrice = isDiscount[0].textContent
+			}
+		}
+		const transformedPrices = transformCurencyDisplay(currencyCode,normalPrice,discountPrice)
+		normalPrice = transformedPrices.normalPrice
+		discountPrice = transformedPrices.discountPrice
+		discountPrice ? discount = discountLogic(discountPrice, normalPrice) : discount = false;
+	}
+
+	const product1 = currentViewProd.split('-')
+	currencyDiscountCodeLogic(currencyCode)
+	return {
+		currencyCode,
+		'name':  $(productViewed[index]).find('h2')[0].children[0].textContent,
+		'id': `${product1[product1.length - 2]}-${product1[product1.length - 1]}`,
+		'price': discountPrice ? discountPrice : normalPrice,
+		'category': window.location.pathname.split('/')[2],
+		'list': pageWhereItIs,
+		'position': index,
+		'metric1': normalPrice,
+		'dimension1': discount ? discount : 0
+	}
+}
+
+	//SEARCHED Products max is 3 (no scroll available)
+	//line 1978
+
+	//Function that inicialize all the view port product process
+	let checkingScroll;
+	let counter = 0;
+	let firstTimeExecViewPort = true;
+	const productInViewPort = (itemsInsideThePage, itemsPerLine) => {
+		const userScrollPos = $(window).scrollTop();
+		// just execute the first desk product impression once
+		let viewedProducts = [];
+		for (let i = 0; i < itemsInsideThePage.length; i++){
+			// if product is visible
+			if(isInViewport(itemsInsideThePage[i])){
+			//rule for recently viewed = horizontal products impressions
+				if(itemsInsideThePage[i].offsetParent.nodeName === 'DIV'){
+					//Desktop visible products
+					if($(window).width() > 1024){
+						//If the user is at the top of the page make a impresion of the two first products(are not 100% inside the view port)
+						const carouselText = $(itemsInsideThePage[i]).closest('section').attr('data-section-id')
+						if(carouselText !== sku){
+							const carouselChildren = itemsInsideThePage[i].parentElement.parentElement.children
+							//check how much items are visible
+							let counter = 0;
+							for (let i = 0; i < carouselChildren.length; i++){
+								if(carouselChildren[i].classList.value.includes('is-selected')){
+									counter = counter + 1
+								}
+							}
+							let arrayCarousel = []
+							for (let n = 0; n < counter; n++){
+								arrayCarousel.push(itemsInsideThePage[i+n])
+							}
+							let viewedProducts = []
+							//check first product to get the currency
+							const currency = $(itemsInsideThePage[0]).find('.ProductItem__Price')
+							if(currency.length > 0){
+								const toProcess = discountCountyLogic(currency[0].outerText)
+								currencyCode = toProcess.currencyCode
+							} else {
+								currencyCode = $('.currency-switcher').attr('data-default-shop-currency')
+							}
+							arrayCarousel.map((carouselProduct, index) => {
+								const name = carouselProduct.children[0].children[1].children[0].children[0].alt
+								const product = carouselProduct.children[0].children[1].pathname.split('-')
+								const id = `${product[product.length - 2]}-${product[product.length - 1]}`
+								const price = ''
+								const category = ''
+								const list = carouselText.toLowerCase().split('-').join(' ')
+								const position = index
+								const metric1 = ''
+								const dimension1 = ''
+								viewedProducts = [...viewedProducts, {name,id,price,category,list,position,metric1,dimension1}]
+							})
+							sendDataLayerEnhanced('eeProductImpression', currencyCode, viewedProducts,true)
+							//path to get the SKU
+							sku = carouselText
+						}
+					} else {
+						const carouselText = $(itemsInsideThePage[i]).closest('section').attr('data-section-id')
+						if(carouselText !== sku){
+							clearTimeout(checkingScroll)
+							//put again the count down
+							checkingScroll = setTimeout(function(){
+								//in mobile always 2 visible or 1 and half (2)
+								let viewedProducts = []
+								//check first product to get the currency
+								const currency = $(itemsInsideThePage[0]).find('.ProductItem__Price')
+								if(currency.length > 0){
+									const toProcess = discountCountyLogic(currency[0].outerText)
+									currencyCode = toProcess.currencyCode
+								} else {
+										currencyCode = $('.currency-switcher').attr('data-default-shop-currency')
+								}
+								for (let n = 0; n < 2; n++){
+									const name = itemsInsideThePage[i + n].children[0].children[1].children[0].children[0].alt
+									const product = itemsInsideThePage[i + n].children[0].children[1].pathname.split('-')
+									const id = `${product[product.length - 2]}-${product[product.length - 1]}`
+									const price = ''
+									const category = ''
+									const list = carouselText.toLowerCase().split('-').join(' ')
+									const position = n
+									const metric1 = ''
+									const dimension1 = ''
+									viewedProducts = [...viewedProducts, {name,id,price,category,list,position,metric1,dimension1}]
+								}
+								sendDataLayerEnhanced('eeProductImpression', currencyCode, viewedProducts,true)
+								//path to get the SKU
+								sku = carouselText
+							},300)
+						}
+					}
+				}
+				// Product impresions
+				const skuPosition = itemsInsideThePage[i].children[0].children.length - 1
+				if(itemsInsideThePage[i].children[0].children[skuPosition].children[0].children[0] !== undefined){
+					const currentViewProd = itemsInsideThePage[i].children[0].children[skuPosition].children[0].children[0].pathname
+					//rule for search results (3 products max on the view)
+					if(itemsPerLine === 'preSearchVal'){
+						const productInfo = generateProductInfo(i, 'preSearchVal', currentViewProd)
+						viewedProducts = [...viewedProducts, productInfo]
+						if(i === itemsInsideThePage.length - 1){
+							sendDataLayerEnhanced('eeProductImpression', productInfo.currencyCode, viewedProducts)
+						}
+					}
+					//rule for mobile mode
+					if(itemsPerLine === 1 && currentViewProd !== sku){
+						//avoid sending info inside the product page
+						if(window.location.pathname.includes('products')){
+							null
+						} else {
+							const productInfo = generateProductInfo(i, skuPosition, currentViewProd)
+							//Array with the info
+							sendDataLayerEnhanced('eeProductImpression', productInfo.currencyCode, [productInfo])
+							//path to get the SKU
+							sku = currentViewProd
+						}
+					}
+					//rule for desktopmode
+					if(itemsPerLine === 2 && i%2 === 0 && !isSearchResult){
+						if(currentViewProd !== sku && currentViewProd !== undefined){
+							//Get product 1 info
+							const productInfoOne = generateProductInfo(i, skuPosition, currentViewProd)
+							//Get product 2 info
+							let productInfoTwo = false;
+							if(!itemsInsideThePage[i + 1].offsetParent.className.includes('Carousel')){
+								const skuPositionProduct2 = itemsInsideThePage[i + 1].children[0].children.length - 1
+								const nextCurrentViewProd = itemsInsideThePage[i + 1].children[0].children[skuPositionProduct2].children[0].children[0].pathname
+								if(nextCurrentViewProd !== undefined && nextCurrentViewProd.length > 0){
+									productInfoTwo = generateProductInfo(i+1, skuPositionProduct2, nextCurrentViewProd)
+								}
+							}
+							//Array with the info
+							const infoArray = productInfoTwo ? [productInfoOne,productInfoTwo] : [productInfoOne]
+							sendDataLayerEnhanced('eeProductImpression', productInfoOne.currencyCode, infoArray)
+							//path to get the SKU
+							sku = currentViewProd
+						}
+					}
+					//Search All product impresions
+					if(isSearchResult){
+						const searchProductImpresion = amount => {
+							if(currentViewProd !== sku && currentViewProd !== undefined){
+								let infoToSend = []
+								const loopToGetInfo = (from,limit) => {
+									infoToSend = []
+									for (let n = from; n <= limit; n++){
+										infoToSend = [...infoToSend, generateProductInfo(n, skuPosition, currentViewProd)]
+									}
+								}
+								const amountItems = $('.ProductItem').length
+								const amountPerView = Math.trunc(amountItems/amount)
+								const freeViewed = amountItems%amount
+								if(amountItems <= amount){
+									loopToGetInfo(0,amountItems - 1);
+								} else if (freeViewed === 0){
+									//freeViewed blocks of amount
+									loopToGetInfo(i, i + amount - 1);
+								} else {
+									//loop thru the full amount block items
+									if(counter === amountPerView){
+										loopToGetInfo(i, i + (freeViewed - 1))
+									} else {
+										loopToGetInfo(i, i + amount - 1);
+										counter = counter + 1
+									}
+								}
+								sendDataLayerEnhanced('eeProductImpression', infoToSend[0].currencyCode, infoToSend)
+								infoToSend = []
+								sku = currentViewProd
+							}
+						}
+						// mobile search
+						if(itemsPerLine === 2 && i%4 === 0){
+							searchProductImpresion(4)
+						}
+						// tablet search
+						if(itemsPerLine === 3 && i%6 === 0){
+							searchProductImpresion(6)
+						}
+						// desktop search
+						if(itemsPerLine === 4 && i%8 === 0){
+							searchProductImpresion(8)
+						}
+					}
+				}
+			} else if (userScrollPos === 0 && i < 1 ){
+				//If nothing get sent but the user is on the top of the page
+				if(window.location.pathname.includes('collections') && !window.location.pathname.includes('products')){
+					if(firstTimeExecViewPort){
+						const skuPosition = itemsInsideThePage[i].children[0].children.length - 1
+						const currentViewProd = itemsInsideThePage[i].children[0].children[skuPosition].children[0].children[0].pathname
+						const productInfoOne = generateProductInfo(0, skuPosition, currentViewProd)
+						const productInfoTwo = generateProductInfo(1, skuPosition, currentViewProd)
+						const infoArray = [productInfoOne,productInfoTwo]
+						sendDataLayerEnhanced('eeProductImpression', productInfoOne.currencyCode, infoArray)
+						firstTimeExecViewPort = false;
+						sku = currentViewProd
+					}
+				}
+			}
+		}
+	}
+	//On LOAD
+	if(window.location.pathname === '/search'){
+		productInViewPort(finalSearchProducts,productsPerLine);
+	} else if (productViewed){
+		productInViewPort(productViewed,productsPerLine);
+	}
+	//On SCROLL
+	window.addEventListener('scroll', function(e) {
+		if(window.location.pathname === '/search'){
+			productInViewPort(finalSearchProducts,productsPerLine);
+		} else if (productViewed){
+			productInViewPort(productViewed,productsPerLine);
+		}
+	})
+	eshop.datalayerPushEvents(productInViewPort)
+	// wishlist eeProductImpression
+	if(window.location.pathname === '/a/wishlist'){
+		const wishProducts = $('.product')
+		//make all img products able to be detectect by the scroll function
+		//reduce the margin
+		$('.wishlistpage .row')[2].setAttribute("style", "margin-left : 2px; margin-right : 2px");
+		$('.wishlistpage .row')[3].setAttribute("style", "margin-left : 2px; margin-right : 2px");
+		for (let i = 0; i < wishProducts.length; i++){
+			//change padding
+			$(wishProducts[i]).find('img').css("padding", "0px");
+			//Click the product
+			$(wishProducts[i]).click(() => {
+				const separator = $(wishProducts[i]).find('.product_title').find('a')[0].pathname.split('-')
+				const sku = `${separator[separator.length - 2]}-${separator[separator.length - 1]}`
+				const name = $(wishProducts[i]).find('.product_title').find('a')[0].textContent
+				const normalPrice = $(wishProducts[i]).find('.price')[0].textContent
+				const toReturn = discountCountyLogic(normalPrice,false)
+				const currencyCode = toReturn.currencyCode
+				const price = toReturn.normalPrice
+				const metric1 = toReturn.normalPrice
+				const category = ''
+				const dimension1 = ''
+				const list = 'wishlist'
+				const position = i
+				dataLayer.push({
+					'event' : 'eeProductClick',
+					'ecommerce': {
+						'click': {
+							'actionField':{list},
+							'products': [{
+								'name': name.toLowerCase(),       // Name or ID is required.
+								'id': sku,
+								'price': toReturn.discountPrice ? toReturn.discountPrice : toReturn.normalPrice,
+								'brand': 'Ivy and Oak',
+								category,
+								'variant': '',
+								'position': i,
+								'metric1': toReturn.normalPrice,
+								dimension1,
+								'dimension8': infoObj.product_ids[i]
+								}]
+							}
+						}
+				});
+			})
+		}
+
+		let checkName;
+		let productsPerView
+		//On load
+		const checkingWishlistViewPort = () => {
+			$(window).width() < 766 ? productsPerView = 1 : productsPerView = 6
+			for (let i = 0; i < wishProducts.length; i++){
+				if(isInViewport(wishProducts[i])){
+					let infoToSend = []
+					const amount = productsPerView
+					const separator = $(wishProducts[i]).find('.product_title').find('a')[0].pathname.split('-')
+					let sku = `${separator[separator.length - 2]}-${separator[separator.length - 1]}`
+					if(productsPerView === 1 && sku !== checkName){
+						const separator = $(wishProducts[i]).find('.product_title').find('a')[0].pathname.split('-')
+						const sku = `${separator[separator.length - 2]}-${separator[separator.length - 1]}`
+						const name = $(wishProducts[i]).find('.product_title').find('a')[0].textContent
+						const normalPrice = $(wishProducts[i]).find('.price')[0].textContent
+						const toReturn = discountCountyLogic(normalPrice,false)
+						const currencyCode = toReturn.currencyCode
+						const price = toReturn.normalPrice
+						const metric1 = toReturn.normalPrice
+						const category = ''
+						const dimension1 = ''
+						const list = 'wishlist'
+						const position = i
+						infoToSend = [{sku,name,position, normalPrice, currencyCode,price,metric1,category,dimension1,list}]
+						sendDataLayerEnhanced('eeProductImpression', infoToSend[0].currencyCode, infoToSend)
+						infoToSend = []
+						checkName = sku
+					}
+					//Rest Of Views
+					if(productsPerView === 6 && i%6 === 0 && sku !== checkName){
+						const loopToGetInfo = (from,limit) => {
+							infoToSend = []
+							for (let n = from; n <= limit; n++){
+								const separator = $(wishProducts[n]).find('.product_title').find('a')[0].pathname.split('-')
+								const sku = `${separator[separator.length - 2]}-${separator[separator.length - 1]}`
+								const name = $(wishProducts[n]).find('.product_title').find('a')[0].textContent
+								const normalPrice = $(wishProducts[n]).find('.price')[0].textContent
+								const toReturn = discountCountyLogic(normalPrice,false)
+								const currencyCode = toReturn.currencyCode
+								const price = toReturn.normalPrice
+								const metric1 = toReturn.normalPrice
+								const category = ''
+								const dimension1 = ''
+								const list = 'wishlist'
+								const position = n
+								infoToSend = [...infoToSend, {sku,name,position, normalPrice, currencyCode,price,metric1,category,dimension1,list}]
+							}
+						}
+						const amountItems = $('.product').length
+						const amountPerView = Math.trunc(amountItems/amount)
+						const freeViewed = amountItems%amount
+						if(amountItems <= amount){
+							loopToGetInfo(0,amountItems - 1);
+						} else if (freeViewed === 0){
+							//freeViewed blocks of amount
+							loopToGetInfo(i, i + amount - 1);
+						} else {
+							//loop thru the full amount block items
+							const finalIndexViewed = i + amount - 1
+							if(finalIndexViewed + amount > amountItems){
+								loopToGetInfo(i, i + (freeViewed - 1))
+							} else {
+								loopToGetInfo(i, i + amount - 1);
+							}
+						}
+						sendDataLayerEnhanced('eeProductImpression', infoToSend[0].currencyCode, infoToSend)
+						infoToSend = []
+						checkName = sku
+					}
+				}
+			}
+		}
+		checkingWishlistViewPort()
+
+		//On Scroll
+		window.addEventListener('scroll', function(e) {
+			checkingWishlistViewPort()
+		})
+	}
+}
+
+//<script>
+eshop.datalayerPushEvents = productInViewPort => {
+	//5- Filtered Collection
+	if (window.location.href.includes("collections") && !window.location.href.includes("products")) {
+		//Click on filter
+		const filterButton= document.getElementsByClassName('CollectionToolbar__Item--filter');
+		filterButton[0].addEventListener("click", function () {
+			sendInfoToDataLayer('button click', '', 'filter')
+		})
+		// Press Apply
+		const filterApplyButton = document.getElementsByClassName('ButtonGroup__Item Button--primary');
+		filterApplyButton[0].addEventListener("click", function () {
+			let categoryValues = []
+			let categorySorted;
+			let valueSorted	= []
+			// all the secctions in filter
+			const	linklistItem = document.getElementsByClassName('Collapsible--autoExpand');
+			for (let i = 0; i < linklistItem.length; i++){
+				if(linklistItem[i].classList.length > 1 && linklistItem[i].offsetParent ){
+					if(linklistItem[i].offsetParent.className === 'Drawer__Content'){
+						// Getting the categorySorted
+						categorySorted = $(linklistItem[i]).find('button')[0].innerText
+						// Getting the valuesorted
+						valueSorted = []
+						const value = linklistItem[i].children[1].children[0].children[0].children
+						for (let n = 0; n < value.length; n++){
+							if(value[n].classList.length > 1){
+								valueSorted = [...valueSorted, value[n].children[0].getAttribute('data-value')]
+							}
+						}
+					}
+				}
+				categoryValues = [...categoryValues,{[categorySorted]:valueSorted}]
+			}
+			let eventLabel = '';
+			categoryValues.map((category,index) => {
+				if(category[Object.keys(category)].length > 0){
+					eventLabel = eventLabel + `${Object.keys(category)} : ${category[Object.keys(category)]} | `
+				}
+			})
+			// Delete the last 3 chars to not have an empty space on the last item
+			eventLabel = eventLabel.slice(0, -3)
+			sendInfoToDataLayer('button apply', eventLabel, 'filter')
+		})
+		//6- Sorted Collection
+		const sortLinks = document.getElementsByClassName('Popover__Value  Heading Link Link--primary u-h6');
+		if(sortLinks.length > 0){
+			for (let i = 0; i < sortLinks.length; i++){
+				sortLinks[i].addEventListener("click", function () {
+					sendInfoToDataLayer(this.innerHTML, '', 'sort')
+				})
+			}
+		}
+	}
+
+	//7- users clicks on the top navigation
+	let sendOnce = 0;
+	const sendNavigationClick = (position,category, subcategory, send = 0) => {
+		// to avoid that is sent the subcategory and category
+		if(sendOnce === 1){return}
+		sendInfoToDataLayer(category, subcategory ? subcategory : '', position)
+		sendOnce = send;
+		return;
+	}
+	const headerNavigation = document.getElementsByClassName('Header__FlexItem');
+	for (let i = 0; i < headerNavigation.length; i++){
+		if(headerNavigation[i].classList.length === 1){
+			// main logo
+			headerNavigation[i].addEventListener("click", function () {
+				sendNavigationClick('navigation','Header Logo', null)
+			})
+		}
+	}
+
+	const horizontalLinksContainer = document.getElementById('section-header').getElementsByClassName('Header__FlexItem Header__FlexItem--fill');
+	const leftLinks = horizontalLinksContainer[0].children[1].children[0].children
+	for (let i = 0; i < leftLinks.length; i++){
+		//CATEGORIES
+		leftLinks[i].addEventListener("click", function () {
+			const category = leftLinks[i].firstElementChild.innerHTML
+			let specialCategory = undefined;
+			//IF contains a span (...sales)
+			if(category.includes('<')){
+				specialCategory = category.split('<')[0]
+			}
+			sendNavigationClick('navigation',specialCategory ? specialCategory.toLowerCase() : category.toLowerCase(), null)
+		})
+	}
+	//SUBCATEGORIES
+	const linksContainer = document.getElementById('section-header').getElementsByClassName('Linklist__Item');
+	for (let i = 0; i < linksContainer.length; i++){
+		linksContainer[i].addEventListener("click", function () {
+			const category = linksContainer[i].parentNode.parentNode.parentNode.firstElementChild.innerHTML;
+			const subCategory = linksContainer[i].children[0].childNodes[0].textContent
+			sendNavigationClick('navigation', category.toLowerCase(), subCategory.toLowerCase(), 1)
+		})
+	}
+	//8- user interacts with the account page
+	if (window.location.href.includes('account')) {
+		// function sendInfoToDataLayer in line 1709
+		//Login page
+		if (window.location.href.includes('login')) {
+			//If fails the login
+			const errorMsgLng = document.getElementsByClassName('Alert--error');
+			if(errorMsgLng.length > 0){
+				sendInfoToDataLayer('login','fail')
+			}
+		}
+		// success in line 1790
+		// logout in line 1800
+		// logout in checkout => commonCheckout.js.liquid line 45
+		if (window.location.href.includes('register')) {
+			const errorMsgRgt = document.getElementsByClassName('Alert__ErrorItem');
+			const submitRgt = document.getElementsByClassName('Form__Submit');
+			if(errorMsgRgt.length > 0){
+				sendInfoToDataLayer('register','fail')
+			}
+			submitRgt[0].addEventListener("click", function () {
+				localStorage.setItem('newAccount', true);
+			})
+		}
+	}
+	const isNewAccount = localStorage.getItem('newAccount');
+	if(window.location.pathname === '/' && isNewAccount){
+		localStorage.removeItem('newAccount')
+		sendInfoToDataLayer('register','success')
+	}
+	// other success that redirect to checkout in commonCheckout.js.liquid line 60
+
+	//9- user signs up for the newsletter
+	// for HOME inside /sections/footer.liquid line 106
+	// for CHECKOUT commonCheckout.js.liquid line 91
+	// for Back-to-stock line 681
+	//pop-up
+	const popUpNewsletterBtn = document.getElementsByClassName('atlanta-field-submit sc-bdVaJa LSELi');
+	if(popUpNewsletterBtn.length > 0){
+		popUpNewsletterBtn[0].addEventListener("click", function () {
+			sendInfoToDataLayer('sign-up', 'pop-up','newsletter', )
+		})
+	}
+	//10- user clicks on a footer link
+	//TBD FIX THE BUTTON LINKS
+	const footerLinks = document.getElementById('section-footer').getElementsByClassName('Linklist__Item');
+	for (let i = 0; i < footerLinks.length; i++){
+		footerLinks[i].addEventListener("click", function () {
+			sendNavigationClick('footer',footerLinks[i].parentNode.parentNode.innerHTML.split('>')[1].slice(0,-4), footerLinks[i].innerText)
+		})
+	}
+	//11- user clicks on site or color dropdown
+	const url = window.location.href;
+	// 11.1- View Available Product Sizes
+	const sizesAvalPanel = document.getElementsByClassName('Popover__ValueList Popover__Sizes');
+	const removeVariant = url.split('?')[0];
+	const sizeSelector = document.getElementsByClassName('ProductForm__Item');
+	if(sizeSelector.length > 0){
+		// always the last in the list is the size, the first one should be the color selector
+		let pressedSize;
+		let pressedColor;
+		sizeSelector[sizeSelector.length - 1].addEventListener("click", function () {
+			if(pressedSize || window.location.pathname.includes('ivy-oak-gift-voucher')){ return }
+			let counter = 0;
+			let availability;
+			$.when(sizesAvalPanel)
+			.then(()=>{
+				for (let i = 0; i < sizesAvalPanel[0].children.length; i++){
+					if(sizesAvalPanel[0].children[i].children[0].nextElementSibling){
+						if(sizesAvalPanel[0].children[i].children[0].nextElementSibling.className === 'BIS__Link'){
+							counter = counter + 1
+						}
+					}
+				}
+				if(counter === 0){
+					availability = 'full availability';
+				} else if (counter === sizesAvalPanel[0].children.length){
+					availability = 'no availability';
+				} else {
+					availability = 'limited availability';
+				}
+				sendInfoToDataLayer('size dropdown', availability, 'product')
+				pressedSize = true;
+			})
+		})
+		// 11.2- View Available Product Colors
+		if(sizeSelector.length === 2){
+			sizeSelector[0].addEventListener("click", function () {
+				if(pressedColor){return}
+				sendInfoToDataLayer('color dropdown', '', 'product')
+				pressedColor = true;
+			})
+		}
+	}
+
+	const script = IOPagesVisited => {
+		IOPagesVisited = [...IOPagesVisited, removeVariant]
+		localStorage.setItem('IOPagesVisited',JSON.stringify(IOPagesVisited));
+		return
+	}
+
+	const button = document.getElementsByClassName('ProductForm__Item');
+	if(button.length > 0){
+		button[button.length - 1].addEventListener("click", function() {
+			let IOPagesVisited = []
+			const IOPagesVisitedJSON = localStorage.getItem('IOPagesVisited')
+			if(IOPagesVisitedJSON){
+				IOPagesVisited = JSON.parse(IOPagesVisitedJSON)
+				let counter = 0;
+				IOPagesVisited.map(page => {
+					if(page === removeVariant){
+						counter = counter + 1
+					}
+				})
+				counter === 0 ? script(IOPagesVisited) : null
+			} else {
+				script(IOPagesVisited);
+			}
+		});
+	}
+	//12 user changes size or color of the product
+	// 12.1- Selected Product Size
+	$.when(sizesAvalPanel)
+		.then(()=>{
+			const sizesClick = document.getElementsByClassName('Popover__Value Heading Link');
+			const BISClick = document.getElementsByClassName('BIS__Link');
+			$.when(sizesClick)
+			.then(()=>{
+				for (let i = 0; i < sizesClick.length; i++){
+					if(sizesClick[i].localName === 'button' && sizesClick[i].parentElement.parentElement.className === 'Popover__ValueList Popover__Sizes'){
+						sizesClick[i].addEventListener("click", function() {
+							sendInfoToDataLayer('size selection',sizesClick[i].dataset.value,'product')
+							eshop.eeAddToBasket(sizesClick[i].dataset.value)
+						})
+					}
+					if(sizesClick[i].localName === 'a' && sizesClick[i].parentElement.parentElement.className === 'Popover__Content'){
+						sizesClick[i].addEventListener("click", function() {
+							sendInfoToDataLayer('color selection', sizesClick[i].innerHTML,'product')
+						})
+					}
+					//voucher logic
+					if(sizesClick[i].localName === 'button' && sizesClick[i].parentElement.parentElement.className === 'Popover__Content'){
+						sizesClick[i].addEventListener("click", function() {
+							sendInfoToDataLayer('voucher selection', sizesClick[i].innerHTML,'voucher')
+							eshop.eeAddToBasket(sizesClick[i].dataset.value)
+						})
+					}
+				}
+			})
+			.catch((error)=>{
+				notFoundVariables('Selected Product Size', error)
+			})
+			//13- user clicks on "notify me when restocked"
+			$.when(BISClick)
+				.then(()=>{
+					for (let i = 0; i < BISClick.length; i++){
+						BISClick[i].addEventListener("click", function() {
+							sendInfoToDataLayer('back in stock', 'open form','product')
+							const newsChecked = document.getElementsByClassName('input-checkbox')
+							for (let j = 0; j < newsChecked.length; j++){
+								newsChecked[j].addEventListener('click',function(){
+									const isCheck = document.getElementsByClassName('input-checkbox')
+									localStorage.setItem('bisNewsChecked',isCheck[j].checked)
+								})
+							}
+						})
+					}
+				})
+		})
+		.catch((error)=>{
+			notFoundVariables('Selected Product Size', error)
+		})
+	//14 user clicks to zoom on the image
+	const pictureCarousel = document.getElementsByClassName('Product__Slideshow Product__Slideshow--zoomable Carousel');
+	if(pictureCarousel.length > 0){
+		for (let i = 0; i < pictureCarousel.length; i++){
+			pictureCarousel[i].addEventListener("click", function() {
+				sendInfoToDataLayer('image zoom', '','product')
+			})
+		}
+	}
+
+	//15 user clicks on "add to wishlist" button
+	// check url to set where the event happend "Product Detail Page", "Collection", "Other"
+	const wishlistMobile = document.getElementsByClassName('smartwishlist');
+	const wishlistDesk = document.getElementById('smartwishlist');
+
+	const whereEventHappend = (whereItHappend, collection) => {
+		let urlCut;
+		if(whereItHappend === undefined || collection){
+			if (url.includes("collections") && url.includes("products")){
+				whereItHappend = 'Product Detail Page'
+			} else if (url.includes("products")){
+				whereItHappend = 'Product Detail Page'
+			}	else if(url.includes("collections")){
+				whereItHappend = 'Collection';
+				if(url.split('/').length === 5){
+					urlCut = url.split('/')[4]
+				}
+			}
+		}
+		//category | product | related product
+		sendInfoToDataLayer('add to wishlist', whereItHappend, 'product')
+	}
+
+	if(wishlistMobile.length > 0 || wishlistDesk !== null){
+		for (let i = 0; i < wishlistMobile.length; i++){
+			wishlistMobile[i].addEventListener("click", function() {
+				if(wishlistMobile[i].className === 'smartwishlist unbookmarked'){
+					let whereItHappend;
+					if(wishlistMobile[i].parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.dataset.sectionId !== undefined){
+						whereItHappend = wishlistMobile[i].parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.dataset.sectionId.split('-').join(' ')
+						if (url.includes("collections") && url.includes("products")){
+								whereEventHappend(whereItHappend, false)
+							} else if (url.includes("products")){
+								whereEventHappend(whereItHappend, false)
+							}	else if(url.includes("collections")){
+								whereEventHappend(whereItHappend, true)
+							}
+						} else {
+							whereEventHappend()
+						}
+					}
+			})
+		}
+		if(wishlistDesk !== null){
+			wishlistDesk.addEventListener("click", function() {
+				$.when(wishlistDesk.children)
+				.then(()=>{
+					if(wishlistDesk.children[0].className === 'sw_tooltip tooltip swpbutton3 bookmarked'){
+						whereEventHappend()
+					}
+				})
+			})
+		}
+	}
+	//16- user clicks on the info icon (mobile only) to get more information about the product
+	//line 1155
+
+	//17- Expand Product Details Mobile
+	// line 868
+
+	//18- user clicks to change the store (on the menu or the pop-up)
+	// line 403 & 483
+
+	//19- user makes an internal search
+	let keyPress;
+	let viewAllPressed = false
+	document.addEventListener('keyup', () => {
+		if($('#Search').attr('aria-hidden')){ return }
+		//clear the exec
+		clearTimeout(keyPress)
+		//put again the count down
+		if(!viewAllPressed){
+			keyPress = setTimeout(function(){
+				const inputSearch = document.getElementById('Search').getElementsByClassName('Search__Input Heading')
+				const localResults = document.getElementById('Search').getElementsByClassName('Heading Text--subdued u-h7')
+				let results
+				localResults[0].outerText.split(' ').length === 2 ? results = `${localResults[0].outerText.split(' ')[0]} Results` : results = '0 Results'
+				const viewAllButton = document.getElementById('Search').getElementsByClassName('Heading Link Link--secondary u-h7')
+				if(inputSearch[0].value.length > 0){
+					sendInfoToDataLayer(inputSearch[0].value, results ,'search')
+					//20- user click on "view all" button
+					for (let i = 0; i < viewAllButton.length; i++){
+						viewAllButton[i].addEventListener('click', ()=>{
+							viewAllPressed = true
+							sendInfoToDataLayer('view all button', '' ,'search')
+						})
+					}
+				}
+				//view port of the search
+				searchProducts = document.getElementById('Search').getElementsByClassName('ProductItem');
+				let viewedProducts = []
+				for (let i = 0; i < searchProducts.length; i++){
+					let normalPrice = false
+					let discountPrice = false
+					const prices = $(searchProducts[i]).find('.ProductItem__PriceList').find('span')
+					//if length = 2 (discount)
+					if(prices.length === 2){
+						//check if is a 'FROM €25' item
+						if(prices[1].children.length === 0){
+							normalPrice = prices[1].textContent
+						} else {
+							normalPrice = prices[0].textContent
+							discountPrice = prices[1].textContent
+						}
+					} else {
+						normalPrice = prices[0].textContent
+					}
+					const name = $(searchProducts[i]).find('h2')[0].children[0].textContent
+					const pathname = $(searchProducts[i]).find('a')[0].pathname.split('-')
+					const id = `${pathname[pathname.length - 2]}-${pathname[pathname.length - 1]}`
+					const toReturn = discountCountyLogic(normalPrice,discountPrice)
+					//return toReturn = {normalPrice,discountPrice,discount,currencyCode}
+					viewedProducts = [...viewedProducts,{
+						name,
+						id,
+						price:toReturn.discountPrice ? toReturn.discountPrice : toReturn.normalPrice,
+						category: '',
+						list:'search',
+						position: i,
+						metric1: toReturn.normalPrice,
+						dimension1 :  toReturn.discount ? toReturn.discount : ''
+					}]
+					//Click event
+					searchProducts[i].addEventListener('click', function () {
+						dataLayer.push({
+							'event' : 'eeProductClick',
+							'ecommerce': {
+								'click': {
+									'actionField':{'list':'search'},
+									'products': [{
+										'name': name.toLowerCase(),       // Name or ID is required.
+										id,
+										'price': toReturn.discountPrice ? toReturn.discountPrice : toReturn.normalPrice,
+										'brand': 'Ivy and Oak',
+										'category': '',
+										'variant': '',
+										'position': i,
+										'metric1': toReturn.normalPrice,
+										'dimension1': toReturn.discount ? toReturn.discount : '',
+										'dimension8': infoObj.product_ids[i]
+										}]
+									}
+								}
+						});
+					})
+				}
+				if(localResults[0].outerText.split(' ').length === 2){
+					dataLayer.push({
+						event:'eeProductImpression',
+						'ecommerce': {
+							currencyCode:toReturn.currencyCode, // Local currency is optional.
+							'impressions':
+								viewedProducts.map(impression => {
+									return (
+										{
+											'name': impression.name.toLowerCase(), // Name or ID is required.
+											'id': impression.id,                   	// Config SKU
+											'price': impression.price,
+											'brand': 'Ivy and Oak',
+											'category': impression.category,
+											'list': impression.list,
+											'position': impression.position,
+											'metric1': impression.metric1,
+											'dimension1': impression.dimension1,
+											'dimension8': infoObj.product_ids[impression.position]
+										}
+									)
+								})
+						}
+					});
+				}
+
+			},2000)
+		}
+	});
+
+	//1.5- Submitted Back in Stock Form
+	// line 551
+
+	//1.7- Clicked Paypal-Express
+	// inside checkout-style-hack GAPaypalButton
+
+	/* OAKIFY-198 Implement Data Layer for LeRoi GA eeBannerClick*/
+	if(window.location.pathname === '/'){
+		/* DELETE BREAK LINES */
+		const normalizeBreakLines = string => {
+			try {
+				if(typeof string !== 'undefined'){
+					return string = string.replace(/(\r\n|\n|\r)/gm," ");
+				}
+			}
+			catch(error){
+				notFoundVariables('normalizeBreakLines', error)
+			}
+		}
+
+		/* BANNER CLICKS | HULK SMASH!*/
+		const dataLayerBannerInfo = (DOMObj, position) => {
+			const name =  normalizeBreakLines($(DOMObj).find('h2')[0].outerText.toLowerCase())
+			const creative =  $(DOMObj).find('h2')[0].parentElement.href
+			const id = $(DOMObj)[0].id.split('-').slice(-1)
+			dataLayer.push({
+				'event': 'eeBannerClick',
+				'ecommerce': {
+					'promoClick': {
+						'promotions': [
+						{
+							id,         // TeaserID
+							name,       // Teaser Name
+							creative,   // Teaser URL
+							position    // Box ID
+						}]
+					}
+				},
+				'eventCallback': function() {
+					document.location = creative;
+				}
+			});
+		}
+		/* BANNER IMPRESIONS | hulk: 'WoW!'*/
+		const dataLayerBannerViewed = promoArray => {
+			dataLayer.push({
+				'event': 'eeTeaserImpression',
+				'ecommerce': {
+					'promoView': {
+						'promotions':
+							promoArray.map(promotion => {
+								return (
+									{
+									'id': promotion.id,           					// TeaserID
+									'name': promotion.name.toLowerCase(), 	// Teaser Name
+									'creative': promotion.creative,     		// Teaser URL
+									'position': promotion.position      		// Box ID
+									}
+								)
+							})
+					}
+				}
+			});
+		}
+
+		//get just the banners
+		const sections = $('.shopify-section')
+		let allBannersArray = [];
+		let allBannersBlockArray = []
+		for (let i = 0; i < sections.length; i++){
+			if(sections[i].clientHeight > 50){
+				if(sections[i].classList.length === 2 && sections[i].classList[1] === 'shopify-section--slideshow'){
+					//large banners
+					allBannersArray.push(sections[i])
+					allBannersBlockArray.push({dom:sections[i],type:false})
+				}
+				if(sections[i].classList.length === 1 && sections[i].classList[0] === 'shopify-section'){
+					//small banners
+					allBannersBlockArray.push({dom:sections[i],type:true})
+					const individualMiniBanner = $(sections[i]).find('.CollectionItem, .Carousel__Cell')
+					for (let n = 0; n < individualMiniBanner.length; n++){
+						individualMiniBanner[n].id = $(sections[i])[0].id
+						allBannersArray.push(individualMiniBanner[n])
+					}
+				}
+			}
+		}
+
+		//click events
+		allBannersArray.map((banner, index) => {
+			banner.addEventListener("click", function() {
+				dataLayerBannerInfo(banner, index)
+			})
+		})
+
+		// add the virtual position dinamically
+		let finalAmount = -1
+		allBannersBlockArray.map((block,index) => {
+			if(block.type){
+				finalAmount = finalAmount + 2
+				allBannersBlockArray[index].dom.AAAvirtualPos = finalAmount
+			} else {
+				finalAmount = finalAmount + 1
+				allBannersBlockArray[index].dom.AAAvirtualPos = finalAmount
+			}
+		})
+
+		let checkName;
+		const bannersInViewPort = () => {
+			const mobileView = $(window).width() < 641 ? true : false
+			if(mobileView){
+				for (let i = 0; i < allBannersArray.length; i++){
+					if(isInViewport(allBannersArray[i])){
+						const name = $(allBannersArray[i]).find('h2')[0].childNodes[0].data
+						if(name !== checkName){
+							const id = allBannersArray[i].id.split('-')[2]
+							const creative =  $(allBannersArray[i]).find('h2')[0].parentElement.href
+							const position = i
+							const name =  normalizeBreakLines($(allBannersArray[i]).find('h2')[0].childNodes[0].data)
+							dataLayerBannerViewed([{id,name,creative,position}])
+							checkName = name
+						}
+					}
+				}
+			} else {
+				for (let i = 0; i < allBannersBlockArray.length; i++){
+					if(isInViewport(allBannersBlockArray[i].dom)){
+						const name =  $(allBannersBlockArray[i].dom).find('h2')[0].childNodes[0].data
+						if(name !== checkName){
+							if(allBannersBlockArray[i].type){ // is a doble banner
+								let toSend = []
+								for (let j = 0; j < 2; j++){
+									let position = allBannersBlockArray[i].dom.AAAvirtualPos - 1
+									position = position + j
+									const id = allBannersArray[position].parentElement.parentElement.parentElement.id.split('-')[1]
+									const name =  normalizeBreakLines($(allBannersArray[position]).find('h2')[0].childNodes[0].data)
+									const creative =  $(allBannersArray[position]).find('h2')[0].parentElement.href
+									toSend = [...toSend, {id,name,creative,position}]
+								}
+								dataLayerBannerViewed(toSend)
+							} else {
+								const id = allBannersBlockArray[i].dom.id.split('-')[2]
+								const creative =  $(allBannersBlockArray[i].dom).find('h2')[0].parentElement.href
+								const position = allBannersBlockArray[i].dom.AAAvirtualPos
+								const name =  normalizeBreakLines($(allBannersBlockArray[i].dom).find('h2')[0].childNodes[0].data)
+								dataLayerBannerViewed([{id,name,creative,position}])
+							}
+							checkName = name
+						}
+					}
+				}
+			}
+		}
+
+		//On LOAD
+		bannersInViewPort();
+		//On SCROLL
+		window.addEventListener('scroll', function(e) {
+			bannersInViewPort();
+		})
+	}
+	// basket with products
+	const cartItem = document.getElementsByClassName('CartItem');
+	//
+	const getProductInfo = index => {
+		if(window.location.pathname.includes('cart')){ return }
+		try {
+			const amount = cartItem[index].children[1].children[2].children[0].children[0].children[1].value
+			const normalPrice = cartItem[index].children[1].children[1].children[2].children[0].outerText
+			const discountPrice = false
+			const toReturn = discountCountyLogic(normalPrice,discountPrice)
+			let productSize =  cartItem[index].children[1].children[1].children[0].outerText;
+			if(productSize.length > 3){
+				isVoucher = true
+				productSize = toReturn.normalPrice;
+			}
+			const url = new URL(cartItem[index].children[1].children[0].children[0].href);
+			const variant = '';
+			const fullURL = cartItem[index].children[1].children[0].children[0].href.split('?')[0]
+			const skuBlock = fullURL.split('/')[4]
+			const skuDash = skuBlock.split('-')
+			const id = `${skuDash[skuDash.length - 2]}-${skuDash[skuDash.length - 1]}`
+			const skuNumber = `${id}-${productSize}`
+			const name = cartItem[index].children[1].children[0].outerText
+			return {productSize,normalPrice,discountPrice,amount,variant,id,skuNumber,name}
+		}
+		catch(error){
+			notFoundVariables('getProductInfo function', error)
+		}
+	}
+
+	const sendProductInfo = (event,infoObj, fullRemove = false) => {
+		//GET INFO FROM LS
+		const cartInfoJSON = localStorage.getItem('cartInfo')
+		let cartInfoObj
+		let productToDelete
+		if(cartInfoJSON){
+			cartInfoObj = JSON.parse(cartInfoJSON)
+			productToDelete = cartInfoObj[infoObj.skuNumber]
+		}
+		const toReturn = discountCountyLogic(infoObj.normalPrice,infoObj.discountPrice)
+		dataLayer.push({
+			event,
+			'ecommerce': {
+				'currencyCode': toReturn.currencyCode,
+				'remove': {
+					'products': [{
+						'name': infoObj.name.toLowerCase(),
+						'id': infoObj.id,
+						'price': toReturn.normalPrice,
+						'brand': 'Ivy and Oak',
+						'category': productToDelete ? productToDelete.category : '',
+						'variant': '',
+						'quantity': fullRemove ? infoObj.amount : 1,
+						'metric1': toReturn.normalPrice,
+						'dimension1': productToDelete ? productToDelete.dimension1 : '',
+						'dimension2': infoObj.productSize, // size
+						'dimension8': infoObj.product_id,
+					}]
+				}
+			}
+		})
+	}
+	//2.2- Removed Product
+	let actionsCounterEnd = 0
+	let actionsCounter = 0
+	let posButtonCounterEnd = 0
+	let posButtonCounter = 0
+	let negButtonCounterEnd = 0
+	let negButtonCounter = 0
+	let checkoutPress = false;
+	const checkCartItems = () => {
+		const cartActions = document.getElementsByClassName('CartItem__Actions Heading Text--subdued');
+		if(cartActions.length === 0){ return }
+		$.when(cartActions)
+			.then(() => {
+				for (let i = 0; i < cartActions.length; i++){
+					const negativeButton = cartActions[i].children[0].children[0].children[0]
+					const amount = cartActions[i].children[0].children[0].children[1]
+					const positiveButton = cartActions[i].children[0].children[0].children[2]
+					negativeButton.addEventListener("click", function () {
+						try {
+							const result = getProductInfo(i)
+							if((negButtonCounter + 1 ) === negButtonCounterEnd){
+								sendProductInfo('eeRemoveFromBasket',result)
+							}
+							negButtonCounterEnd = negButtonCounterEnd + 1
+						}
+						catch(error){
+							notFoundVariables('negativeButton.addEventListener', error)
+						}
+					})
+					positiveButton.addEventListener("click", function () {
+						try {
+							const result = getProductInfo(i)
+							if((posButtonCounter + 1 ) === posButtonCounterEnd){
+								sendProductInfo('eeAddToBasket',result)
+							}
+							posButtonCounterEnd = posButtonCounterEnd + 1
+						}
+						catch(error){
+							notFoundVariables('positiveButton.addEventListener', error)
+						}
+					})
+					posButtonCounter = posButtonCounterEnd
+					negButtonCounter = negButtonCounterEnd
+				}
+
+				/* OAKIFY-198 Implement Data Layer for LeRoi GA eeRemoveFromBasket*/
+
+				for (let i = 0; i < cartActions.length; i++){
+					cartActions[i].children[1].addEventListener("click", function () {
+						try {
+							const result = getProductInfo(i)
+							if((actionsCounter + 1 ) === actionsCounterEnd){
+								sendProductInfo('eeRemoveFromBasket',result,true)
+							}
+							actionsCounterEnd = actionsCounterEnd + 1
+						}
+						catch(error){
+							notFoundVariables('eeRemoveFromBasket', error)
+						}
+					})
+					actionsCounter = actionsCounterEnd
+				}
+				const sendCartToDL = sideCart => {
+					try {
+						//all the cart products data
+						let productsInCheckout = []
+						//GET INFO FROM LS
+						const cartInfoJSON = localStorage.getItem('cartInfo')
+						let cartInfoObj
+						if(cartInfoJSON){
+							cartInfoObj = JSON.parse(cartInfoJSON)
+						}
+						for (let i = 0; i < cartItem.length; i++){
+							let productSize =  $(cartItem[i]).find('p')[0].textContent
+							const amount =  $(cartItem[i]).find('input')[0].value
+							const normalPrice = $(cartItem[i]).find('span')[0].outerText
+							const discountPrice = false
+							const toReturn = discountCountyLogic(normalPrice,discountPrice)
+							const url = new URL(cartItem[i].children[1].children[0].children[0].href);
+							const fullURL = $(cartItem[i]).find('a')[0].href.split('?')[0]
+							const skuBlock = fullURL.split('/')[4]
+							const skuDash = skuBlock.split('-')
+							const id = `${skuDash[skuDash.length - 2]}-${skuDash[skuDash.length - 1]}`
+							//If product size bigger than 3 chars then is a voucher
+							let	skuNumber;
+							let isVoucher = false
+							if(productSize.length > 3 && !productSize.toLowerCase().includes('one size')){
+								isVoucher = true
+								skuNumber = `${id}-${toReturn.normalPrice}`;
+								productSize = toReturn.normalPrice;
+							} else {
+								skuNumber = `${id}-${productSize}`;
+							}
+							//delete event click just for /cart
+							if(!sideCart){
+								cartItem[i].children[2].children[1].addEventListener('click', function () {
+									const infoToSend = {
+										name: $(cartItem[i]).find('h2')[0].outerText,
+										id,
+										amount,
+										productSize,
+										normalPrice,
+										discountPrice,
+										skuNumber
+									}
+									sendProductInfo('eeRemoveFromBasket',infoToSend,true)
+								})
+							}
+							//LS Info
+							const LSProductInfo = cartInfoObj[skuNumber]
+							productsInCheckout = [...productsInCheckout,{
+								currency: toReturn.currencyCode,
+								name: $(cartItem[i]).find('h2')[0].outerText.toLowerCase(),
+								id: `${skuDash[skuDash.length - 2]}-${skuDash[skuDash.length - 1]}`,
+								price: LSProductInfo.price,
+								category: LSProductInfo.category,
+								variant: '',
+								quantity: amount,
+								metric1: LSProductInfo.metric1,
+								dimension1: LSProductInfo.dimension1,
+								dimension2: productSize, // size
+								url:LSProductInfo.url
+							}]
+						}
+						const remadePrices = price => {
+							return price.split(',').join('.')
+						}
+						setTimeout(function(){
+							localStorage.setItem('sideCart',sideCart);
+							try { // adding the cart if we are in /cart
+								if(!sideCart){
+									// TBD
+									if(!sessionStorage.getItem('eeCheckoutStep1Sent')){
+										sessionStorage.setItem('eeCheckoutStep1Sent', true)
+										dataLayer.push({
+											'event': 'eeCheckout',
+											'ecommerce': {
+												'currencyCode': toReturn.currencyCode,
+												'checkout': {
+													'actionField': {'step': 1},
+													'products':
+														productsInCheckout.map((product, index) => {
+														return (
+															{
+																'name': product.name.toLowerCase(), // Name or ID is required.
+																'id': product.id,                   	// Config SKU
+																'price': (remadePrices(product.price) * parseInt(product.quantity)).toFixed(2),
+																'brand': 'Ivy and Oak',
+																'category': product.category,
+																'variant': '',
+																'quantity': parseInt(product.quantity),
+																'metric1': (remadePrices(product.metric1) * parseInt(product.quantity)).toFixed(2),
+																'dimension1': product.dimension1,
+																'dimension2': product.dimension2,
+																'dimension8': infoObj.cart_product_id[index].id
+															}
+														)
+													})
+												}
+											}
+										})
+									}
+								}
+							}
+							catch(error){
+								notFoundVariables('adding the cart if we are in /cart', error)
+							}
+						},200);
+					}
+					catch(error){
+						notFoundVariables('sendCartToDL', error)
+					}
+				}
+				// cart page
+				if(window.location.pathname === '/cart'){
+					sendCartToDL(false)
+				}
+			})
+			.catch( error => {
+				notFoundVariables('cartActions', error)
+			})
+
+	}
+	checkCartItems();
+	const cartDrawerTittle = document.getElementsByClassName('Drawer__Title Heading u-h4')
+	if(cartDrawerTittle.length > 0){
+		window.setInterval(function(){
+			checkCartItems();
+		}, 100);
+	}
+}
+//<script>
+eshop.datalayerVariables = () => {
+	//1.4 Page type
+	const dashes = window.location.pathname.split('/')
+	if(dashes.length === 2 && dashes[1] === 'account'){
+		const userId = document.getElementById('customerID').innerText
+		localStorage.setItem('userLoginStatus', true);
+		localStorage.setItem('customerID', userId);
+		//8- user interacts with the account page
+		sendInfoToDataLayer('login','success')
+	}
+	const logoutBtn = document.getElementsByClassName('PageHeader__Back')
+	if(logoutBtn.length > 0){
+		logoutBtn[0].addEventListener('click', () => {
+			localStorage.removeItem('userLoginStatus');
+			localStorage.removeItem('customerID');
+			sendInfoToDataLayer('logout','success')
+		})
+	}
+}
+//<script>
+eshop.eeAddToBasket = function (size) {
+	if(!window.location.pathname.includes('products')) { return }
+	const productBody = document.getElementsByClassName('Product Product--two');
+	$.when(productBody)
+		.then(()=>{
+			const dashes = window.location.pathname.split('/')
+			const finalDash = dashes[dashes.length - 1].split('-')
+			const skuNumber = `${finalDash[finalDash.length - 2]}-${finalDash[finalDash.length - 1]}`
+			//IF contain a discount price span1 % span2 normal
+			const isDiscount = $(productBody[0]).find('.ProductMeta__PriceList')[0].children.length
+			let normalPrice = false
+			let discountPrice = false
+			if(isDiscount === 2){
+				discountPrice = $(productBody[0]).find('.ProductMeta__PriceList')[0].children[0].outerText
+				normalPrice = $(productBody[0]).find('.ProductMeta__PriceList')[0].children[1].outerText
+			} else {
+				normalPrice = $(productBody[0]).find('.ProductMeta__PriceList')[0].children[0].outerText
+			}
+			setTimeout( function() {
+				const addToCartButton = document.getElementsByClassName('ProductForm__AddToCart');
+				$.when(addToCartButton)
+					.then(()=>{
+						addToCartButton[0].addEventListener("click", function () {
+							const toReturn = discountCountyLogic(normalPrice,discountPrice)
+							$.when(toReturn)
+								.then(() => {
+									//if is a voucher
+									let dimension3;
+									let isVoucher = false
+									const price = toReturn.discountPrice ? toReturn.discountPrice : toReturn.normalPrice;
+									if(window.location.pathname.includes('ivy-oak-gift-voucher')){
+										isVoucher = true
+										const simplePrice = price.includes('.') ? price.split('.')[0] : price
+										dimension3 = `${skuNumber}-${simplePrice}`;
+									} else {
+										dimension3 = `${skuNumber}-${size}`;
+									}
+									const dimension1 = toReturn.discount ? toReturn.discount : ''
+									const metric1 = toReturn.normalPrice;
+									const url = window.location.pathname;
+									let category
+									if(window.location.pathname.split('/')[1] === 'collections'){
+										category = window.location.pathname.split('/')[2]
+									} else if (isVoucher) {
+										category = 'voucher'
+									} else {
+										category = 'product page'
+									}
+									//SEND INFO TO LS
+									const cartInfoJSON = localStorage.getItem('cartInfo')
+									let cartInfoObj
+									if(cartInfoJSON){
+										cartInfoObj = JSON.parse(cartInfoJSON)
+									}
+                  cartInfoObj = Object.assign({ [dimension3]:{price,metric1,category,dimension1,url,isVoucher} });
+									localStorage.setItem('cartInfo',JSON.stringify(cartInfoObj));
+									dataLayer.push({
+										'event': 'eeAddToBasket',
+										'ecommerce': {
+											'currencyCode': toReturn.currencyCode,
+											'add': {
+												'products': [{
+													'name': infoObj.product.name.toLowerCase(),       // Name or ID is required.
+													'id': skuNumber,
+													'price': price,
+													'brand': 'Ivy and Oak',
+													'category': category,
+													'variant': '',
+													'quantity': 1,
+													'metric1': metric1,
+													'dimension1': dimension1,
+													'dimension2': isVoucher ? price : size, // size
+													'dimension3': dimension3, // simple SKU
+													'dimension8': infoObj.product_id,
+												}]
+											}
+										}
+									});
+								})
+								.catch( error => {
+									notFoundVariables('addToCartButton click', error)
+								})
+
+							// OAKIFY - 242
+							eshop.sameProductInCartObserver();
+						})
+					})
+					.catch( error => {
+						notFoundVariables('ProductForm__AddToCart', error)
+					})
+			},200);
+		})
+		.catch( error => {
+			notFoundVariables('eshop.eeAddToBasket', error)
+		})
+}
+//<script>
+//Product Detail Impresions Desktop
+eshop.eeProducDetail = function () {
+	eeProducDetailCounter = eeProducDetailCounter + 1;
+	const dashes = window.location.pathname.split('/')
+	const skuNumber = dashes.slice(-1)[0].split('-').slice(-2).join('-')
+	//MOBILE MODE
+	if($(window).width() < 1025){
+		try {
+			/* OAKIFY-198 Implement Data Layer for LeRoi GA eeProducDetail*/
+			//Product Detail Impresions MOBILE
+			//sending the info of product when the product details are viewed MOBILE ONLY
+			const productHeader = document.getElementsByClassName('Header__Logo')
+			const productBody = document.getElementsByClassName('Product__Wrapper')
+
+			//make a loop here to check if the button is the addToCart
+			let isDiscount;
+			let normalPrice = false
+			let discountPrice = false
+			const checkAddToCartButton = $('.ProductForm__AddToCart')
+			if(checkAddToCartButton[0].type === 'submit'){
+				if(checkAddToCartButton[0].children.length > 1){
+					isDiscount = checkAddToCartButton[0].children
+					normalPrice = isDiscount[2].outerText
+					if(isDiscount.length === 4){
+						discountPrice = isDiscount[3].outerText
+					}
+				} else {
+					//get price from LS
+					let priceSoldOut;
+					if(localStorage.getItem('soldOutPrice')){
+						priceSoldOut = JSON.parse(localStorage.getItem('soldOutPrice'))
+						//check if LS contain the same info as spected
+						if(priceSoldOut[skuNumber]){
+							// If discount
+							if(priceSoldOut[skuNumber].length > 2){
+								discountPrice = priceSoldOut[skuNumber].metric1
+							}
+							normalPrice = priceSoldOut[skuNumber].price
+						} else {
+							// by default 'Sold Out if no price match'
+							normalPrice = 0
+						}
+					} else {
+						normalPrice = 0
+					}
+				}
+			}
+			const toReturn = discountCountyLogic(normalPrice,discountPrice)
+			const dimension1 = toReturn.discount ? toReturn.discount : ''
+			const variant = ''
+			const price = toReturn.discountPrice ? toReturn.discountPrice : toReturn.normalPrice;
+			const metric1 = toReturn.normalPrice;
+			let category
+			if(window.location.pathname.split('/')[1] === 'collections'){
+				category = window.location.pathname.split('/')[2]
+			} else {
+				category = ''
+			}
+			dataLayer.push({
+				'event': 'eeProductDetail',
+				'ecommerce': {
+					'detail': {
+						'products': [{
+							'name': infoObj.product.name.toLowerCase(),       // Name or ID is required.
+							'id': skuNumber,  // Config SKU
+							'price': price === 0 ? 'Sold Out' : price,
+							'brand': 'Ivy and Oak',
+							'category': category,
+							'metric1': metric1 === 0 ? 'Sold Out' : metric1,
+							'dimension1': dimension1,
+							'dimension8': infoObj.product_id,
+						}]
+					}
+				}
+			});
+		}
+		catch(error){
+			notFoundVariables('eshop.eeProducDetail MOBILE', error)
+		}
+	} else { // desktop only
+		//click on info buttons for desktop
+		const container = document.getElementsByClassName('Container');
+		$.when(container)
+			.then(()=>{
+				const name = $(container[0]).find('h1')[0].outerText.toLowerCase()
+				let discountPrice = false
+				let normalPrice = false
+				let dimension1;
+				let price;
+				let metric1;
+				let category;
+				if(window.location.pathname.includes('ivy-oak-gift-voucher')){
+					// gift voucher product
+					normalPrice = $(container[0]).find('.ProductMeta__Price, .Price')[0].textContent;
+					category = 'voucher';
+				} else {
+					const isDiscount = container[0].children[0].children[1].children
+					if (isDiscount.length === 2) {
+						discountPrice = isDiscount[0].outerText
+						normalPrice = isDiscount[1].outerText
+					} else {
+						normalPrice = isDiscount[0].outerText
+					}
+					if(window.location.pathname.split('/')[1] === 'collections'){
+						category = window.location.pathname.split('/')[2]
+					} else {
+						category = 'product page'
+					}
+				}
+				const toReturn = discountCountyLogic(normalPrice,discountPrice)
+				dimension1 = toReturn.discount ? toReturn.discount : ''
+				price = toReturn.discountPrice ? toReturn.discountPrice : toReturn.normalPrice;
+				metric1 = toReturn.normalPrice;
+				setTimeout(function(){
+					dataLayer.push({
+						'event': 'eeProductDetail',
+						'ecommerce': {
+							'detail': {
+								'products': [{
+									name,       // Name or ID is required.
+									'id': skuNumber,  // Config SKU
+									price,
+									variant:'',
+									'brand': 'Ivy and Oak',
+									category,
+									metric1,
+									dimension1,
+									'dimension8': infoObj.product_id,
+								}]
+							}
+						}
+					});
+				},500);
+			})
+			.catch((error)=>{
+				notFoundVariables('eshop.eeProducDetail DESKTOP',error)
+			})
+	}
+};
+//<script>
+eshop.BIS = () => {
+	if(eshop.cache.$BISPopover.length === 0) return;
+		// error msg
+		let msg = '';
+
+		// open email when available
+    $('.BIS__Link').click(function(){
+    	setTimeout(function(){
+    		eshop.cache.$PageOverlay.addClass('is-visible');
+    		$('html').addClass('no-scroll');
+    	},200);
+    });
+		// close email when available
+    $('.BIS_Popover .Popover__Close, .PageOverlay, .Modal__Close').click(function(){
+    	eshop.cache.$PageOverlay.removeClass('is-visible');
+    	$('html').removeClass('no-scroll');
+    });
+
+    var handleSuccess = function($form){
+    	$form.find('.BIS_Submit').prepareTransition().addClass('hidden');
+    	$form.find('.BIS_hint_success').prepareTransition().addClass('show');
+			/** OAKIFY-166 BIS notification form delete 'Send' button **/
+			$form.find('.BIS_hint_error').html(msg).prepareTransition().addClass('hidden');
+			setTimeout(function(){
+				eshop.cache.$PageOverlay.removeClass('is-visible');
+				$('.BIS_Popover').attr('aria-hidden', 'true');
+				$('html').removeClass('no-scroll');
+    	},2000);
+    }
+ 	 var handleError = function(msg,$form){
+ 	 	/** OAKIFY-166 BIS notification form delete 'Send' button **/
+ 		//$form.find('.BIS_Submit').prepareTransition().addClass('hidden');
+  	$form.find('.BIS_hint_error').html(msg).prepareTransition().addClass('show');
+ 	}
+
+	var notificationCallback = function(data,$form) {
+	    msg = '';
+	    if (data.status == 'OK') {
+	      handleSuccess($form);
+				/* OAKIFY-198 Implement Data Layer for LeRoi GA */
+				sendInfoToDataLayer('back in stock','submit form', 'product')
+				//9- user signs up for the newsletter
+				const isNewsCheckJSON = localStorage.getItem('bisNewsChecked')
+				if(isNewsCheckJSON){
+					isNewsCheck = JSON.parse(isNewsCheckJSON)
+					if(isNewsCheck){
+						sendInfoToDataLayer('sign-up','back-in-stock', 'newsletter')
+					}
+				}
+	    } else { // it was an error
+	      for (var k in data.errors) {  // collect all the error messages into a string
+	         msg += ( data.errors[k].join());
+				 }
+				notFoundVariables('BackInStock', msg);
+	      handleError(msg,$form);
+	    }
+  	}
+	// must be  "function (event)" instead "event =>" to preserver 'this' values
+ 	$('.BIS_Submit').click(function (event){
+ 	    event.preventDefault();
+	    var $form  = $(this).closest('form');
+	    const email = $form.find('[name="bis[email]"]').val();
+      const productId = $form.find('[name="bis[product]"]').val();
+      const variantId = $form.find('[name="bis[variant]"]').val();
+
+	  	if($form.find('[name="bis[accepts_marketing]"]:checked').length > 0)
+		{
+			if (typeof BIS_MailChimp_Subscribe === 'function') {
+				BIS_MailChimp_Subscribe(email);
+			}
+		}
+	    BIS.create(email, variantId, productId).then(function(data){
+	    	notificationCallback(data,$form);
+	    }); // create the notification
+  });
+}
+
+//<script>
+
+/*OAKIFY-42 Filtering*/
+eshop.Collection_filtering = new function() {
+	var self = this;
+	this.temporaryFilters = [];
+	this.currentFilters = [];
+	this.products = {};
+	this.filtered_Products = {};
+	this.currentSortBy = "";
+
+	this.init = () => {
+		this.getCollectionJSON();
+	}
+
+	this.getCollectionJSON = () => {
+
+		document.dispatchEvent(new CustomEvent("theme:loading:start"));
+		if(this.currentSortBy){
+			sort_by = "&sort_by="+this.currentSortBy;
+		}
+		else{
+			sort_by = new URL(window.location).searchParams.get("sort_by");
+			if(sort_by != null){
+				sort_by = "&sort_by="+sort_by;
+			}else{
+				sort_by = "";
+			}
+		}
+
+		$.ajax({
+		  url: "/collections/"+eshop.currentCollection+"?view=filtering"+sort_by,
+		  success: handleJSON
+		});
+	}
+
+	var handleJSON = function( data ) {
+		try {
+			document.dispatchEvent(new CustomEvent("theme:loading:end"));
+			var last_key = null;
+			var last_value = null;
+			//OAKIFY-218, transform a variable into a string
+			data = data.replace(new RegExp('One Size', 'g'), '"One Size"');
+			self.products = JSON.parse(data).products;
+
+			setActiveFilters();
+			getActiveFilters();
+			if(self.temporaryFilters.length > 0 || self.currentSortBy.length > 0){
+				handleApplyFilters();
+			}
+		}
+		catch(error){
+			notFoundVariables('handleJSON', error)
+		}
+	}
+
+
+	var getActiveFilters = function(){
+		$('[data-action="eshop-toggle-filter"].is-active').each(function(index,element){
+			var tag = $(this).data('tag');
+			var group = $(this).data('group');
+			var value = $(this).data('value');
+			if(typeof self.temporaryFilters.find(x => x.tag == tag)== 'undefined'){
+				self.temporaryFilters.push({"tag":tag, "group":group, "value":value});
+			}
+		})
+	}
+
+	var setActiveFilters = function(){
+		var filter_by_param = new URL(window.location).searchParams.get("filter_by");
+		if(filter_by_param == null) return;
+		var tags = filter_by_param.split('%2B');
+
+		if(tags.length > 0){
+			$('[data-action="eshop-toggle-filter"]').removeClass("is-active").parent().removeClass("is-selected");
+			tags.forEach( function(element, index) {
+				$('[data-action="eshop-toggle-filter"][data-tag="'+element+'"]').addClass("is-active").parent().addClass("is-selected");
+			});
+		}
+
+	}
+
+	var handleFilterClick = function(event){
+		try {
+			var tag = $(this).data('tag');
+			var group = $(this).data('group');
+			var value = $(this).data('value');
+			if($(this).hasClass('is-active')){
+				$(this).removeClass("is-active").parent().removeClass("is-selected");
+				//remove filter
+				self.temporaryFilters = self.temporaryFilters.filter(function( filter ) {
+						return filter.tag !== tag;
+				});
+			}
+			else{
+				self.temporaryFilters.push({"tag":tag, "group":group, "value":value});
+				$(this).addClass("is-active").parent().addClass("is-selected");
+			}
+		}
+		catch(error){
+			notFoundVariables('handleFilterClick', error)
+		}
+	}
+
+	handleApplyFilters = function(){
+		try {
+			self.currentFilters = self.temporaryFilters;
+			var final_filters = groupFilters();
+			self.filtered_Products = self.products.flexFilter(final_filters);
+
+			//Apply Handlebars
+			var html = generateHTML(self.filtered_Products);
+
+			//emtpy and fill in new content
+			eshop.cache.$ProductList.empty();
+
+			eshop.cache.$ProductList.append(html);
+
+			$('.Drawer__Footer [data-action="eshop-reset-filters"]').each(function(index,element) {
+				try {
+					if(self.currentFilters.length > 0){
+						$(element).css('display','block');
+					}
+					else{
+						$(element).css('display','none');
+					}
+				}
+				catch(error){
+					notFoundVariables(`$('.Drawer__Footer [data-action="eshop-reset-filters"]')`, error)
+				}
+			});
+
+			if(self.currentFilters.length > 0){
+				eshop.cache.$CollectionToolbar__Itemfilter.empty().html('Filter <span class="Text--subdued">(' + self.currentFilters.length + ')</span>');
+			} else {
+				eshop.cache.$CollectionToolbar__Itemfilter.empty().html('Filter');
+			}
+
+			setURL();
+			$(document).trigger("theme:loading:end");
+			eshop.cache.$Pagination__Nav.hide();
+			closeDrawer();
+
+			// OAKIFY - 201 -- Trigger the change event to convert currency for products loaded via AJAX
+
+			var currencySelector = document.getElementsByClassName("CurrencySelector__Select");
+			if(currencySelector.length > 0){
+				currencySelector[0].dispatchEvent(new Event('change'));
+			}
+		}
+		catch(error){
+			notFoundVariables('handleApplyFilters', error)
+		}
+	}
+
+
+	var setURL = function(){
+
+		var currentURL = new URL(window.location);
+		var params = new URLSearchParams(currentURL.search.slice(1));
+
+		a = currentURL.protocol + "//" + currentURL.host +"/collections/"+ eshop.currentCollection +buildFilterParams(params);
+		window.history.pushState({
+				path: a
+		}, "", a)
+	}
+	var buildFilterParams = function(params){
+		//filter
+		if(self.currentFilters.length > 0){
+			params.set("filter_by",self.currentFilters.map(x => x.tag).join('%2B'));
+		}
+		else{
+			params.delete("filter_by");
+		}
+		//sort
+		if(self.currentSortBy){
+			params.set("sort_by",self.currentSortBy);
+		}
+		var params_string = params.toString().length > 0 ? "?"+params.toString():"";
+		return params_string;
+	}
+
+
+	var generateHTML = function(products){
+		if(products.length == 0)
+		{
+			return document.getElementById("products-empty-template").innerHTML;
+		}
+
+		var output = "";
+		var source = document.getElementById("product-filter-template").innerHTML;
+		var template = Handlebars.compile(source);
+
+		products.forEach(function(element){
+			output = output + template(element);
+		});
+		return output;
+	}
+
+	//Helper to get filter in right format for filtering with flexfilter
+	var groupFilters = function(){
+		var groups = eshop.Collection_filtering.currentFilters.map(x => x.group).filter(unique).map(function(x){
+		    return {"Field":x, Values:[]};
+		})
+
+		eshop.Collection_filtering.currentFilters.reduce(function (r, a) {
+		        r = groups.find(x => x.Field == a.group)
+		        r.Values.push(a);
+		        return r;
+		    }, groups);
+
+		groups.forEach(function(element,index){
+		    element.Values = element.Values.map(x => x.value);
+		});
+		return groups;
+	}
+
+	var handleResetFilters = function(){
+		try {
+			self.temporaryFilters = [];
+			self.currentFilters = [];
+			$('[data-action="eshop-toggle-filter"]').removeClass("is-active").parent().removeClass("is-selected");
+			handleApplyFilters();
+		}
+		catch(error){
+			notFoundVariables('handleResetFilters', error)
+		}
+	}
+
+	var resetToCurrentFilters = function(){
+		try {
+			$('[data-action="eshop-toggle-filter"]').removeClass("is-active").parent().removeClass("is-selected");
+			self.currentFilters.forEach( function(element, index) {
+				$('[data-action="eshop-toggle-filter"][data-tag="'+element.tag+'"]').addClass("is-active").parent().addClass("is-selected");
+			});
+		}
+		catch(error){
+			notFoundVariables('resetToCurrentFilters', error)
+		}
+	};
+
+	//UPDATED VERSION /* OAKIFY-184 */ Arrow function
+closeDrawer = () => {
+	//todo: Funktioniert noch nicht 100%, geht nicht wider auf
+	resetToCurrentFilters();
+	eshop.cache.$CollectionFilterDrawer.attr("aria-hidden", "true");
+	eshop.cache.$CollectionFilterDrawer.removeAttr("tabindex");
+	eshop.cache.$PageOverlay.removeClass("is-visible");
+	$('html').removeClass("no-scroll");
+	eshop.themeControls.filterdrawer.isOpen = false;
+	disableBodyScroll(!1, "[data-scrollable]");
+}
+
+//OLD VERSION /* OAKIFY-184 */
+/*
+	this.closeDrawer = function(){
+	//todo: Funktioniert noch nicht 100%, geht nicht wider auf
+	resetToCurrentFilters();
+	eshop.cache.$CollectionFilterDrawer.attr("aria-hidden", "true");
+	eshop.cache.$CollectionFilterDrawer.removeAttr("tabindex");
+	eshop.cache.$PageOverlay.removeClass("is-visible");
+		$('html').removeClass("no-scroll");
+		eshop.themeControls.filterdrawer.isOpen = false;
+	disableBodyScroll(!1, "[data-scrollable]");
+}
+*/
+
+
+
+	/*Event Listeners*/
+	$('[data-action="eshop-toggle-filter"]').click(handleFilterClick);
+	$('[data-action="eshop-apply-filters"]').click(handleApplyFilters);
+	$(document).on("click",'[data-action="eshop-reset-filters"]',handleResetFilters);
+
+}
+//<script>
+
+//INITIALIZER (globaly available)
+// ESHOP
+window.eshop = window.eshop || {};
+
+// GET THE CURRENT HEIGHT OF OUR VIEW
+eshop.headerHeight = document.documentElement.style.getPropertyValue('--header-height').replace('px','')*1;
+
+// OAKIFY-240
+eshop.scrollTo = scrollTarget => {
+	/* OAKIFY-198 Implement Data Layer for LeRoi GA Point ee3*/
+	//1.3- Expand Product Details Mobile
+	if(scrollTarget === '.ProductMeta__Description'){ sendInfoToDataLayer('mobile product info', '', 'product') }
+	//Extra 50px is to avoid the header
+  $('html, body').animate({ scrollTop: $(scrollTarget).offset().top - 100}, 'normal');
+}
+
+eshop.store_country = "{{settings.store_switcher_country_codes | upcase | split: ' ' |first }}";
+
+eshop.section_setting = ($element,setting_name) => {
+	try {
+		return JSON.parse($element.data("section-settings"))[setting_name];
+	}
+	catch(error){
+		notFoundVariables('eshop.section_setting', error)
+	}
+}
+
+eshop.cookies = {};
+eshop.cookies.getCookie = name => {
+	try {
+		var v = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
+		return v ? v[2] : null;
+	}
+	catch(error){
+		notFoundVariables('eshop.cookies.getCookie', error)
+	}
+}
+
+eshop.cookies.setCookie = (name, value, days, gaCrossDomain = false) => {
+	var d = new Date;
+	d.setTime(d.getTime() + 24*60*60*1000*days);
+	let domain = window.location.hostname
+	if(domain.includes('.myshopify.com'))
+	{
+		domain = 'myshopify.com'
+	}
+	document.cookie = `${name}=${value};Domain=.${domain};path=/;expires=${d.toGMTString()}`;
+}
+
+eshop.SwitchStore = (url, source, sessionType) => {
+	try {
+		//OAKIFY-147 added sessionType to know where the user came
+		//OAKIFY-134 Always redirect to main page
+		//collect Params
+		params = new URLSearchParams();
+		//gdpr
+		var gdpr_consent = eshop.cookies.getCookie('GDPRbar_dismissed');
+		if(gdpr_consent){
+			params.set('gdpr_consent', gdpr_consent);
+		}
+
+		/* OAKIFY-229 Fixing Cross-Domain Tracking In Google Analytics */
+		const ga_crossDomain = eshop.cookies.getCookie('_ga');
+		if(ga_crossDomain){
+			params.set('_ga', ga_crossDomain);
+		}
+		//storeSwitch
+		var switcher_popup_dismissed = localStorage.getItem('store_switcher_popup_dismissed');
+		if(switcher_popup_dismissed){
+			params.set('store_switcher_popup_dismissed', switcher_popup_dismissed);
+		}
+		params.set('store_switch_source', source);
+		params.set('store_switch_from', new URL(window.location).hostname);
+		url.search = params;
+
+		/** OAKIFY-147 Enhance PDP back navigation **/
+		//OAKIFY-134 Redirect to the origin (de/en-ivy-oak.shopify.com), instead the full url plus all the parameters
+		if(sessionType === 'new'){
+			// came from Add, so if go back will go to /collections/all
+			window.location = '/collections/all';
+			// NEED REAL TEST TO SEE THE PARAMS
+			// window.location = '/collections/all' + url.search;
+		} else if (sessionType === 'collection'){
+			// get the name of the collection before added
+			const collectionName = localStorage.getItem('collection_name');
+			window.location = `/collections/${collectionName}`;
+		} else {
+			// regular shop Lang change
+			window.location = url.origin + url.search;
+			//console.log('SWITCHED Store');
+		}
+	}
+	catch(error){
+		notFoundVariables('eshop.SwitchStore', error)
+	}
+}
+
+/************Store Switcher OAKIFY-34*****/
+eshop.initStoreSelect = () => {
+	try {
+		if(eshop.cache.$StoreSelect.length > 0){
+			eshop.cache.$StoreSelect.change(data => {
+				//Build new Store URL, same page
+				var oldUrl = window.location.href;
+				var url = new URL(oldUrl);
+				url.hostname = data.target.value;
+				localStorage.setItem('store_switcher_selected_store', data.target.value);
+				eshop.SwitchStore(url,'header_nav');
+				//18- user clicks to change the store (on the MENU or the pop-up)
+				const languShop = string => {
+					const ending = string.split('.').slice(-1)
+					return toReturn = ending[0].toLowerCase().includes('com') ? 'EN' : ending[0]
+				}
+				const whatToSend = url.hostname.includes('myshopify.com') ? data.target.value.substring(0, 2) : languShop(data.target.value)
+				sendInfoToDataLayer(whatToSend, '', 'store switch')
+			});
+		}
+	}
+	catch(error){
+		notFoundVariables('eshop.initStoreSelect', error)
+	}
+}
+
+//<script>
+ /************GDPR BAR OAKIFY-54*****/
+ eshop.GDPRbar = () => {
+ 	if(eshop.cache.$GDPRBar.length == 0) return;
+
+ 	if(!eshop.cookies.getCookie('GDPRbar_dismissed'))
+ 	{
+ 		eshop.cache.$GDPRBar.attr('aria-hidden',false);
+		/* Temporary Hack */
+		$('.no-margin-top .CollectionInner__Sidebar').addClass('gpdr-fix');
+ 	}
+
+ 	const hide_bar = () => {
+		eshop.cookies.setCookie('GDPRbar_dismissed', true, 30);
+		eshop.cache.$GDPRBar.prepareTransition().attr('aria-hidden',true);
+		/* Temporary Hack */
+		$('.no-margin-top .CollectionInner__Sidebar').removeClass('gpdr-fix');
+	}
+
+	eshop.cache.GDPRBar__Close.click(hide_bar);
+
+ }
+//<script>
+
+eshop.stickyFilters = st => {
+	try {
+		if(eshop.cache.$CollectionToolbar.length == 0) return;
+		//get position from screen top
+		var filterSticks = (eshop.cache.$CollectionToolbar.offset().top - $(window).scrollTop() <= eshop.headerHeight);
+
+		// Added eshop.lastScrollTop >= 0 because Safari returns -ve value for force push to top
+			if (st > eshop.lastScrollTop && eshop.lastScrollTop >= 0 && filterSticks){
+				// downscroll code
+				eshop.cache.$CollectionToolbar.addClass('CollectionToolbar--hidden');
+			} else {
+				// upscroll code
+				eshop.cache.$CollectionToolbar.removeClass('CollectionToolbar--hidden');
+				/*eshop.cache.$CollectionToolbar.addClass('CollectionToolbar--shadow');
+				if(!filterSticks){
+					eshop.cache.$CollectionToolbar.removeClass('CollectionToolbar--shadow');
+				}*/
+		}
+	}
+  catch(error){
+		notFoundVariables('eshop.stickyFilters', error)
+	}
+}
+
+/************OAKIFY-64*****/
+/* OAKIFY-320 Collection Menu not scrolling on desktop */
+eshop.stickyHeader = st => {
+	try {
+
+		if(eshop.cache.$Header.length == 0) return;
+		if(st < 300){
+			eshop.cache.$Header.removeClass('Header--hidden');
+			document.documentElement.style.setProperty('--header-not-hidden',1);
+			return;
+		}
+		//if no collection toolbar, then 0
+		var toolbarOffset = typeof eshop.cache.$CollectionToolbar.offset() == 'undefined'? 0 : eshop.cache.$CollectionToolbar.offset().top;
+
+		var headerSticks = ((eshop.cache.$Header.offset().top + eshop.headerHeight)>= toolbarOffset);
+		if (st > eshop.lastScrollTop && headerSticks){
+			// downscroll code
+			eshop.cache.$Header.addClass('Header--hidden');
+			document.documentElement.style.setProperty('--header-not-hidden',0);
+			if(eshop.cache.$Product__ActionList.length != 0){
+				eshop.cache.$Product__ActionList.addClass('Header--hidden');
+			}
+		} else {
+			// upscroll code
+			eshop.cache.$Header.removeClass('Header--hidden');
+			document.documentElement.style.setProperty('--header-not-hidden',1);
+			if(eshop.cache.$Product__ActionList.length != 0){
+				eshop.cache.$Product__ActionList.removeClass('Header--hidden');
+			}
+		}
+	}
+	catch(error){
+		notFoundVariables('eshop.stickyHeader', error)
+	}
+}
+
+ /************Hide Filters OAKIFY-39*****/
+eshop.lastScrollTop = 0;
+/*eshop.handleStickBars = debounce(event => {
+	try {
+		var st = window.scrollY;
+		eshop.stickyFilters(st);
+		eshop.stickyHeader(st);
+		eshop.lastScrollTop = st;
+	}
+	catch(error){
+		notFoundVariables('eshop.handleStickBars', error)
+	}
+},50);*/
+/* OAKIFY-320 Collection Menu not scrolling on desktop */
+$(window).scroll(function(){
+	var st = window.scrollY;
+	eshop.stickyFilters(st);
+	eshop.stickyHeader(st);
+	eshop.lastScrollTop = st;
+});
+//<script>
+let eeProducDetailCounter = 0;
+eshop.initeeProducDetail = () => {
+	if(eeProducDetailCounter > 0){ return }
+	if($(window).scrollTop() > 0){
+		if (window.location.href.includes('products')) {
+			eshop.eeProducDetail();
+		}
+	}
+}
+//<script>
+/** OAKIFY-147 Enhance PDP back navigation **/
+// sending to SwitchStore all the info needed
+const currentWeb = sessionType => {
+	try {
+		const url = window.location.href;
+		const webSite = url.split('/');
+		for (let i = 0; i < webSite.length; i++){
+			if(webSite[i].includes('ivy-oak')){
+				// webSite[i] is the url of our current shop
+				eshop.SwitchStore(webSite[i],'prompt', sessionType)
+			}
+		}
+	}
+	catch(error){
+		notFoundVariables('currentWeb', error)
+	}
+}
+eshop.manageHistoyBack = function () {
+	// logic for visited collection
+	const collectionName = localStorage.getItem('collection_name');
+	const productsObjJSON = localStorage.getItem('products_visited');
+	// if there are a collection visited before
+	if(collectionName !== null){
+		localStorage.removeItem('products_visited');
+		currentWeb('collection',collectionName)
+	} else if (productsObjJSON !== null){
+		// conditional for visited web
+		productsObj = JSON.parse(productsObjJSON)
+		if(productsObj.productsNr > 1){
+			// still can go window.back
+			eshop.productCounter(true);
+		} else {
+			// if no more products to go back
+			localStorage.removeItem('products_visited');
+			currentWeb('new');
+		}
+	}
+}
+//<script>
+eshop.Wishlist = () => {
+	$(document).on("theme:loading:end",event => {
+		//console.log(event);
+		try{
+			SmartWishlistMain();
+		}
+		 catch(e) {
+			debugConsole('Wishlist Error',e);
+		}
+
+	});
+}
+//<script>
+eshop.loadjQueryCache = () => {
+	try {
+		eshop.cache = {
+			$CollectionToolbar : $('.CollectionToolbar'),
+			$CollectionFilterDrawer : $('#collection-filter-drawer'),
+			$CollectionFilters : $('.CollectionFilters '),
+			$CollectionToolbar__Itemfilter: $(".CollectionToolbar__Item--filter"),
+			$ProductList : $('.CollectionInner__Products .ProductList'),
+			$StoreSelect :$('.StoreSelector__Select'),
+			$StoreSwitchPopup: $('.StoreSwitchPopup'),
+			$StoreSwitchPopup__Button: $('.StoreSwitchPopup__Button'),
+			$StoreSwitchPopup__Close: $('.StoreSwitchPopup__Close'),
+			$GDPRBar: $('#section-gdpr-bar'),
+			GDPRBar__Close: $('.GDPRBar__Close'),
+			$Header: $('.shopify-section--header'),
+			$BISPopover: $('.BIS_Popover'),
+			$PageOverlay: $('.PageOverlay'),
+			$Product__InfoWrapper: $('.Product__InfoWrapper'),
+			$Product__ActionList: $('.Product__ActionList'),
+			$Pagination__Nav: $('.Pagination__Nav')
+		};
+	}
+	catch(error){
+		notFoundVariables('eshop.loadjQueryCache', error)
+	}
+}
+//<script>
+/** OAKIFY-139 Red Color to discount for mobile < 640px **/
+eshop.nonDiscToBlack = sizeSelected => {
+	let container = $('.ProductForm__AddToCart');
+	$.when(container)
+		.then(() => {
+		container = document.getElementsByClassName('ProductForm__AddToCart');
+		if(container.length > 0){
+			const numberSpam = container[0].children.length;
+			if(numberSpam === 4){
+				const discount = container[0].children[2].innerText;
+				container[0].children[3].setAttribute("style", "color: #f94c43;");
+				if(discount !== '€0' && sizeSelected){
+					container[0].children[3].setAttribute("style", "color: #f94c43;");
+				} else if (discount === '€0' && sizeSelected){
+					container[0].children[3].setAttribute("style", "color: #fff;");
+				}
+			}
+		}
+  })
+	.catch( error => {
+		notFoundVariables('eshop.nonDiscToBlack', error)
+	});
+}
+//<script>
+/* OAKIFY-72 Directly open the size selector when no size selected */
+eshop.openSizeSelector = () => {
+	//Check if the size is selected
+	const sizeValue = $('.ProductForm__SelectedValue')
+	const isSizeNotSelected = isNaN(parseInt($(sizeValue[sizeValue.length - 1]).text()))
+
+	if (isSizeNotSelected) {
+		const productFormItem = $('.ProductForm__Item')
+		const popOvers = $('.OptionSelector, .Popover')
+		// select the popover for the sizes
+		for (let i = 0; i < popOvers.length; i++) {
+			if (popOvers[i].id.includes('product-template-grosse') || popOvers[i].id.includes('product-template-size')) {
+				$(popOvers[i]).attr('aria-hidden', 'false')
+				// Hide it size popover when a size is selected
+				$('.Popover__Content').click(() => {
+					$(popOvers[i]).attr('aria-hidden', 'true')
+				})
+				// Hide it when click on the mobile X
+				$('.Popover__Close').click(() => {
+					$(popOvers[i]).attr('aria-hidden', 'true')
+				})
+				//If user clicks away the size selector hide
+				$(document).mouseup(e => {
+					const container = $(popOvers[i]);
+					// if the target of the click isn't the container nor a descendant of the container
+					if (!container.is(e.target) && container.has(e.target).length === 0) {
+						container.attr('aria-hidden', 'true')
+					}
+				});
+			}
+		}
+		// always choose the latest (size selector)
+		$(productFormItem[productFormItem.length - 1]).attr('aria-expanded', 'true')
+	}
+}
+
+var myLoopCount = 1;
+
+tfcapi('event', 'tfc-fitrec-product', 'success', function (context) {
+
+	if(!trueFitOpened || myLoopCount > 1) return;
+	myLoopCount++;
+
+	let sizeFound = Number(context.fitRecommendation.size);
+
+	if ($(window).width() < 1025) {
+		$('.Product__InfoWrapper .tfc-cfg-widget.tfc-fitrec-result .tfc-cfg-message-layout').css('display', 'inline-block');
+	}
+
+	$('a.tfc-popup-click-open').attr("href", "#");
+
+	if (sizeFound > 0) {
+		const popOvers = $('.OptionSelector, .Popover');
+		let sizeSelector;
+
+		for (let i = 0; i < popOvers.length; i++) {
+
+			if (popOvers[i].id.includes('product-template-grosse') || popOvers[i].id.includes('product-template-size')) {
+
+				sizeSelector = $(popOvers[i]).find('.Popover__Content').find('.Popover__ValueList').find('div').find('button.Popover__Value');
+
+				for (let j = 0; j < sizeSelector.length; j++) {
+
+					if (Number($(sizeSelector[j]).attr('data-value')) === sizeFound) {
+
+						$(sizeSelector[j]).trigger("click");
+
+						if (sizeSelector[j].className.indexOf("unavailable") !== -1) {
+
+							const checkIfModalClosed = setInterval(() => {
+								if (document.activeElement && document.activeElement.tagName !== 'IFRAME') {
+									$("button.BIS__Link[data-value='" + sizeFound + "']").trigger("click");
+									myLoopCount--;
+									clearInterval(checkIfModalClosed);
+								}
+
+							}, 100);
+						}
+
+					}
+
+				}
+
+			}
+		}
+	}
+});
+
+
+// OAKIFY - 264
+
+var pageTransitionObserver = new MutationObserver(function (mutations) {
+	$(".PageTransition").css({ "opacity": 0, "visibility": "hidden" });
+});
+
+var target = document.querySelector(".PageTransition");
+pageTransitionObserver.observe(target, { attributes: true, attributeFilter: ['style'] });
+//<script>
+/*OAKIFY-147 make bigger some buttons*/
+eshop.popOverIpadPro = () => {
+	const popOverIpadPro = document.getElementById('collection-sort-popover');
+	$.when(popOverIpadPro).then(() => {
+		if(popOverIpadPro){
+			popOverIpadPro.removeAttribute("style");
+		}
+	});
+}
+//<script>
+eshop.productCounter = goingBack => {
+	try {
+		let productsObj; // will contain the info about visited products
+		let numberProductsVisited; // number of products visited (if f5 the counter keep equal)
+		let productsObjJSON = localStorage.getItem('products_visited'); // get the previous saved data
+		let fromWindowBack = localStorage.getItem('fromWindowBack'); // check if we came from a window.back
+		path = window.location.pathname;
+		if(productsObjJSON === null){
+			numberProductsVisited = 1; // fresh entered number get 1
+		} else {
+			productsObj = JSON.parse(productsObjJSON)
+			if(productsObj.path === path && !goingBack){ // if the same product is reloaded
+				numberProductsVisited = Number(productsObj.productsNr);
+			} else {
+				if(goingBack){ // we press to go one product back
+					numberProductsVisited = Number(productsObj.productsNr) - 1;
+					localStorage.setItem('fromWindowBack',true);
+					localStorage.setItem('products_visited',JSON.stringify(productsObj));
+					history.back();
+				} else if (fromWindowBack){ // if we came from a window.back
+					localStorage.removeItem('fromWindowBack');
+					numberProductsVisited = Number(productsObj.productsNr);
+				} else { // if we browse thru products
+					numberProductsVisited = Number(productsObj.productsNr) + 1;
+				}
+			}
+		}
+		// send the current status
+		productsObj = { productsNr:numberProductsVisited, path };
+		localStorage.setItem('products_visited',JSON.stringify(productsObj));
+	}
+	catch(error){
+		notFoundVariables('eshop.productCounter', error)
+	}
+}
+//<script>
+/* OAKIFY-240 pdp 2.0 */
+const productInfoTabs = $('.Product__Tabs .Collapsible')
+try {
+	let prevClick;
+	if(productInfoTabs.length > 0){
+		//If page is a giftvoucher
+		if(infoObj.product.type.toLowerCase() === 'giftcard'){
+			$(productInfoTabs[2]).addClass('hidden')
+			$(productInfoTabs[3]).addClass('hidden')
+		}
+		for (let i = 0; i < productInfoTabs.length; i++){
+			let moreInfo = productInfoTabs[i].children[0].innerText.toLowerCase()
+			if(moreInfo.includes('size table')){ moreInfo = 'size table'}
+			if(moreInfo.includes('grössent')){ moreInfo = 'grössent'}
+			moreInfo = moreInfo.slice(0,3)
+			$(productInfoTabs[i]).addClass(moreInfo)
+			productInfoTabs[i].addEventListener('click', () => {
+				if($(window).width() < 1023){
+					setTimeout(() => { eshop.scrollTo(`.${moreInfo}`) }, 600);
+				}
+				if(prevClick === moreInfo){ return }
+				prevClick = moreInfo;
+				// change &amp; for &
+				if(moreInfo.includes('&amp;')){
+					moreInfo = moreInfo.replace('&amp;', '&')
+				}
+				sendInfoToDataLayer('more information', moreInfo, 'product')
+			})
+		}
+	}
+}
+catch(error){
+	notFoundVariables('productInfoTabs', error)
+}
+//<script>
+eshop.removeCollection = () => {
+	try {
+		const lastclear = localStorage.getItem('lastclear'),
+		time_now  = (new Date()).getTime();
+		// twelve hours until the previous collection visited get deleted
+		if ((time_now - lastclear) > 1000 * 60 * 60 * 12) {
+			localStorage.removeItem('collection_name');
+			//OAKIFY-149
+			localStorage.removeItem('IOPagesVisited')
+			localStorage.setItem('lastclear', time_now);
+		}
+	}
+	catch(error){
+		notFoundVariables('eshop.removeCollection', error)
+	}
+}
+//<script>
+/* OAKIFY - 242 | Popup for same product different sizes */
+eshop.sameProductInCartObserver = () => {
+    if (!window.location.pathname.includes('products')) {
+        return
+    }
+
+    var targetNode = document.getElementById('sidebar-cart');
+    var config = {
+        attributes: true
+    };
+    // Create an observer instance linked to the callback function
+    var observer = new MutationObserver(checkCartForSameProductCallBack);
+
+    // Start observing the target node for configured mutations
+    observer.observe(targetNode, config);
+
+}
+
+// Callback function to execute when mutations are observed
+const checkCartForSameProductCallBack = (mutationsList, observer) => {
+
+    for (var mutation of mutationsList) {
+        if (mutation.type == 'attributes' && mutation.attributeName == 'aria-hidden' && $('#sidebar-cart').attr('aria-hidden') == 'false') {
+            checkDuplicateProductInCart(observer);
+        }
+    }
+};
+
+const checkDuplicateProductInCart = observer => {
+
+    if ($("#MultipleProductPopup").length) {
+
+        $.getJSON('/cart.js', function(data) {
+
+            if (data.items.length > 1) {
+
+                let uniqueProducts = [...new Set(data.items.map(product => product.product_id))];
+
+                if (data.items.length !== uniqueProducts.length) {
+                    var sameProductCount = data.items.reduce(function(n, product) {
+                        return n + (product.product_id == infoObj.product_id);
+                    }, 0);
+
+                    if (sameProductCount > 1) {
+                        if ($(window).width() <= 1024) {
+                            $('#MultipleProductPopup .modal-size-guide').show();
+                        } else {
+                            $('#MultipleProductPopup .default-action').show();
+                        }
+
+                        $('#MultipleProductPopup').show('slow');
+                        /*$('#sidebar-cart .Drawer__Main').animate({
+                            scrollTop: $("#MultipleProductPopup").offset().top
+                        }, 1200); */
+
+                        sendInfoToDataLayer('choice order', infoObj.product.sku, 'product');
+
+                    }
+                }
+            }
+        });
+    }
+
+    observer.disconnect();
+
+    $(document).on("click", "#MultipleProductPopup button", function(e) {
+
+        $('#MultipleProductPopup').hide('slow');
+        e.preventDefault();
+        return false;
+    });
+
+    $(document).on("click", "#MultipleProductPopup .modal-size-guide", function(e) {
+
+        $(".PageOverlay").trigger("click");
+        $(".Collapsible.hidden-lap-and-up .Collapsible__Button").trigger("click");
+        e.preventDefault();
+        return false;
+    });
+
+}
+//<script>
+/*OAKIFY-168 Build page which allows to resend the account-invite */
+/*OAKIFY-180 Resend account invite: validte empty email field */
+eshop.sendAccountInvite = function () {
+	const submitInvite = document.getElementById('shopify-section-page-send-account-invite-template').getElementsByClassName('Form__Submit');
+	const error = document.getElementById('shopify-section-page-send-account-invite-template').getElementsByClassName('Alert--error');
+	const errorServer = document.getElementById('shopify-section-page-send-account-invite-template').getElementsByClassName('server');
+	const errorEmpty = document.getElementById('shopify-section-page-send-account-invite-template').getElementsByClassName('empty');
+	const success = document.getElementById('shopify-section-page-send-account-invite-template').getElementsByClassName('Alert--success');
+	const userEmail = $('#user_email')
+	submitInvite[0].addEventListener("click", function(event) {
+		event.preventDefault();
+		if(error[0].classList[3] === undefined){
+			error[0].classList.toggle('hidden')
+		}
+		$.when(userEmail)
+			.then(()=>{
+				let page;
+				if(window.location.href.includes('ivy-oak.com')){
+					page = 'EN'
+				}
+				if(window.location.href.includes('ivy-oak.de')){
+					page = 'DE'
+				}
+				if(window.location.href.includes('ivy-oak-de')){
+					page = 'DEV'
+				}
+				if(userEmail.val().length === 0){
+					errorEmpty[0].classList.remove('hidden')
+					errorServer[0].classList.add('hidden')
+					error[0].classList.add('hidden')
+				} else {
+				$.ajax({
+					url: 'https://services.ivy-oak.com/send-account-invite',
+					dataType: 'json',
+					method: 'post',
+					contentType: 'application/x-www-form-urlencoded',
+					data: {
+						email: userEmail.val(),
+						page
+					},
+				})
+				.done(function(data) {
+					if(data.success){
+						submitInvite[0].classList.toggle('hidden')
+						success[0].classList.toggle('hidden')
+						errorServer[0].classList.add('hidden')
+						errorEmpty[0].classList.add('hidden')
+						error[0].classList.add('hidden')
+						sendInfoToDataLayer('account invitation','success')
+					}
+					if(data.successError){
+						errorServer[0].innerText = data.successError;
+						errorServer[0].classList.remove('hidden')
+						errorEmpty[0].classList.add('hidden')
+						error[0].classList.add('hidden')
+						sendInfoToDataLayer('account invitation','fail')
+					}
+				})
+				.fail(function(xhr) {
+					error[0].classList.remove('hidden')
+					errorServer[0].classList.add('hidden')
+					errorEmpty[0].classList.add('hidden')
+					sendInfoToDataLayer('account invitation','fail')
+				});
+			}
+		})
+	})
+}
+//<script>
+// OAKIFY - 157
+// SHOPREADER COOKIE CREATION
+/**
+ *
+ * @param name
+ * @param value
+ */
+ const setSessionCookie = (name, value) =>{
+	document.cookie = name + "=" + escape(value);
+}
+
+const getSessionCookie = name => {
+	var cookie = " " + document.cookie;
+	var search = " " + name + "=";
+	var setStr = false;
+	var offset = 0;
+	var end = 0;
+	if (cookie.length > 0) {
+		offset = cookie.indexOf(search);
+		if (offset != -1) {
+			offset += search.length;
+			end = cookie.indexOf(";", offset)
+			if (end == -1) {
+				end = cookie.length;
+			}
+			setStr = unescape(cookie.substring(offset, end));
+		}
+	}
+	return (setStr);
+}
+
+if (window.location.search.substring(1).indexOf('affiliate=shopreader') !== -1) {
+	if (!getSessionCookie('shopreader')) {
+		var params = window.location.search.substring(1).split("&");
+
+		params.forEach(function (part) {
+			var item = part.split("="),
+				userToken = decodeURIComponent(item[1]) || "default";
+
+			setSessionCookie('shopreader-usertoken', userToken);
+		});
+
+		setSessionCookie('shopreader', true);
+	}
+}
+
+if (window.location.search.toLowerCase().substring(1).indexOf('cjevent') !== -1) {
+	var params = window.location.search.toLowerCase().substring(1).split("&");
+	params.forEach(function (part) {
+		var item = part.split("="),
+			userToken = decodeURIComponent(item[1]) || "default";
+			if('cjevent' === item[0]){
+				eshop.cookies.setCookie('CJEVENT', userToken, 30);
+			}
+	});
+}
+
+{% if settings.bis_mailchimp_integration and settings.mailchimp_url and settings.mailchimp_userid and settings.bis_mailchimp_list_id %}
+eshop.BIS_MailChimp_Subscribe = email => {
+    var mc_url = '{{settings.mailchimp_url}}post-json?u={{settings.mailchimp_userid}}&id={{settings.bis_mailchimp_list_id}}&c=?';
+
+    if (!email) {
+        return false;
+    }
+
+    $.ajax({
+        url: mc_url,
+        method: 'get',
+        type: 'get',
+        cache: false,
+        dataType: 'json',
+        data: {
+            EMAIL: email
+        },
+        success: function (response) {},
+        error: function (response) {}
+    });
+    return false;
+}
+{% endif %}
+//<script>
+// OAKIFY - 201 Currency Switcher
+const showCurrencySwitchPopup = countryCode =>{
+	{% if settings.currency_conversion_enabled %}
+		if (eshop.cookies.getCookie('show-currency-popup')===null) {
+			var included_countries = eshop.section_setting($('.CurrencySwitchPopup'),"included_countries").split(',');
+			if(included_countries.includes(countryCode)){
+				$('.CurrencySwitchPopup').attr('aria-hidden',false);
+
+				$('.popup-currency-block').click(function(e){
+					e.preventDefault();
+					var curr = $(this).attr('data-currency');
+
+					$(".CurrencySelector__Select").val(curr);
+
+					// OAKIFY - 201 -- Trigger the change event to convert currency for products loaded via AJAX
+
+					var currencySelector = document.getElementsByClassName("CurrencySelector__Select");
+					if(currencySelector.length > 0)
+					{
+						currencySelector[0].dispatchEvent(new Event('change'));
+					}
+
+					eshop.cookies.setCookie('show-currency-popup', false, 30);
+					$('.CurrencySwitchPopup').attr('aria-hidden',true);
+				});
+
+				$('.CurrencySwitchPopup__Close').click( function() {
+					eshop.cookies.setCookie('show-currency-popup', false, 30);
+					$('.CurrencySwitchPopup').attr('aria-hidden',true);
+				});
+			}
+		}
+	{% endif %}
+}
+
+window.showCurrencySwitchPopup = showCurrencySwitchPopup;
+//<script>
+/** OAKIFY-210 Include Size-Reco image in accordions and size-picker **/
+eshop.sizeRecoImgAccordion = () => {
+	try {
+		//first Desk next Pocket
+		const productInfo = $('.Product__Tabs')
+		if(productInfo.length === 0){ return }
+		//Get all html from passform
+		const passformHTML = productInfo[0].children[2];
+		//Not display if we are on laptop
+		passformHTML.classList.add('hidden-lap-and-up');
+		//Get text of the passform
+		const textInfo = passformHTML.children[0].outerText
+		//Get HTML form passform
+		const infoToPass = $(passformHTML).find('.size-reco')
+		//If the new info is there
+		if(infoToPass.length > 0){
+			//PC Popover__FooterHelp Heading Link Link--primary Text--subdued u-h6
+			//Found the destination place
+			const destinyPage = $('.destinyPage')
+			// Change destiantion tittle
+			destinyPage.find('h2')[0].innerHTML = textInfo
+			// Change Size Table tittle for the new one
+			$('.Popover__FooterHelp')[0].innerHTML = textInfo
+			// Get the correct size table clicker
+			const deskSizeClick = $('.ProductMeta__Description, .Rte, .hidden-pocket').find('.Collapsible__Button, .Heading u-h6')
+			for (let i = 0; i < deskSizeClick.length; i++){
+				if($(deskSizeClick[i]).attr('data-action') === 'open-modal'){
+					deskSizeClick[i].innerHTML = `${textInfo} <span class="Collapsible__Plus"></span>`
+				}
+			}
+			const placeToAddInfo = destinyPage.find('.Modal__Content .Container')[0]
+			// add the html into destination
+			placeToAddInfo.prepend(infoToPass[0])
+			// add an extra h4 with the dinamic name
+			placeToAddInfo.innerHTML = placeToAddInfo.innerHTML
+			// Transform the p to div>span
+			const textToUpdate = $('.img_dress_length')
+			for (let i = 0; i < textToUpdate.length; i++) {
+				// copy internal name
+				const textToUpdateText = textToUpdate[i].innerHTML
+				// Replace the HTML
+				$(textToUpdate[i]).replaceWith( `<div class="img_dress_length"><span>${textToUpdateText}</span></div>`);
+			}
+			//just for mobile
+			if($(window).width() <= 1024){
+				//duplicate all the html from new passform
+				const newPassFormHTMLContent = destinyPage.find('.Container')[0].innerHTML
+				//make visible Passform and add the HTML to it to be the new "SIZE TABLE"
+				passformHTML.classList.remove('hidden');
+				passformHTML.classList.add('hidden-lap-and-up');
+				// Move the HTML content inside the mobile dropdown
+				$(passformHTML).find('.Collapsible__Content')[0].innerHTML = newPassFormHTMLContent
+				//Pict the name SIZE & FIT
+				const footerValue = $('.OptionSelector').find('.Popover__FooterHelp')[0].textContent
+				$(passformHTML).find('.Collapsible__Button')[0].innerHTML = `${footerValue} <span class="Collapsible__Plus"></span>`
+				//Updating the height for DE/SE languages
+				let amount = 1
+				if(window.location.hostname.includes('ivy-oak-de.myshopify.com')){
+					amount = 5
+				}
+				for (let i = 0; i < amount; i++) {
+					//Only for small devices (under 700px Width)
+					const textToCheck = $('.img_dress_length')
+					if(textToCheck[i].innerHTML.split(' ').length === 1 && $(window).width() < 700){
+						let bottom_height = $(textToCheck[i]).css('bottom');
+						// by default
+						let device_height = 0
+						//Logic to know how much to increase
+						//regular mobile devices
+						if($(window).width() >= 350 && $(window).width() <= 500){
+						// increase a 1% the height from the bottom
+						device_height = $(window).height() * 0.01
+						}
+						if($(window).width() < 350){
+						// increase a 2% the height from the bottom
+						device_height = $(window).height() * 0.020
+						}
+						bottom_height = `${parseFloat(bottom_height.split('px')[0]) + device_height}px`
+						// reapply it
+						$(textToCheck[i]).css('bottom', bottom_height);
+					}
+				}
+			}
+		} else {
+			$(productInfo[0].children[3]).removeClass('hidden-pocket')
+		}
+	}
+	catch(error){
+		notFoundVariables('eshop.sizeRecoImgAccordion', error)
+	}
+}
+//<script>
+  /************IP Based Store Switcher OAKIFY-35*****/
+eshop.storeSwitchPopup = () => {
+	try {
+		if(eshop.cache.$StoreSwitchPopup.length == 0) return;
+
+		//var showOnlyOnce = eshop.section_setting(eshop.cache.$StoreSwitchPopup,"showOnlyOnce");
+		const show_popup = !localStorage.getItem('store_switcher_popup_dismissed');
+		var excluded_countries = eshop.section_setting(eshop.cache.$StoreSwitchPopup,"excluded_countries").split(',');
+
+		var ipCallback = function(location){
+			var countryCode = location.countryCode;
+			showCurrencySwitchPopup(countryCode);
+			/*
+			var show_popup = true;
+			if(showOnlyOnce){
+				show_popup = !localStorage.getItem('store_switcher_popup_dismissed');
+			}
+			*/
+
+			if(!excluded_countries.includes(countryCode) && show_popup){
+				show_Popup();
+			}
+		}
+
+		const ipLookup = function() {
+			dbip.getVisitorInfo()
+				.then(function(info) {
+						ipCallback(info);
+				})
+				.catch(function(error) {
+					sendInfoToDataLayer('failed loading', '', 'GeoIp',true)
+				});
+		}
+
+		const show_Popup = function(){
+			try {
+				eshop.cache.$StoreSwitchPopup.attr('aria-hidden',false);
+				/****OAKIFY-127 Hide cookie-banner on mobile if Store Switcher is Shown ****/
+				if ($(window).width() < 641 ){
+					$('#shopify-section-gdpr-bar').css('display', 'none');
+				}
+				//21- user sees the store switch pop-up
+				sendInfoToDataLayer('view', '', 'store switch pop-up',true)
+			}
+			catch(error){
+				notFoundVariables('show_Popup', error)
+			}
+		}
+		const hide_Popup = function(){
+			try {
+				localStorage.setItem('store_switcher_popup_dismissed', true);
+				eshop.cache.$StoreSwitchPopup.attr('aria-hidden',true);
+			}
+			catch(error){
+				notFoundVariables('hide_Popup', error)
+			}
+		}
+
+		eshop.cache.$StoreSwitchPopup__Close.click(hide_Popup);
+
+		eshop.cache.$StoreSwitchPopup__Button.click(function(e){
+			try {
+				var url = new URL($(this).attr('href'));
+				const urlToGo = url.hostname.toUpperCase()
+				localStorage.setItem('store_switcher_selected_store', urlToGo);
+				//18- user clicks to change the store (on the menu or the POP-UP)
+				sendInfoToDataLayer(urlToGo.substring(0, 2), '', 'store switch');
+				eshop.SwitchStore(url,"prompt","prompt");
+				e.preventDefault();
+				return false;
+			}
+			catch(error){
+				notFoundVariables('eshop.cache.$StoreSwitchPopup__Button', error)
+			}
+		});
+		ipLookup();
+	}
+	catch(error){
+		notFoundVariables('eshop.storeSwitchPopup', error)
+	}
+}
+//<script>
+/*OAKIFY-126 Create a new page for transparency */
+/*OAKIFY-171 Transparency Page II */
+eshop.transparencyPage = () => {
+	// initial desktop state
+  let pictureBox = document.getElementById('shopify-section-page-transparency-template').getElementsByClassName('PictureBox');
+	let textContainer = document.getElementById('shopify-section-page-transparency-template').getElementsByClassName('text-name');
+	let bulletContainer = document.getElementById('shopify-section-page-transparency-template').getElementsByClassName('bullet-container');
+	// initial mobile state
+  let PictureBoxMobileUp = document.getElementById('shopify-section-page-transparency-template').getElementsByClassName('PictureBoxMobileUp');
+  let PictureBoxMobileDown = document.getElementById('shopify-section-page-transparency-template').getElementsByClassName('PictureBoxMobileDown');
+	let bulletContainerMobileUp = document.getElementById('shopify-section-page-transparency-template').getElementsByClassName('bullet-container-mobile-up');
+	let bulletContainerMobileDown = document.getElementById('shopify-section-page-transparency-template').getElementsByClassName('bullet-container-mobile-down');
+	let nextPict = 1;
+
+	selectTransparency = (pageClass,bulletPict) => {
+		//Desktop Logic
+		if ($(window).width() > 1024) {
+			if(bulletPict){
+				const bulletNr = bulletPict.split('-')[1]
+				nextPict = parseInt(bulletNr)
+				for (let i=0; i < pictureBox.length; i++){
+					pictureBox[i].lastElementChild.classList.add("hidden");
+					bulletContainer[0].children[i].classList.remove("is-selected");
+					textContainer[i].classList.add('hidden');
+					const indexToShow = pictureBox[i].className.indexOf(nextPict);
+					if (indexToShow !== -1) {
+						pictureBox[i].lastElementChild.classList.toggle("hidden");
+						textContainer[i].classList.toggle("hidden");
+						bulletContainer[0].children[i].classList.add("is-selected");
+					}
+				}
+
+			} else if(pageClass === 'next'){
+				if(nextPict >= pictureBox.length){
+						nextPict = 0
+				}
+				nextPict = nextPict + 1
+				for (let i=0; i < pictureBox.length; i++){
+					pictureBox[i].lastElementChild.classList.add("hidden");
+					bulletContainer[0].children[i].classList.remove("is-selected");
+					textContainer[i].classList.add('hidden');
+					const indexToShow = pictureBox[i].className.indexOf(nextPict);
+					if (indexToShow !== -1) {
+						pictureBox[i].lastElementChild.classList.toggle("hidden");
+						textContainer[i].classList.toggle("hidden");
+						bulletContainer[0].children[i].classList.add("is-selected");
+					}
+				}
+			} else {
+				if(nextPict === 1){
+					nextPict = 0
+				}
+				nextPict = pictureBox.length - nextPict
+				if(nextPict === 0){
+					nextPict = pictureBox.length - 1
+				}
+				initialPictNum =  nextPict
+				for (let i=0; i < pictureBox.length; i++){
+					pictureBox[i].lastElementChild.classList.add("hidden");
+					bulletContainer[0].children[i].classList.remove("is-selected");
+					textContainer[i].classList.add('hidden');
+					const indexToShow = pictureBox[i].className.indexOf(nextPict);
+					if (indexToShow !== -1) {
+						pictureBox[i].lastElementChild.classList.toggle("hidden");
+						textContainer[i].classList.toggle("hidden");
+						bulletContainer[0].children[i].classList.add("is-selected");
+					}
+				}
+			}
+		}	else {
+			//Mobile Logic
+			if(bulletPict){
+				const bulletNr = bulletPict.split('-')[1]
+				nextPict = parseInt(bulletNr)
+				for (let i=0; i < PictureBoxMobileUp.length; i++){
+					PictureBoxMobileUp[i].lastElementChild.classList.add("hidden");
+					PictureBoxMobileDown[i].lastElementChild.classList.add("hidden");
+					bulletContainerMobileUp[0].children[i].classList.remove("is-selected");
+					bulletContainerMobileDown[0].children[i].classList.remove("is-selected");
+					textContainer[i].classList.add('hidden');
+					const indexToShow = PictureBoxMobileUp[i].className.indexOf(nextPict);
+					if (indexToShow !== -1) {
+						PictureBoxMobileUp[i].lastElementChild.classList.toggle("hidden");
+						PictureBoxMobileDown[i].lastElementChild.classList.toggle("hidden");
+						textContainer[i].classList.toggle("hidden");
+						bulletContainerMobileUp[0].children[i].classList.add("is-selected");
+						bulletContainerMobileDown[0].children[i].classList.add("is-selected");
+					}
+				}
+
+			} else if(pageClass === 'next'){
+				if(nextPict >= PictureBoxMobileUp.length){
+						nextPict = 0
+				}
+				nextPict = nextPict + 1
+				for (let i=0; i < PictureBoxMobileUp.length; i++){
+					PictureBoxMobileUp[i].lastElementChild.classList.add("hidden");
+					PictureBoxMobileDown[i].lastElementChild.classList.add("hidden");
+					bulletContainerMobileUp[0].children[i].classList.remove("is-selected");
+					bulletContainerMobileDown[0].children[i].classList.remove("is-selected");
+					textContainer[i].classList.add('hidden');
+					const indexToShow = PictureBoxMobileUp[i].className.indexOf(nextPict);
+					if (indexToShow !== -1) {
+						PictureBoxMobileUp[i].lastElementChild.classList.toggle("hidden");
+						PictureBoxMobileDown[i].lastElementChild.classList.toggle("hidden");
+						textContainer[i].classList.toggle("hidden");
+						bulletContainerMobileUp[0].children[i].classList.add("is-selected");
+						bulletContainerMobileDown[0].children[i].classList.add("is-selected");
+					}
+				}
+			} else {
+				if(nextPict === 1){
+					nextPict = 0
+				}
+				nextPict = PictureBoxMobileUp.length - nextPict
+				if(nextPict === 0){
+					nextPict = PictureBoxMobileUp.length - 1
+				}
+				initialPictNum =  nextPict
+				for (let i=0; i < PictureBoxMobileUp.length; i++){
+					PictureBoxMobileUp[i].lastElementChild.classList.add("hidden");
+					PictureBoxMobileDown[i].lastElementChild.classList.add("hidden");
+					bulletContainer[0].children[i].classList.remove("is-selected");
+					textContainer[i].classList.add('hidden');
+					const indexToShow = PictureBoxMobileUp[i].className.indexOf(nextPict);
+					if (indexToShow !== -1) {
+						PictureBoxMobileUp[i].lastElementChild.classList.toggle("hidden");
+						PictureBoxMobileDown[i].lastElementChild.classList.toggle("hidden");
+						textContainer[i].classList.toggle("hidden");
+						bulletContainer[0].children[i].classList.add("is-selected");
+					}
+				}
+			}
+		}
+	}
+}
+//<script>
+/* OAKIFY-119 Style Wishlist-Page*/
+eshop.wishListStyle =  () => {
+	const container = document.getElementsByClassName('allbuttons');
+	const removeButton = document.getElementsByClassName('singleremovebutton');
+	if (container.length > 0){
+		container[0].remove()
+	}
+	if(removeButton.length > 0){
+		for (let i = 0; i < removeButton.length; i++){
+			removeButton[i].setAttribute("style", "border-radius: 0;");
+		}
+	}
+}

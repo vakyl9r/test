@@ -1,0 +1,132 @@
+{%- comment -%}
+--------------------------------------------------------------------------------------------------------------------
+Gift Card CONTENT
+--------------------------------------------------------------------------------------------------------------------
+{%- endcomment -%}
+
+<h1 class="GiftCard__SubText Heading u-h1">{{ section.settings.heading }}</h1>
+
+{%- capture print_link -%}
+        <a href="#" id="PrintGiftCard" class="Link Link--underlineNative">{{ 'gift_card.issued.print' | t }}</a>
+{%- endcapture -%}
+
+      <div class="GiftCard__Redeem">{{ section.settings.content }}</div>
+
+       <div class="GiftCard__Wrapper">
+        {%- if gift_card.enabled and gift_card.expired == false -%}
+        {%- assign formatted_initial_value = gift_card.initial_value | money_without_trailing_zeros: gift_card.currency -%}
+
+        {%- if gift_card.expires_on or gift_card.balance != gift_card.initial_value -%}
+          <div class="Alert Alert--success">
+          
+            {%- if gift_card.balance != gift_card.initial_value -%}
+              {%- assign formatted_balance = gift_card.balance | money_without_trailing_zeros: gift_card.currency -%}
+              <p>{{ 'gift_card.issued.remaining_balance_html' | t: balance: formatted_balance }}</p>
+            {%- endif -%}
+
+            {%- if gift_card.expires_on -%}
+              {%- assign gift_card_expiry_date = gift_card.expires_on | date: format: 'month_day_year' -%}
+              <p>{{ 'gift_card.issued.expires_on' | t: expiry: gift_card_expiry_date }}</p>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+        
+        {%- else -%}
+          <div class="Alert Alert--error">
+            {%- if gift_card.expired and gift_card.enabled -%}
+              {%- assign gift_card_expiry_date = gift_card.expires_on | date: format: 'month_day_year' -%}
+              <p>{{ 'gift_card.issued.expired' | t: expiry: gift_card_expiry_date }}</p>
+            {%- else -%}
+              <p>{{ 'gift_card.issued.disabled' | t }}</p>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+
+
+      <div class="Custom_Grid">
+          <div class="one-half">
+            <div class="GiftCard__IllustrationWrapper">
+              <img class="GiftCard__Illustration" src="{{ section.settings.content_img | img_url: 'x500' }}" alt="{{ 'gift_card.issued.illustration_alt' | t }}">         
+            </div>
+          </div>
+
+        <div class="one-half Background">
+          <div class="vertical-center">
+              <div><img src="{{ section.settings.logo | img_url }}" alt="logo"></div>         
+              <p>{{ section.settings.name }}</p>
+
+              <div class="Heading u-h4 GiftCard_border">{{ formatted_initial_value }}</div>
+              
+              <div class="Heading u-h4 GiftCard_border">{{ gift_card.code | format_code }}</div>
+              <div id="QrCode" class="GiftCard__QrCode" data-identifier="{{ gift_card.qr_identifier }}"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="GiftCard__Redeem">{{ section.settings.tnc }}</div>
+
+
+    <div class="ButtonGroup">
+        {%- if gift_card.pass_url -%}
+          <div class="ButtonGroup__Item">
+            <a href="{{ gift_card.pass_url }}" class="GiftCard__apple-wallet">
+              <img class="apple-wallet-image" src="{{ 'gift-card/add-to-apple-wallet.svg' | shopify_asset_url }}" width="120" height="40" alt="{{ 'gift_card.issued.add_to_apple_wallet' | t }}">
+            </a>
+          </div>
+        {%- endif -%}
+
+        <div class="ButtonGroup__Item">
+          <a href="{{ shop.url }}" class="Button Button--primary" target="_blank">{{ section.settings.cta }}</a>
+        </div>
+
+    </div>
+
+
+    </div>
+
+
+
+
+{% schema %}
+{
+  "name": "Gift Card",
+  "class": "shopify-section--gift-card",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Choose Ivy&Oak Dark Logo "
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading"
+    },
+    {
+      "type": "richtext",
+      "id": "content",
+      "label": "Page Content"
+    },
+    {
+      "type": "image_picker",
+      "id": "content_img",
+      "label": "Choose an Image to Display on Page"
+    },
+    {
+      "type": "text",
+      "id": "name",
+      "label": "Giftcard Text"
+    },
+    {
+      "type": "richtext",
+      "id": "tnc",
+      "label": "Terms & Conditions text"
+    },
+    {
+      "type": "text",
+      "id": "cta",
+      "label": "Start Shopping CTA Text"
+    }
+  ]
+}
+{% endschema %}

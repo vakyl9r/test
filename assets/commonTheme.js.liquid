@@ -1,0 +1,202 @@
+//<script>
+/**
+ * Include your custom JavaScript here.
+ *
+ * We also offer some hooks so you can plug your own logic. For instance, if you want to be notified when the variant
+ * changes on product page, you can attach a listener to the document:
+ *
+ * document.addEventListener('variant:changed', function(event) {
+ *   var variant = event.detail.variant; // Gives you access to the whole variant details
+ * });
+ *
+ * You can also add a listener whenever a product is added to the cart:
+ *
+ * document.addEventListener('product:added', function(event) {
+ *   var variant = event.detail.variant; // Get the variant that was added
+ *   var quantity = event.detail.quantity; // Get the quantity that was added
+ * });
+ */
+
+/* PAGE LOADED JS INIT */
+
+// @TODOfor OAKIFY - 264
+var trueFitOpened = false;
+
+$(() => {
+	try {
+		// loading some JQuery cached variables/functions
+		eshop.loadjQueryCache();
+		/*Waiting until all the content is loaded */
+		window.addEventListener('load', () => {
+			debugConsole('LOADED LOAD JQUERY')
+			try {
+				/* ADBLOCK TRACKER to FullStory */
+				if($('#checkingBlockers').height() > 0) {
+					FS.log('info',`No AdBlock: URL: ${window.location.href}`)
+				} else {
+					FS.log('info',`AdBlock Detected: URL: ${window.location.href}`)
+				}
+
+				/* OAKIFY-149 Implement custom events for Google Tagmanager */
+				/* OAKIFY-56 Implement GA events for cross-selling product types */
+				/* OAKIFY-198 Implement Data Layer for LeRoi GA */
+				eshop.datalayerVariables();
+				eshop.eeProductImpression();
+				eshop.eeProductClick();
+
+				/* OAKIFY-168 Build page which allows to resend the account-invite */
+				if (window.location.href.includes('account-invite')) {
+					eshop.sendAccountInvite();
+				}
+
+				/*OAKIFY-147 MAKE BIGGER SOME BUTTONS*/
+				if ($(window).width() > 641 && $(window).width() < 1025){
+					// reduce the size of the sort by in big devices
+					const sortByButton = document.getElementsByClassName('CollectionToolbar__Item--sort');
+					if(sortByButton.length > 0){
+						sortByButton[0].addEventListener('click', eshop.popOverIpadPro);
+					}
+				}
+
+				if (window.location.href.includes('collections') || window.location.href.includes('products')) {
+					/* Black Color to non discount prices OAKIFY-139 */
+					if ($(window).width() < 641){
+						eshop.nonDiscToBlack();
+						$('.Popover__ValueList').on('click',function() {
+							eshop.nonDiscToBlack(true);
+						});
+					}
+					/* OAKIFY-147 Enhance PDP back navigation */
+					// time out for the collection to expire in LocalStore
+					eshop.removeCollection();
+				}
+				if (window.location.href.includes('collections')) {
+					/* OAKIFY-147 Enhance PDP back navigation */
+					// save the name of the actual collection
+					const collectionName = window.location.pathname.split('/');
+					localStorage.setItem('collection_name', collectionName[2]);
+				}
+
+				if (window.location.href.includes('products')) {
+					/* Left Shop The look OAKIFY-115.1 */
+					//eshop.moveLeftShopTheLook();
+					/* OAKIFY-143 cookie-banner on mobile on PDP */
+					if ($(window).width() < 641 ){
+						$('#shopify-section-gdpr-bar').css('display', 'none');
+					}
+					/* OAKIFY-147 Enhance PDP back navigation */
+					// activate a counter to know how much items are until go to /collections/all
+					eshop.productCounter();
+					/* OAKIFY-210 Include Size-Reco image in accordions and size-picker */
+					if(infoObj.product.type.toLowerCase() !== 'giftcard'){
+						eshop.sizeRecoImgAccordion();
+					}
+				}
+
+				/* OAKIFY-117 Style Wishlist-Page */
+				// to check post loading buttons
+				if (window.location.href.includes('wishlist')) {
+					eshop.wishListStyle();
+				}
+
+				/* OAKIFY-130 Load geoIP last */
+				eshop.storeSwitchPopup();
+				if (window.location.href.includes('transparency')){
+					eshop.transparencyPage();
+				}
+
+				// OAKIFY - 242
+				eshop.sameProductInCartObserver();
+				
+				// OAKIFY - 264
+				$('.tfc-popup-click-open').click(function () {
+					trueFitOpened = true;
+				});
+				
+			}
+			catch (error) {
+				notFoundVariables('on Load function', error)
+			}
+		})
+
+		//refresh cache on finishs the load
+		$(document).on('theme:loading:end',eshop.loadjQueryCache);
+
+		/* OAKIFY-117 Style Wishlist-Page */
+		// delete some divs before loading all wishlist
+		if (window.location.href.includes('wishlist')) {
+			eshop.wishListStyle();
+		}
+
+		/** Hide Filters OAKIFY-39 */
+
+		//OAKIFY-70 Set cookies from params
+		//moved into theme.liquid
+
+		/* OAKIFY-64 */
+		$(window).scroll(eshop.handleStickBars);
+
+		/************Store Switcher OAKIFY-34*****/
+		eshop.initStoreSelect();
+		eshop.Wishlist();
+		eshop.GDPRbar();
+		//OAKIFY-130 moved to line 101 eshop.storeSwitchPopup();
+		eshop.BIS();
+		//eshop.mobileProductForm();
+
+		if(eshop.cache.$CollectionFilters.length != 0){
+			eshop.Collection_filtering.init();
+		}		
+
+	}
+	catch(error){
+		notFoundVariables('main init $(function()', error)
+	}
+});
+
+/* OAKIFY-198 Implement Data Layer for LeRoi GA eeProducDetail*/
+$(window).scroll(eshop.initeeProducDetail);
+
+
+
+/*
+key: "_reloadProducts",
+	value: function() {
+	var e = this;
+	document.dispatchEvent(new CustomEvent("theme:loading:start"));
+	var t = this.toolbarElement.querySelector(".CollectionToolbar__Item--filter");
+	if (t) {
+			var n = t.querySelector("span");
+			n && t.removeChild(n),
+			0 === this.currentTags.length ? t.classList.add("Text--subdued") : (t.classList.remove("Text--subdued"),
+			t.innerHTML += '<span class="Text--subdued">(' + this.currentTags.length + ")</span>")
+	}
+	if (history.replaceState) {
+			var i = this.currentTags.length > 0 ? this.currentTags.join("+") : ""
+				, a = window.location.protocol + "//" + window.location.host + this.settings.collectionUrl + "/" + i + "?sort_by=" + this.currentSortBy;
+			window.history.pushState({
+					path: a
+			}, "", a)
+	}
+	var o = new FormData;
+	o.append("view", "ajax"),
+	o.append("sort_by", this.currentSortBy),
+	fetch(location.pathname + "?view=ajax&sort_by=" + this.currentSortBy, {
+			credentials: "same-origin",
+			method: "GET"
+	}).then(function(t) {
+			t.text().then(function(t) {
+					var n = document.createElement("div");
+					n.innerHTML = t,
+					e.collectionInnerElement.innerHTML = n.querySelector(".shopify-section").innerHTML,
+					document.dispatchEvent(new CustomEvent("theme:loading:end")),
+					e._setupAnimation();
+					var i = e.element.querySelector(".CollectionMain").getBoundingClientRect().top - parseInt(document.documentElement.style.getPropertyValue("--header-height"));
+					r["default"].matchesBreakpoint("lap-and-up") && e.toolbarElement && 0 === e.toolbarElement.clientHeight && (i -= 50),
+					i < 0 && window.scrollBy({
+							top: i,
+							behavior: "smooth"
+					})
+			})
+	})
+*/

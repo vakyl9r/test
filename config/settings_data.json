@@ -1,0 +1,2122 @@
+{
+  "current": {
+    "heading_color": "#1c1b1b",
+    "text_color": "#1c1b1b",
+    "text_light_color": "#1c1b1b",
+    "link_color": "#6a6a6a",
+    "background": "#ffffff",
+    "light_background": "#ffffff",
+    "product_on_sale_color": "#f94c43",
+    "button_background": "#1c1b1b",
+    "button_text_color": "#ffffff",
+    "header_background": "#1c1b1b",
+    "header_dropdown_background": "#ffffff",
+    "header_dropdown_color": "#000000",
+    "header_heading_color": "#ffffff",
+    "header_light_color": "#ffffff",
+    "footer_background": "#e3e5e3",
+    "footer_heading_color": "#1c1b1b",
+    "footer_text_color": "#000000",
+    "navigation_background": "#1c1b1b",
+    "navigation_text_color": "#ffffff",
+    "newsletter_popup_background": "#1c1b1b",
+    "newsletter_popup_text_color": "#ffffff",
+    "secondary_elements_background": "#1c1b1b",
+    "secondary_elements_text_color": "#ffffff",
+    "heading_font": "twentieth_century_n4",
+    "heading_size": "normal",
+    "uppercase_heading": true,
+    "text_font": "twentieth_century_n4",
+    "base_text_font_size": 16,
+    "page_heading_font": "Gilda Display",
+    "page_heading_desktop_font_size": 35,
+    "page_heading_mobile_font_size": 24,
+    "currency_conversion_enabled": true,
+    "currency_conversion_round_amounts": false,
+    "currency_conversion_supported_currencies": "EUR SEK DKK",
+    "currency_conversion_money_format": "money_with_currency_format",
+    "store_switcher_enabled": true,
+    "store_switcher_country_codes": "DE EN",
+    "store_switcher_country_URLS": "de-ivy-oak.myshopify.com en-ivy-oak.myshopify.com",
+    "show_page_transition": true,
+    "show_image_zooming": false,
+    "show_element_staggering": false,
+    "search_mode": "product,article,page",
+    "size_chart_page": "size-guide",
+    "product_show_price_on_hover": false,
+    "product_show_secondary_image": true,
+    "product_info_alignment": "center",
+    "product_image_size": "natural",
+    "product_list_horizontal_spacing": "extra_large",
+    "product_list_vertical_spacing": "medium",
+    "cart_type": "drawer",
+    "cart_enable_notes": false,
+    "cart_show_free_shipping_threshold": false,
+    "cart_free_shipping_threshold": 100,
+    "show_usps": false,
+    "usp_title_1": "SHOP SAFE",
+    "usp_1_text": "Delivery time: 2-3 days",
+    "usp_1_image": "shopify:\/\/shop_images\/lieferdauer_icon_d8bcee96-a092-466b-bb07-60926a30fe3e.png",
+    "usp_2_text": "Free shipping & free returns",
+    "usp_2_image": "shopify:\/\/shop_images\/rueckgabe_icon_1a9f37f7-6568-4a08-a776-59ed18c4feb5.png",
+    "usp_3_text": "Test USP 123",
+    "usp_3_image": "",
+    "usp_title_2": "YOUR DELIVERY OPTIONS",
+    "usp_4_text": "Standard: 2-3 days (free)",
+    "usp_4_image": "",
+    "usp_5_text": "",
+    "usp_5_image": "",
+    "usp_6_text": "",
+    "usp_6_image": "",
+    "show_multiple_product_msg": true,
+    "multiple_product_msg": "",
+    "multiple_product_cta": "",
+    "share_image": "",
+    "social_facebook": "https:\/\/www.facebook.com\/ivyandoakstories",
+    "social_twitter": "",
+    "social_google_plus": "",
+    "social_pinterest": "",
+    "social_instagram": "https:\/\/instagram.com\/ivyandoakstories",
+    "social_vimeo": "",
+    "social_tumblr": "",
+    "social_youtube": "",
+    "social_linkedin": "",
+    "social_snapchat": "",
+    "social_fancy": "",
+    "favicon": "shopify:\/\/shop_images\/favicon.png",
+    "mailchimp_userid": "22f73f1bb12ccb03332544b40",
+    "mailchimp_url": "https:\/\/ivy-oak.us18.list-manage.com\/subscribe\/",
+    "bis_mailchimp_integration": true,
+    "bis_mailchimp_integration_prechecked": true,
+    "bis_mailchimp_list_id": "41d95c2d21",
+    "dbip_api_key": "",
+    "custom_checkout_logo": "",
+    "checkout_tnc_checkbox": true,
+    "checkout_tnc_page": "terms-and-conditions",
+    "post_checkout_info": true,
+    "post_checkout_info_img": "",
+    "post_checkout_info_heading": "",
+    "post_checkout_info_content": "<p>Add your own custom content to explain your processes...<\/p>",
+    "post_checkout_placeholder": "Wedding Day",
+    "post_checkout_cta": "Surprise Me",
+    "post_checkout_info_success": "<p>Thanks for sharing with us. We wish you already a wonderful wedding ahead.<\/p>",
+    "post_checkout_info_error": "<p>Some error ocurred .<\/p>",
+    "checkout_header_image": "",
+    "checkout_logo_image": "shopify:\/\/shop_images\/IVY_OAK_Logo_black_PNG_300dpi.png",
+    "checkout_logo_position": "left",
+    "checkout_logo_size": "small",
+    "checkout_body_background_image": "",
+    "checkout_body_background_color": "#ffffff",
+    "checkout_input_background_color_mode": "white",
+    "checkout_sidebar_background_image": "",
+    "checkout_sidebar_background_color": "#ffffff",
+    "checkout_heading_font": "Roboto",
+    "checkout_body_font": "Roboto",
+    "checkout_accent_color": "#1c1b1b",
+    "checkout_button_color": "#1c1b1b",
+    "checkout_error_color": "#e32c2b",
+    "mlvedaACS_roundDecimal": true,
+    "page_heading_font_size": 48,
+    "mlvedaACS_positionTop": false,
+    "mlvedaACS_positionRight": "0px",
+    "mlvedaACS_positionLeft": false,
+    "mlvedaACS_defaultCurrency": "EUR",
+    "mlvedaACS_positionBottom": "10px",
+    "mlvedaACS_position": "bottom_with_right",
+    "mlvedaACS_enable": true,
+    "mlvedaACS_supportedCurrencies": "EUR DKK SEK",
+    "mlvedaACS_hideDecimal": false,
+    "mlvedaACS_currencyFormat": "money_with_currency_format",
+    "mlvedaACS_displayFlag": true,
+    "sections": {
+      "1533591555295": {
+        "type": "divider",
+        "settings": {
+          "divider_spacing": 30,
+          "mobile_divider_spacing": 10,
+          "divider_border": false
+        }
+      },
+      "footer": {
+        "type": "footer",
+        "blocks": {
+          "1530192826077": {
+            "type": "links",
+            "settings": {
+              "menu": "footer-navigation"
+            }
+          },
+          "1530192909961": {
+            "type": "links",
+            "settings": {
+              "menu": "footer-menu-information"
+            }
+          },
+          "footer-1": {
+            "type": "links",
+            "settings": {
+              "menu": "footer"
+            }
+          },
+          "footer-2": {
+            "type": "newsletter",
+            "settings": {
+              "mailchimp_list_id": "41d95c2d21",
+              "title": "Newsletter",
+              "content": ""
+            }
+          }
+        },
+        "block_order": [
+          "1530192826077",
+          "1530192909961",
+          "footer-1",
+          "footer-2"
+        ],
+        "settings": {
+          "show_payment_methods": true
+        }
+      },
+      "1530188717520": {
+        "type": "slideshow",
+        "blocks": {
+          "1530188717520-0": {
+            "type": "image",
+            "settings": {
+              "image": "shopify:\/\/shop_images\/6___IVYOAK_banner_middle_1440x578_desktop-1.jpg",
+              "mobile_image": "shopify:\/\/shop_images\/K-_22-CREATIVE_ART-DIRECTION_ONLINE_WEBSHOP_TEASER_BANNER_180802_WEEKLY_EDIT_Web_PSDs_6___IVYOAK_banner_middle_750x730_mobile.jpg",
+              "apply_overlay": false,
+              "content_position": "middleCenter",
+              "mobile_content_position": "middleCenter",
+              "distanceLeft": 70,
+              "distanceRight": 70,
+              "subheading": "#itsallaboutmoments",
+              "title": "NEW ARRIVALS",
+              "text_color_desktop": "#ffffff",
+              "text_color_mobile": "#ffffff",
+              "button_1_text": "explore now",
+              "button_1_link": "shopify:\/\/collections\/new-in",
+              "button_2_text": "",
+              "button_2_link": "",
+              "button_text_color_desktop": "#363636",
+              "button_text_color_mobile": "#363636",
+              "button_background_color_desktop": "#ffffff",
+              "button_background_color_mobile": "#ffffff"
+            }
+          }
+        },
+        "block_order": [
+          "1530188717520-0"
+        ],
+        "settings": {
+          "show_fullscreen": false,
+          "show_arrow": false,
+          "autoplay": false,
+          "cycle_speed": 3,
+          "dots_color": "#ffffff"
+        }
+      },
+      "page-faq-template": {
+        "type": "page-faq-template",
+        "blocks": {
+          "page-faq-template-0": {
+            "type": "separator",
+            "settings": {
+              "title": "POLICY TEST"
+            }
+          },
+          "page-faq-template-1": {
+            "type": "question",
+            "settings": {
+              "title": "Do you ship overseas?",
+              "answer": "<p>Yes, we ship all over the world. Shipping costs will apply, and will be added at checkout. We run discounts and promotions all year, so stay tuned for exclusive deals.<\/p>"
+            }
+          },
+          "page-faq-template-2": {
+            "type": "question",
+            "settings": {
+              "title": "How long will it take to get my order?",
+              "answer": "<p>It depends on where you are. Orders processed here will take 5-7 business days to arrive. Overseas deliveries can take anywhere from 7-16 days. Delivery details will be provided in your confirmation email.<\/p>"
+            }
+          },
+          "page-faq-template-3": {
+            "type": "question",
+            "settings": {
+              "title": "What shipping carriers do you use?",
+              "answer": "<p>We use all major carriers, and local courier partners. You’ll be asked to select a delivery method during checkout.<\/p>"
+            }
+          },
+          "page-faq-template-4": {
+            "type": "separator",
+            "settings": {
+              "title": "Product"
+            }
+          },
+          "page-faq-template-5": {
+            "type": "question",
+            "settings": {
+              "title": "Can I return my product?",
+              "answer": "<p>We always aim for make sure our customers love our products, but if you do need to return an order, we’re happy to help. Just email us directly and we’ll take you through the process.<\/p>"
+            }
+          },
+          "page-faq-template-6": {
+            "type": "question",
+            "settings": {
+              "title": "Can I get my product personalized?",
+              "answer": "<p>It depends on the creator and the product. All options are outlined on the product page, so look out for customization options there.<\/p>"
+            }
+          },
+          "page-faq-template-7": {
+            "type": "separator",
+            "settings": {
+              "title": "Other"
+            }
+          },
+          "page-faq-template-8": {
+            "type": "question",
+            "settings": {
+              "title": "Any question?",
+              "answer": "<p>You can contact us through our contact page! We will be happy to assist you.<\/p>"
+            }
+          }
+        },
+        "block_order": [
+          "page-faq-template-0",
+          "page-faq-template-1",
+          "page-faq-template-2",
+          "page-faq-template-3",
+          "page-faq-template-4",
+          "page-faq-template-5",
+          "page-faq-template-6",
+          "page-faq-template-7",
+          "page-faq-template-8"
+        ],
+        "settings": {}
+      },
+      "1533590920869": {
+        "type": "x-y-section",
+        "blocks": {
+          "1533590920869-0": {
+            "type": "tile",
+            "settings": {
+              "button_link": "",
+              "image": "shopify:\/\/shop_images\/5___IVYOAK_R2_right_722x813_desktop.jpg",
+              "mobile_image": "shopify:\/\/shop_images\/5___IVYOAK_R2_right_722x813_desktop.jpg",
+              "image_alignment": "center center",
+              "content_position": "middleCenter",
+              "subheading": "vacation edit",
+              "title": "last chance",
+              "button_text": "explore now",
+              "apply_overlay": false
+            }
+          },
+          "1533590920869-1": {
+            "type": "tile",
+            "settings": {
+              "button_link": "",
+              "image": "shopify:\/\/shop_images\/4___IVYOAK_R2_left_580x420_desktop.jpg",
+              "mobile_image": "",
+              "image_alignment": "center center",
+              "content_position": "middleCenter",
+              "subheading": "upgrade your wardrobe",
+              "title": "new essentials",
+              "button_text": "View products",
+              "apply_overlay": false
+            }
+          }
+        },
+        "block_order": [
+          "1533590920869-0",
+          "1533590920869-1"
+        ],
+        "settings": {
+          "image_size": "normal",
+          "bigger_image": "right",
+          "section_width": 85,
+          "section_alignment": "center",
+          "add_spacing": true,
+          "text_color": "#ffffff",
+          "button_color": "#363636"
+        }
+      },
+      "1532959591445": {
+        "type": "x-y-section",
+        "blocks": {
+          "1532959591445-0": {
+            "type": "tile",
+            "settings": {
+              "button_link": "shopify:\/\/pages\/customer-care",
+              "image": "shopify:\/\/shop_images\/2.jpg",
+              "mobile_image": "shopify:\/\/shop_images\/2.jpg",
+              "image_alignment": "center center",
+              "content_position": "middleCenter",
+              "subheading": "Be my guest",
+              "title": "it's time to shine",
+              "button_text": "Explore now",
+              "apply_overlay": false
+            }
+          },
+          "1532959591445-1": {
+            "type": "tile",
+            "settings": {
+              "button_link": "shopify:\/\/collections\/bridal",
+              "image": "shopify:\/\/shop_images\/1..jpg",
+              "mobile_image": "shopify:\/\/shop_images\/1..jpg",
+              "image_alignment": "center center",
+              "content_position": "middleCenter",
+              "subheading": "Wedding dresses",
+              "title": "bridal boutique",
+              "button_text": "explore now",
+              "apply_overlay": true
+            }
+          }
+        },
+        "block_order": [
+          "1532959591445-0",
+          "1532959591445-1"
+        ],
+        "settings": {
+          "image_size": "small",
+          "bigger_image": "same",
+          "section_width": 85,
+          "section_alignment": "center",
+          "add_spacing": true,
+          "text_color": "#ffffff",
+          "button_color": "#363636"
+        }
+      },
+      "collection-footer": {
+        "type": "collection-footer",
+        "settings": {
+          "show_section": false,
+          "image": "",
+          "text_color": "#ffffff",
+          "apply_overlay": true,
+          "title": "Our story",
+          "content": "<p>Add your own custom content to explain your processes...<\/p>"
+        }
+      },
+      "product-template": {
+        "type": "product-template",
+        "settings": {
+          "show_share_buttons": false,
+          "show_vendor": false,
+          "description_below_add_to_cart": true,
+          "show_color_swatch": true,
+          "show_color_carousel": false,
+          "show_quantity_selector": false,
+          "show_inventory_quantity": true,
+          "inventory_quantity_threshold": 7,
+          "show_payment_button": false,
+          "image_size": "two",
+          "enable_image_zoom": true,
+          "show_thumbnails": false,
+          "tab_page_1_handle": "",
+          "tab_page_2_handle": "",
+          "show_usps": true,
+          "usp_1_text": "Delivery time: 2-3 days",
+          "usp_1_image": "shopify:\/\/shop_images\/lieferdauer_icon_d8bcee96-a092-466b-bb07-60926a30fe3e.png",
+          "usp_2_text": "Free shipping & free returns",
+          "usp_2_image": "shopify:\/\/shop_images\/rueckgabe_icon_1a9f37f7-6568-4a08-a776-59ed18c4feb5.png",
+          "usp_3_text": "",
+          "usp_3_image": "",
+          "reviews_enabled": false,
+          "featured_image_size": "large"
+        }
+      },
+      "1530192045943": {
+        "type": "newsletter",
+        "settings": {
+          "mailchimp_list_id": "41d95c2d21",
+          "section_size": "normal",
+          "image": "shopify:\/\/shop_images\/IVYOAK_R2_right_750x730_mobile.jpg",
+          "text_color": "#b53e38",
+          "button_BG_color": "#ffffff",
+          "button_color": "#000000",
+          "button_BG_color_hover": "#ffffff",
+          "subheading": "Stay in touch",
+          "title": "Newsletter",
+          "content": "<p>STAY UPDATED ON OUR LATEST OFFERS AND GET A <strong>10€<\/strong> <strong>DISCOUNT<\/strong><\/p>"
+        }
+      },
+      "custom-shop-the-look": {
+        "type": "custom-shop-the-look",
+        "settings": {
+          "show_section": true,
+          "title": "Shop The Looksss",
+          "show_product_info": false,
+          "show_color_swatch": false
+        }
+      },
+      "1533591762138": {
+        "type": "divider",
+        "settings": {
+          "divider_spacing": 30,
+          "mobile_divider_spacing": 15,
+          "divider_border": false
+        }
+      },
+      "cart-template": {
+        "type": "cart-template",
+        "settings": {
+          "show_shipping_estimator": false,
+          "shipping_estimator_default_country": "United States"
+        }
+      },
+      "sidebar-menu": {
+        "type": "sidebar-menu",
+        "settings": {
+          "primary_menu": "main-menu",
+          "secondary_menu": "",
+          "show_social_media": true
+        }
+      },
+      "announcement": {
+        "type": "announcement",
+        "settings": {
+          "enable_bar": true,
+          "home_page_only": true,
+          "background": "#c8d5cd",
+          "text_color": "#1c1b1b",
+          "content": "FREE DELIVERY | FREE RETURNS",
+          "link": ""
+        }
+      },
+      "related-products": {
+        "type": "related-products",
+        "settings": {
+          "show_section": true,
+          "title": "Related Products",
+          "show_product_info": false,
+          "related_tag_prefix": "customRelatedProducts",
+          "show_color_swatch": false
+        }
+      },
+      "recently-viewed-products": {
+        "type": "recently-viewed-products",
+        "settings": {
+          "show_section": true,
+          "title": "Recently viewed",
+          "show_product_info": false,
+          "show_color_swatch": false
+        }
+      },
+      "list-collections-template": {
+        "type": "list-collections-template",
+        "settings": {
+          "image_size": "small",
+          "add_spacing": true,
+          "expand_collection": true,
+          "apply_overlay": false,
+          "text_color": "#1c1b1b",
+          "button_color": "#ffffff"
+        }
+      },
+      "1532955983558": {
+        "type": "divider",
+        "settings": {
+          "divider_spacing": 30,
+          "mobile_divider_spacing": 10,
+          "divider_border": false
+        }
+      },
+      "1533591459799": {
+        "type": "divider",
+        "settings": {
+          "divider_spacing": 10,
+          "mobile_divider_spacing": 10,
+          "divider_border": false
+        }
+      },
+      "gdpr-bar": {
+        "type": "gdpr-bar",
+        "settings": {
+          "enable_bar": true,
+          "home_page_only": false,
+          "background": "#ffffff",
+          "text_color": "#1c1b1b",
+          "content": "<p>WE USE COOKIES ON OUR WEBSITE TO GIVE YOU THE BEST SERVICE POSSIBLE. READ MORE <a href=\"https:\/\/www.ivy-oak.com\/legal\/privacy-policy\/\" title=\"https:\/\/www.ivy-oak.com\/legal\/privacy-policy\/\">HERE<\/a>.<\/p>",
+          "GDPR_font": "quicksand_n4"
+        }
+      },
+      "collection-template": {
+        "type": "collection-template",
+        "settings": {
+          "show_collection_info": true,
+          "show_collection_image": true,
+          "show_color_swatch": false,
+          "collection_image_size": "small",
+          "show_sort_by": true,
+          "show_layout_switch": false,
+          "toolbar_position": "top",
+          "show_collection_sidebar": true,
+          "sidebar_menu_1": "collection-sidebar-explore",
+          "sidebar_menu_2": "",
+          "sidebar_menu_3": "",
+          "filter_position": "sidebar",
+          "filter_mode": "group",
+          "show_filter_color_swatch": true,
+          "filter_menu": "",
+          "grid_items_per_page": 48,
+          "grid_mobile_items_per_row": "1",
+          "grid_desktop_items_per_row": 2
+        }
+      },
+      "page-stories-template": {
+        "type": "page-stories-template",
+        "settings": {
+          "access_token": "2154868891.6a7999e.36a36d3d7e19488387e57f8fdec96370",
+          "section_title": "‘MORE THAN JUST A DRESS’",
+          "subheading": "Be part of our stories and follow us on Instagram"
+        }
+      },
+      "popup": {
+        "type": "popup",
+        "settings": {
+          "show_popup": false,
+          "show_only_on_index": true,
+          "show_only_for_visitors": true,
+          "show_only_once": false,
+          "title": "Popup",
+          "content": "<p>You can use this popup to display some useful information to your customers.<\/p>",
+          "show_newsletter": true,
+          "mailchimp_list_id": "",
+          "apparition_delay": 5
+        }
+      },
+      "1533591595970": {
+        "type": "x-y-section",
+        "blocks": {
+          "1533591595970-0": {
+            "type": "tile",
+            "settings": {
+              "button_link": "shopify:\/\/pages\/stories",
+              "image": "shopify:\/\/shop_images\/5.jpg",
+              "mobile_image": "",
+              "image_alignment": "center center",
+              "content_position": "bottomLeft",
+              "subheading": "inspire us and get inspired",
+              "title": "our stories",
+              "button_text": "follow us",
+              "apply_overlay": false
+            }
+          },
+          "1533591595970-1": {
+            "type": "tile",
+            "settings": {
+              "button_link": "https:\/\/www.google.de\/maps\/place\/IVY+%26+OAK\/@52.5249756,13.4070483,15z\/data=!4m5!3m4!1s0x0:0xb096b5df488bdbf0!8m2!3d52.5249756!4d13.4070483",
+              "image": "shopify:\/\/shop_images\/IVYOAK_visit_us_580x428_R3_right_AW18.jpg",
+              "mobile_image": "",
+              "image_alignment": "center center",
+              "content_position": "bottomLeft",
+              "subheading": "come visit us",
+              "title": "our berlin store",
+              "button_text": "visit us",
+              "apply_overlay": false
+            }
+          }
+        },
+        "block_order": [
+          "1533591595970-0",
+          "1533591595970-1"
+        ],
+        "settings": {
+          "image_size": "normal",
+          "bigger_image": "right",
+          "section_width": 85,
+          "section_alignment": "center",
+          "add_spacing": true,
+          "text_color": "#ffffff",
+          "button_color": "#363636"
+        }
+      },
+      "1533591437444": {
+        "type": "divider",
+        "settings": {
+          "divider_spacing": 30,
+          "mobile_divider_spacing": 10,
+          "divider_border": false
+        }
+      },
+      "page-about-template": {
+        "type": "page-about-template",
+        "blocks": {
+          "1533113889029": {
+            "type": "text_with_image",
+            "settings": {
+              "title": "‘MORE THAN JUST A DRESS’",
+              "image": "shopify:\/\/shop_images\/MG_5370.jpg",
+              "image_subtitle": "<p>Caroline von Stieglitz (Founder &amp; Managing Director)<br>Christopher Deckert (Managing Director)<\/p>",
+              "image_position": "right",
+              "text_image_ratio": 55,
+              "text_image_spacing": 5,
+              "content": "<p>IVY &amp; OAK is designed for women who value quality, simplicity, sustainability and style. Our collection is focused on timeless designs, feminine silhouettes and attention to detail.<\/p>\n<p>We manufacture high-quality clothing that is not only inspiring and easy to wear, but also affordable and made to last.<\/p>\n<p>IVY &amp; OAK doesn’t just offer fashion for special moments in life; it offers a distinctive feel, which is what makes our products so unique.<\/p>",
+              "link_text": "",
+              "link_url": ""
+            }
+          },
+          "1533117425814": {
+            "type": "heading",
+            "settings": {
+              "title": "‘SIMPLICITY IS THE NEW ELEGANCE’",
+              "content": "",
+              "link_text": "",
+              "text_position": "left",
+              "text_orientation": "left",
+              "text_max_width": 40
+            }
+          },
+          "1533592450250": {
+            "type": "text_with_image",
+            "settings": {
+              "title": "",
+              "image": "shopify:\/\/shop_images\/stoffschnitte-klein.jpg",
+              "image_subtitle": "",
+              "image_position": "left",
+              "text_image_ratio": 75,
+              "text_image_spacing": 0,
+              "content": "<p>Luxury quality does not need to be expensive\n<\/p>\n<p>\nWe do not believe in traditional trade fairs, unnecessary middlemen and their associated costs.\n<\/p><p>\nWe keep it simple.\n<\/p><p>\nOur customers only pay for what they ultimately get: a beautiful product in a great quality at a reasonable price.\n<\/p><p>\nOur selection of high-quality materials combined with precise workmanship are essential for creating products that are comfortable to wear  and remain a wardrobe companion for more than just a  season.<\/p>",
+              "link_text": "",
+              "link_url": ""
+            }
+          },
+          "1554909324809": {
+            "type": "text_with_video",
+            "settings": {
+              "title": "‘Some fancy title’",
+              "video_url": "https:\/\/vimeo.com\/288311567",
+              "video_position": "right",
+              "text_video_ratio": 45,
+              "text_video_spacing": 0
+            }
+          },
+          "1533593055900": {
+            "type": "heading",
+            "settings": {
+              "title": "‘IT´S ALL ABOUT MOMENTS THIS IS YOURS MADE TO LAST’",
+              "content": "",
+              "link_text": "",
+              "text_position": "left",
+              "text_orientation": "left",
+              "text_max_width": 50
+            }
+          },
+          "1533592722143": {
+            "type": "text_with_image",
+            "settings": {
+              "title": "‘IN A WORLD FULL OF TRENDS, WE BELIEVE IN STYLE’",
+              "image": "shopify:\/\/shop_images\/DSCF4025-Bearbeitet.jpg",
+              "image_subtitle": "",
+              "image_position": "right",
+              "text_image_ratio": 50,
+              "text_image_spacing": 0,
+              "content": "",
+              "link_text": "",
+              "link_url": ""
+            }
+          },
+          "1533592864057": {
+            "type": "text_with_image",
+            "settings": {
+              "title": "",
+              "image": "shopify:\/\/shop_images\/IMG_1602.jpg",
+              "image_subtitle": "<p><a href=\"https:\/\/www.ivy-oak.com\/wp-content\/uploads\/2018\/03\/DSCF4025-Bearbeitet.jpg\"><\/a><\/p>",
+              "image_position": "right",
+              "text_image_ratio": 70,
+              "text_image_spacing": 15,
+              "content": "<p>We value exceptional manufacturing, luxury quality and great style over fast fashion principles.<\/p>\n\n<p>\nWe want to create collections that are long lasting in regards to both design and quality.<\/p>\n\n<p>\nWe source the most beautiful and sustainable, as well as rescued deadstock fabrics and are making sure that our products are responsibly manufactured according to the highest ethical and quality standards.<\/p>\n\n<p>\nAdditonally our production is limited to avoid filling warehouses with unnecessary overstock.<\/p>\n\n<p>\nAs we grow we are working hard to lay an even more sustainable foundation for IVY &amp; OAK<\/p>",
+              "link_text": "",
+              "link_url": ""
+            }
+          },
+          "1533113984779": {
+            "type": "text_with_image",
+            "settings": {
+              "title": "",
+              "image": "shopify:\/\/shop_images\/MG_5348.jpg",
+              "image_subtitle": "",
+              "image_position": "left",
+              "text_image_ratio": 60,
+              "text_image_spacing": 0,
+              "content": "<h1>Facts<\/h1>\n<ul align=\"left\">\n<li>IVY &amp; OAK was founded in May 2016<\/li>\n<li>The company employs 25 passionate employees: 70% women and 30% men<\/li>\n<li> IVY &amp; OAK is active in 28 countries via its online shop and premium retailers<\/li>\n<li>Two collections are launched per year, each characterised by timeless style and elegance<\/li>\n<li>The head office is based in Berlin <\/li>\n<\/ul>",
+              "link_text": "",
+              "link_url": ""
+            }
+          },
+          "1533593142797": {
+            "type": "text_with_image",
+            "settings": {
+              "title": "",
+              "image": "shopify:\/\/shop_images\/MG_5444.jpg",
+              "image_subtitle": "",
+              "image_position": "right",
+              "text_image_ratio": 70,
+              "text_image_spacing": 0,
+              "content": "<div align=\"right\">\n<h1>contact<\/h1>\n\n<p>We’d love to hear from you.<br>\nContact us via email or call us:<\/p>\n<p>\n+49 (0) 30 220 564 200<br>\nhello@ivy-oak.com\n<\/p>\n<\/div>",
+              "link_text": "",
+              "link_url": ""
+            }
+          }
+        },
+        "block_order": [
+          "1533113889029",
+          "1533117425814",
+          "1533592450250",
+          "1554909324809",
+          "1533593055900",
+          "1533592722143",
+          "1533592864057",
+          "1533113984779",
+          "1533593142797"
+        ],
+        "settings": {}
+      },
+      "header": {
+        "type": "header",
+        "settings": {
+          "use_sticky_header": true,
+          "logo": "shopify:\/\/shop_images\/IVY_OAK_Logo_white_300dpi.png",
+          "logo_max_width": 190,
+          "navigation_menu": "main-menu",
+          "navigation_style": "inline",
+          "enable_transparent_header": false,
+          "enable_transparent_header_collection": false,
+          "transparent_text_color": "#ffffff",
+          "transparent_logo": ""
+        }
+      },
+      "slideshow": {
+        "type": "slideshow",
+        "blocks": {
+          "slide-0": {
+            "type": "image",
+            "settings": {
+              "image": "shopify:\/\/shop_images\/main_teaser.jpg",
+              "mobile_image": "shopify:\/\/shop_images\/main_teaser-mobile.jpg",
+              "apply_overlay": false,
+              "content_position": "middleLeft",
+              "mobile_content_position": "bottomCenter",
+              "distanceLeft": 70,
+              "distanceRight": 70,
+              "subheading": "IT'S ALL ABOUT TRANSPARENCY",
+              "title": "This is love",
+              "text_color_desktop": "#000000",
+              "text_color_mobile": "#b94c4c",
+              "button_1_text": "Explore now",
+              "button_1_link": "shopify:\/\/collections\/bridal",
+              "button_2_text": "",
+              "button_2_link": "",
+              "button_text_color_desktop": "#ffffff",
+              "button_text_color_mobile": "#ffffff",
+              "button_background_color_desktop": "#000000",
+              "button_background_color_mobile": "#ff0000"
+            }
+          },
+          "1557746623274": {
+            "type": "image",
+            "settings": {
+              "image": "",
+              "mobile_image": "",
+              "apply_overlay": true,
+              "content_position": "bottomLeft",
+              "mobile_content_position": "middleCenter",
+              "distanceLeft": 70,
+              "distanceRight": 70,
+              "subheading": "Slide title",
+              "title": "Tell your story",
+              "text_color_desktop": "#ff0000",
+              "text_color_mobile": "#000000",
+              "button_1_text": "",
+              "button_1_link": "",
+              "button_2_text": "",
+              "button_2_link": "",
+              "button_text_color_desktop": "#363636",
+              "button_text_color_mobile": "#363636",
+              "button_background_color_desktop": "#fff",
+              "button_background_color_mobile": "#fff"
+            }
+          }
+        },
+        "block_order": [
+          "slide-0",
+          "1557746623274"
+        ],
+        "settings": {
+          "show_fullscreen": true,
+          "show_arrow": false,
+          "autoplay": true,
+          "cycle_speed": 5,
+          "dots_color": "#ffffff"
+        }
+      },
+      "page-transparency-template": {
+        "type": "page-transparency-template",
+        "blocks": {
+          "1535009279870": {
+            "type": "text_with_image",
+            "settings": {
+              "title": "Title",
+              "image": "",
+              "image_subtitle": "",
+              "image_position": "right",
+              "text_image_ratio": 50,
+              "text_image_spacing": 0,
+              "content": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam dapibus, ex sed suscipit tincidunt, eros nulla commodo magna, at bibendum lectus ipsum in risus. Nunc commodo eu velit nec hendrerit. Proin scelerisque rutrum ipsum, laoreet egestas magna varius non. Pellentesque vel diam vulputate augue molestie tincidunt a vitae ex. Nulla facilisi. Ut et erat eu ex iaculis placerat ut nec nisi. Aliquam eget pretium arcu, in commodo enim. In scelerisque auctor ante efficitur blandit. Aenean vestibulum placerat odio in fermentum. Cras fermentum vestibulum tempus. Proin vel libero consectetur, congue nisi tristique, accumsan justo.\n\nDuis malesuada non ligula at bibendum. Duis ultricies, mi id suscipit finibus, enim mauris efficitur sapien, quis sodales risus tortor nec diam. Pellentesque commodo sagittis lacus, vel sagittis tellus sollicitudin at. Vestibulum id nunc quis urna scelerisque euismod. Cras condimentum tellus id rhoncus lacinia. Sed egestas imperdiet arcu eget vulputate. Sed sagittis nulla quis elit ornare, at imperdiet libero elementum. Nullam vel enim turpis. In rutrum, justo vitae euismod faucibus, elit lorem consectetur risus, ut malesuada turpis enim ac odio.<\/p>",
+              "link_text": "",
+              "link_url": ""
+            }
+          }
+        },
+        "block_order": [
+          "1535009279870"
+        ],
+        "settings": {}
+      },
+      "store-switch-popup": {
+        "type": "store-switch-popup",
+        "settings": {
+          "show_popup": true,
+          "show_only_on_index": false,
+          "show_only_for_visitors": false,
+          "show_only_once": false,
+          "title": "Switch to international store?",
+          "content": "<p>This is our German store. If you wish to shop in English, please follow the link below.<\/p>",
+          "button_title": "Let's Go!",
+          "button_link": "https:\/\/ivy-oak.com",
+          "excluded_countries": "CH,AT"
+        }
+      },
+      "currency-switch-popup": {
+        "type": "currency-switch-popup",
+        "settings": {
+          "popup": true,
+          "title": "Popup",
+          "content": "<p>You can use this popup to display some useful information to your customers.<\/p>",
+          "included_countries": "DK,SE"
+        }
+      },
+      "1555497229346": {
+        "type": "shop-the-look",
+        "blocks": {
+          "1555497229346-0": {
+            "type": "look",
+            "settings": {
+              "image": "shopify:\/\/shop_images\/IvyOak_Bridal_M09_1154_4_720x1000_872cc2b8-19aa-4fc6-8c9a-311dc5ba66e9.png",
+              "dot_style": "light",
+              "product_1": "ankle-length-lace-dress-navy-blue",
+              "product_1_horizontal_position": 53,
+              "product_1_vertical_position": 40,
+              "product_2": "bicoloured-scarf-frost-blue",
+              "product_2_horizontal_position": 45,
+              "product_2_vertical_position": 65,
+              "product_3": "",
+              "product_3_horizontal_position": 70,
+              "product_3_vertical_position": 50
+            }
+          }
+        },
+        "block_order": [
+          "1555497229346-0"
+        ],
+        "settings": {
+          "subheading": "Shop",
+          "title": "Our looks",
+          "show_mobile_product_info": false
+        }
+      }
+    },
+    "content_for_index": [
+      "slideshow",
+      "1532955983558",
+      "1532959591445",
+      "1533591459799",
+      "1533590920869",
+      "1533591437444",
+      "1530188717520",
+      "1533591555295",
+      "1533591595970",
+      "1533591762138",
+      "1530192045943",
+      "1555497229346"
+    ]
+  },
+  "presets": {
+    "Vogue": {
+      "text_font": "futura_n4",
+      "show_element_staggering": false,
+      "footer_background": "#ffffff",
+      "search_mode": "product,article",
+      "light_background": "#ffffff",
+      "navigation_text_color": "#ffffff",
+      "heading_color": "#454545",
+      "heading_font": "din_neuzeit_grotesk_n3",
+      "cart_free_shipping_threshold": 50,
+      "currency_conversion_money_format": "money_format",
+      "uppercase_heading": true,
+      "link_color": "#a17c5e",
+      "checkout_body_background_color": "#fff",
+      "cart_enable_notes": true,
+      "currency_conversion_supported_currencies": "USD CAD EUR GBP",
+      "product_show_secondary_image": false,
+      "product_show_price_on_hover": true,
+      "product_list_vertical_spacing": "small",
+      "checkout_accent_color": "#a17c5e",
+      "sections": {
+        "blog-posts": {
+          "settings": {
+            "button_text": "View all articles",
+            "title": "Featured article",
+            "show_category": false
+          },
+          "blocks": {
+            "blog-0": {
+              "settings": {
+                "blog": "news"
+              },
+              "type": "blog"
+            }
+          },
+          "type": "blog-posts",
+          "block_order": [
+            "blog-0"
+          ]
+        },
+        "recently-viewed-products": {
+          "settings": {
+            "show_product_info": true,
+            "title": "Recently viewed",
+            "show_section": true
+          },
+          "type": "recently-viewed-products"
+        },
+        "shop-the-look": {
+          "settings": {
+            "title": "Our looks",
+            "subheading": "Shop"
+          },
+          "blocks": {
+            "look-1": {
+              "settings": {
+                "product_1_vertical_position": 45,
+                "product_1_horizontal_position": 25,
+                "dot_style": "light",
+                "product_2_horizontal_position": 55,
+                "product_2_vertical_position": 30,
+                "product_3_horizontal_position": 65,
+                "product_3_vertical_position": 60
+              },
+              "type": "look"
+            },
+            "look-0": {
+              "settings": {
+                "product_1_vertical_position": 40,
+                "product_1_horizontal_position": 30,
+                "dot_style": "light",
+                "product_2_horizontal_position": 45,
+                "product_2_vertical_position": 65,
+                "product_3_horizontal_position": 70,
+                "product_3_vertical_position": 50
+              },
+              "type": "look"
+            }
+          },
+          "type": "shop-the-look",
+          "block_order": [
+            "look-0",
+            "look-1"
+          ]
+        },
+        "footer": {
+          "settings": {
+            "show_payment_methods": true
+          },
+          "blocks": {
+            "footer-2": {
+              "settings": {
+                "title": "Newsletter",
+                "content": "<p>Subscribe to receive updates, access to exclusive deals, and more.<\/p>"
+              },
+              "type": "newsletter"
+            },
+            "footer-1": {
+              "settings": {
+                "menu": "footer"
+              },
+              "type": "links"
+            },
+            "footer-0": {
+              "settings": {
+                "title": "About the shop",
+                "show_social_media": true,
+                "content": "<p>Use this text area to tell your customers about your brand and vision. You can change it in the theme settings.<\/p>"
+              },
+              "type": "text"
+            }
+          },
+          "type": "footer",
+          "block_order": [
+            "footer-0",
+            "footer-1",
+            "footer-2"
+          ]
+        },
+        "featured-product": {
+          "settings": {
+            "show_inventory_quantity": false,
+            "show_vendor": true,
+            "show_description": true,
+            "show_color_swatch": true,
+            "inventory_quantity_threshold": 3,
+            "show_color_carousel": false,
+            "title": "Featured product",
+            "show_quantity_selector": true
+          },
+          "type": "featured-product"
+        },
+        "featured-collections": {
+          "settings": {
+            "show_product_info": true,
+            "grid_desktop_items_per_row": 4,
+            "layout_mode": "grid",
+            "grid_mobile_items_per_row": "2",
+            "title": "Featured collection"
+          },
+          "blocks": {
+            "featured-collection-0": {
+              "settings": {
+                "grid_items_count": 8,
+                "button_text": "View all products"
+              },
+              "type": "collection"
+            }
+          },
+          "type": "featured-collections",
+          "block_order": [
+            "featured-collection-0"
+          ]
+        },
+        "collection-template": {
+          "settings": {
+            "show_layout_switch": false,
+            "filter_position": "sidebar",
+            "show_filter_color_swatch": true,
+            "grid_desktop_items_per_row": 4,
+            "show_collection_image": false,
+            "show_sort_by": true,
+            "show_collection_info": true,
+            "filter_mode": "tag",
+            "grid_mobile_items_per_row": "2",
+            "toolbar_position": "bottom",
+            "grid_items_per_page": 16
+          },
+          "type": "collection-template"
+        },
+        "collection-footer": {
+          "settings": {
+            "text_color": "#ffffff",
+            "apply_overlay": true,
+            "title": "Our story",
+            "content": "<p>Add your own custom content to explain your processes...<\/p>",
+            "show_section": false
+          },
+          "type": "collection-footer"
+        },
+        "product-template": {
+          "settings": {
+            "show_inventory_quantity": false,
+            "show_thumbnails": false,
+            "show_vendor": true,
+            "show_share_buttons": true,
+            "show_color_swatch": true,
+            "image_size": "large",
+            "inventory_quantity_threshold": 3,
+            "enable_image_zoom": true,
+            "show_color_carousel": false,
+            "show_quantity_selector": true,
+            "reviews_enabled": false
+          },
+          "type": "product-template"
+        },
+        "header": {
+          "settings": {
+            "enable_transparent_header": true,
+            "navigation_menu": "main-menu",
+            "logo_max_width": 140,
+            "transparent_text_color": "#ffffff",
+            "navigation_style": "inline",
+            "use_sticky_header": true
+          },
+          "type": "header"
+        },
+        "timeline": {
+          "settings": {
+            "text_color": "#ffffff"
+          },
+          "blocks": {
+            "item-2": {
+              "settings": {
+                "heading": "Heading",
+                "apply_overlay": true,
+                "title": "2002",
+                "subheading": "Sub-heading",
+                "content": "<p>Add your own custom content to give more information about your store, availability details...<\/p>"
+              },
+              "type": "item"
+            },
+            "item-1": {
+              "settings": {
+                "heading": "Heading",
+                "apply_overlay": true,
+                "title": "2001",
+                "subheading": "Sub-heading",
+                "content": "<p>Add your own custom content to give more information about your store, availability details...<\/p>"
+              },
+              "type": "item"
+            },
+            "item-0": {
+              "settings": {
+                "heading": "Heading",
+                "apply_overlay": true,
+                "title": "2000",
+                "subheading": "Sub-heading",
+                "content": "<p>Add your own custom content to give more information about your store, availability details...<\/p>"
+              },
+              "type": "item"
+            }
+          },
+          "type": "timeline",
+          "block_order": [
+            "item-0",
+            "item-1",
+            "item-2"
+          ]
+        },
+        "slideshow": {
+          "settings": {
+            "show_fullscreen": true,
+            "button_color": "#363636",
+            "cycle_speed": 5,
+            "text_color": "#ffffff",
+            "show_arrow": false,
+            "autoplay": true
+          },
+          "blocks": {
+            "slide-0": {
+              "settings": {
+                "apply_overlay": true,
+                "title": "Tell your story",
+                "subheading": "Slide title",
+                "content_position": "bottomLeft"
+              },
+              "type": "image"
+            },
+            "slide-1": {
+              "settings": {
+                "apply_overlay": true,
+                "title": "Tell your story",
+                "subheading": "Slide title",
+                "content_position": "bottomLeft"
+              },
+              "type": "image"
+            }
+          },
+          "type": "slideshow",
+          "block_order": [
+            "slide-0",
+            "slide-1"
+          ]
+        },
+        "collection-list": {
+          "settings": {
+            "expand_collection": false,
+            "button_color": "#363636",
+            "add_spacing": true,
+            "text_color": "#ffffff"
+          },
+          "blocks": {
+            "collection-0": {
+              "settings": {
+                "image_alignment": "center center",
+                "button_text": "View products",
+                "apply_overlay": true,
+                "subheading": "Sub-heading"
+              },
+              "type": "collection"
+            },
+            "collection-1": {
+              "settings": {
+                "image_alignment": "center center",
+                "button_text": "View products",
+                "apply_overlay": true,
+                "subheading": "Sub-heading"
+              },
+              "type": "collection"
+            },
+            "collection-2": {
+              "settings": {
+                "image_alignment": "center center",
+                "button_text": "View products",
+                "apply_overlay": true,
+                "subheading": "Sub-heading"
+              },
+              "type": "collection"
+            }
+          },
+          "type": "collection-list",
+          "block_order": [
+            "collection-0",
+            "collection-1",
+            "collection-2"
+          ]
+        },
+        "sidebar-menu": {
+          "settings": {
+            "show_social_media": true,
+            "primary_menu": "main-menu"
+          },
+          "type": "sidebar-menu"
+        },
+        "announcement": {
+          "settings": {
+            "background": "#f1e4d8",
+            "text_color": "#343434",
+            "content": "Announce something here"
+          },
+          "type": "announcement"
+        },
+        "related-products": {
+          "settings": {
+            "show_product_info": true,
+            "title": "Related Products",
+            "show_section": true
+          },
+          "type": "related-products"
+        }
+      },
+      "newsletter_popup_text_color": "#ffffff",
+      "content_for_index": [
+        "slideshow",
+        "featured-collections",
+        "collection-list",
+        "featured-product",
+        "timeline",
+        "blog-posts",
+        "shop-the-look"
+      ],
+      "newsletter_popup_background": "#454545",
+      "background": "#ffffff",
+      "header_background": "#ffffff",
+      "checkout_logo_position": "left",
+      "checkout_logo_size": "medium",
+      "text_color": "#454545",
+      "header_heading_color": "#454545",
+      "checkout_button_color": "#454545",
+      "navigation_background": "#454545",
+      "footer_heading_color": "#454545",
+      "checkout_sidebar_background_color": "#fafafa",
+      "cart_type": "drawer",
+      "checkout_input_background_color_mode": "white",
+      "secondary_elements_background": "#f1e4d8",
+      "product_list_horizontal_spacing": "medium",
+      "footer_text_color": "#9d9d9d",
+      "base_text_font_size": 14,
+      "product_on_sale_color": "#f94c43",
+      "button_background": "#c2a284",
+      "product_image_size": "natural",
+      "currency_conversion_round_amounts": true,
+      "heading_size": "small",
+      "show_page_transition": true,
+      "product_info_alignment": "center",
+      "button_text_color": "#ffffff",
+      "header_light_color": "#9d9d9d",
+      "text_light_color": "#9d9d9d",
+      "secondary_elements_text_color": "#373737",
+      "currency_conversion_enabled": false,
+      "cart_show_free_shipping_threshold": false
+    },
+    "Allure": {
+      "text_font": "nunito_sans_n4",
+      "footer_background": "#ffffff",
+      "search_mode": "product,article",
+      "light_background": "#ffffff",
+      "navigation_text_color": "#ffffff",
+      "heading_color": "#1c1b1b",
+      "heading_font": "montserrat_n5",
+      "cart_free_shipping_threshold": 50,
+      "currency_conversion_money_format": "money_format",
+      "uppercase_heading": true,
+      "link_color": "#6a6a6a",
+      "checkout_body_background_color": "#ffffff",
+      "cart_enable_notes": true,
+      "currency_conversion_supported_currencies": "USD CAD EUR GBP",
+      "product_show_secondary_image": false,
+      "product_show_price_on_hover": false,
+      "product_list_vertical_spacing": "small",
+      "checkout_accent_color": "#1c1b1b",
+      "sections": {
+        "blog-posts": {
+          "settings": {
+            "button_text": "View all articles",
+            "title": "Featured article",
+            "show_category": false
+          },
+          "blocks": {
+            "blog-0": {
+              "settings": {
+                "blog": "news"
+              },
+              "type": "blog"
+            }
+          },
+          "type": "blog-posts",
+          "block_order": [
+            "blog-0"
+          ]
+        },
+        "recently-viewed-products": {
+          "settings": {
+            "show_product_info": true,
+            "title": "Recently viewed",
+            "show_section": true
+          },
+          "type": "recently-viewed-products"
+        },
+        "shop-the-look": {
+          "settings": {
+            "title": "Our looks",
+            "subheading": "Shop"
+          },
+          "blocks": {
+            "look-1": {
+              "settings": {
+                "product_1_vertical_position": 45,
+                "product_1_horizontal_position": 25,
+                "dot_style": "light",
+                "product_2_horizontal_position": 55,
+                "product_2_vertical_position": 30,
+                "product_3_horizontal_position": 65,
+                "product_3_vertical_position": 60
+              },
+              "type": "look"
+            },
+            "look-0": {
+              "settings": {
+                "product_1_vertical_position": 40,
+                "product_1_horizontal_position": 30,
+                "dot_style": "light",
+                "product_2_horizontal_position": 45,
+                "product_2_vertical_position": 65,
+                "product_3_horizontal_position": 70,
+                "product_3_vertical_position": 50
+              },
+              "type": "look"
+            }
+          },
+          "type": "shop-the-look",
+          "block_order": [
+            "look-0",
+            "look-1"
+          ]
+        },
+        "footer": {
+          "settings": {
+            "show_payment_methods": true
+          },
+          "blocks": {
+            "footer-2": {
+              "settings": {
+                "title": "Newsletter",
+                "content": "<p>Subscribe to receive updates, access to exclusive deals, and more.<\/p>"
+              },
+              "type": "newsletter"
+            },
+            "footer-1": {
+              "settings": {
+                "menu": "footer"
+              },
+              "type": "links"
+            },
+            "footer-0": {
+              "settings": {
+                "title": "About the shop",
+                "show_social_media": true,
+                "content": "<p>Use this text area to tell your customers about your brand and vision. You can change it in the theme settings.<\/p>"
+              },
+              "type": "text"
+            }
+          },
+          "type": "footer",
+          "block_order": [
+            "footer-0",
+            "footer-1",
+            "footer-2"
+          ]
+        },
+        "featured-product": {
+          "settings": {
+            "show_inventory_quantity": false,
+            "show_vendor": true,
+            "show_description": true,
+            "show_color_swatch": true,
+            "inventory_quantity_threshold": 3,
+            "show_color_carousel": false,
+            "title": "Featured product",
+            "show_quantity_selector": true
+          },
+          "type": "featured-product"
+        },
+        "featured-collections": {
+          "settings": {
+            "show_product_info": true,
+            "grid_desktop_items_per_row": 4,
+            "layout_mode": "grid",
+            "grid_mobile_items_per_row": "2",
+            "title": "Featured collection"
+          },
+          "blocks": {
+            "featured-collection-0": {
+              "settings": {
+                "grid_items_count": 8,
+                "button_text": "View all products"
+              },
+              "type": "collection"
+            }
+          },
+          "type": "featured-collections",
+          "block_order": [
+            "featured-collection-0"
+          ]
+        },
+        "collection-template": {
+          "settings": {
+            "show_layout_switch": false,
+            "filter_position": "sidebar",
+            "show_filter_color_swatch": true,
+            "grid_desktop_items_per_row": 4,
+            "show_collection_image": false,
+            "show_sort_by": true,
+            "show_collection_info": true,
+            "filter_mode": "tag",
+            "grid_mobile_items_per_row": "2",
+            "toolbar_position": "bottom",
+            "grid_items_per_page": 16
+          },
+          "type": "collection-template"
+        },
+        "collection-footer": {
+          "settings": {
+            "text_color": "#ffffff",
+            "apply_overlay": true,
+            "title": "Our story",
+            "content": "<p>Add your own custom content to explain your processes...<\/p>",
+            "show_section": false
+          },
+          "type": "collection-footer"
+        },
+        "product-template": {
+          "settings": {
+            "show_inventory_quantity": false,
+            "show_thumbnails": false,
+            "show_vendor": true,
+            "show_share_buttons": true,
+            "show_color_swatch": true,
+            "image_size": "large",
+            "inventory_quantity_threshold": 3,
+            "enable_image_zoom": true,
+            "show_color_carousel": false,
+            "show_quantity_selector": true,
+            "reviews_enabled": false
+          },
+          "type": "product-template"
+        },
+        "header": {
+          "settings": {
+            "enable_transparent_header": true,
+            "navigation_menu": "main-menu",
+            "logo_max_width": 140,
+            "transparent_text_color": "#ffffff",
+            "navigation_style": "inline",
+            "use_sticky_header": true
+          },
+          "type": "header"
+        },
+        "timeline": {
+          "settings": {
+            "text_color": "#ffffff"
+          },
+          "blocks": {
+            "item-2": {
+              "settings": {
+                "heading": "Heading",
+                "apply_overlay": true,
+                "title": "2002",
+                "subheading": "Sub-heading",
+                "content": "<p>Add your own custom content to give more information about your store, availability details...<\/p>"
+              },
+              "type": "item"
+            },
+            "item-1": {
+              "settings": {
+                "heading": "Heading",
+                "apply_overlay": true,
+                "title": "2001",
+                "subheading": "Sub-heading",
+                "content": "<p>Add your own custom content to give more information about your store, availability details...<\/p>"
+              },
+              "type": "item"
+            },
+            "item-0": {
+              "settings": {
+                "heading": "Heading",
+                "apply_overlay": true,
+                "title": "2000",
+                "subheading": "Sub-heading",
+                "content": "<p>Add your own custom content to give more information about your store, availability details...<\/p>"
+              },
+              "type": "item"
+            }
+          },
+          "type": "timeline",
+          "block_order": [
+            "item-0",
+            "item-1",
+            "item-2"
+          ]
+        },
+        "slideshow": {
+          "settings": {
+            "show_fullscreen": true,
+            "button_color": "#363636",
+            "cycle_speed": 5,
+            "text_color": "#ffffff",
+            "show_arrow": false,
+            "autoplay": true
+          },
+          "blocks": {
+            "slide-0": {
+              "settings": {
+                "apply_overlay": true,
+                "title": "Tell your story",
+                "subheading": "Slide title",
+                "content_position": "bottomLeft"
+              },
+              "type": "image"
+            },
+            "slide-1": {
+              "settings": {
+                "apply_overlay": true,
+                "title": "Tell your story",
+                "subheading": "Slide title",
+                "content_position": "bottomLeft"
+              },
+              "type": "image"
+            }
+          },
+          "type": "slideshow",
+          "block_order": [
+            "slide-0",
+            "slide-1"
+          ]
+        },
+        "collection-list": {
+          "settings": {
+            "expand_collection": false,
+            "button_color": "#363636",
+            "add_spacing": true,
+            "text_color": "#ffffff"
+          },
+          "blocks": {
+            "collection-0": {
+              "settings": {
+                "image_alignment": "center center",
+                "button_text": "View products",
+                "apply_overlay": true,
+                "subheading": "Sub-heading"
+              },
+              "type": "collection"
+            },
+            "collection-1": {
+              "settings": {
+                "image_alignment": "center center",
+                "button_text": "View products",
+                "apply_overlay": true,
+                "subheading": "Sub-heading"
+              },
+              "type": "collection"
+            },
+            "collection-2": {
+              "settings": {
+                "image_alignment": "center center",
+                "button_text": "View products",
+                "apply_overlay": true,
+                "subheading": "Sub-heading"
+              },
+              "type": "collection"
+            }
+          },
+          "type": "collection-list",
+          "block_order": [
+            "collection-0",
+            "collection-1",
+            "collection-2"
+          ]
+        },
+        "sidebar-menu": {
+          "settings": {
+            "show_social_media": true,
+            "primary_menu": "main-menu"
+          },
+          "type": "sidebar-menu"
+        },
+        "announcement": {
+          "settings": {
+            "background": "#000000",
+            "text_color": "#ffffff",
+            "content": "Announce something here"
+          },
+          "type": "announcement"
+        },
+        "related-products": {
+          "settings": {
+            "show_product_info": true,
+            "title": "Related Products",
+            "show_section": true
+          },
+          "type": "related-products"
+        }
+      },
+      "newsletter_popup_text_color": "#ffffff",
+      "content_for_index": [
+        "slideshow",
+        "featured-collections",
+        "collection-list",
+        "featured-product",
+        "timeline",
+        "blog-posts",
+        "shop-the-look"
+      ],
+      "newsletter_popup_background": "#1c1b1b",
+      "background": "#efefef",
+      "header_background": "#ffffff",
+      "checkout_logo_position": "center",
+      "checkout_logo_size": "small",
+      "text_color": "#1c1b1b",
+      "header_heading_color": "#1c1b1b",
+      "checkout_button_color": "#1c1b1b",
+      "navigation_background": "#1c1b1b",
+      "footer_heading_color": "#1c1b1b",
+      "checkout_sidebar_background_color": "#efefef",
+      "cart_type": "drawer",
+      "checkout_input_background_color_mode": "white",
+      "secondary_elements_background": "#1c1b1b",
+      "product_list_horizontal_spacing": "medium",
+      "footer_text_color": "#6a6a6a",
+      "base_text_font_size": 14,
+      "product_on_sale_color": "#f94c43",
+      "button_background": "#1c1b1b",
+      "product_image_size": "natural",
+      "currency_conversion_round_amounts": true,
+      "heading_size": "small",
+      "show_page_transition": true,
+      "product_info_alignment": "center",
+      "button_text_color": "#ffffff",
+      "header_light_color": "#6a6a6a",
+      "text_light_color": "#6a6a6a",
+      "secondary_elements_text_color": "#ffffff",
+      "currency_conversion_enabled": false,
+      "cart_show_free_shipping_threshold": false
+    },
+    "Couture": {
+      "text_font": "century_gothic_n4",
+      "footer_background": "#ffffff",
+      "search_mode": "product,article",
+      "light_background": "#ffffff",
+      "navigation_text_color": "#5c5c5c",
+      "heading_color": "#5c5c5c",
+      "heading_font": "futura_n4",
+      "cart_free_shipping_threshold": 50,
+      "currency_conversion_money_format": "money_format",
+      "uppercase_heading": false,
+      "link_color": "#323232",
+      "checkout_body_background_color": "#fff",
+      "cart_enable_notes": true,
+      "currency_conversion_supported_currencies": "USD CAD EUR GBP",
+      "product_show_secondary_image": false,
+      "product_show_price_on_hover": true,
+      "product_list_vertical_spacing": "small",
+      "checkout_accent_color": "#323232",
+      "sections": {
+        "blog-posts": {
+          "settings": {
+            "button_text": "View all articles",
+            "title": "Featured article",
+            "show_category": false
+          },
+          "blocks": {
+            "blog-0": {
+              "settings": {
+                "blog": "news"
+              },
+              "type": "blog"
+            }
+          },
+          "type": "blog-posts",
+          "block_order": [
+            "blog-0"
+          ]
+        },
+        "recently-viewed-products": {
+          "settings": {
+            "show_product_info": true,
+            "title": "Recently viewed",
+            "show_section": true
+          },
+          "type": "recently-viewed-products"
+        },
+        "shop-the-look": {
+          "settings": {
+            "title": "Our looks",
+            "subheading": "Shop"
+          },
+          "blocks": {
+            "look-1": {
+              "settings": {
+                "product_1_vertical_position": 45,
+                "product_1_horizontal_position": 25,
+                "dot_style": "light",
+                "product_2_horizontal_position": 55,
+                "product_2_vertical_position": 30,
+                "product_3_horizontal_position": 65,
+                "product_3_vertical_position": 60
+              },
+              "type": "look"
+            },
+            "look-0": {
+              "settings": {
+                "product_1_vertical_position": 40,
+                "product_1_horizontal_position": 30,
+                "dot_style": "light",
+                "product_2_horizontal_position": 45,
+                "product_2_vertical_position": 65,
+                "product_3_horizontal_position": 70,
+                "product_3_vertical_position": 50
+              },
+              "type": "look"
+            }
+          },
+          "type": "shop-the-look",
+          "block_order": [
+            "look-0",
+            "look-1"
+          ]
+        },
+        "footer": {
+          "settings": {
+            "show_payment_methods": true
+          },
+          "blocks": {
+            "footer-2": {
+              "settings": {
+                "title": "Newsletter",
+                "content": "<p>Subscribe to receive updates, access to exclusive deals, and more.<\/p>"
+              },
+              "type": "newsletter"
+            },
+            "footer-1": {
+              "settings": {
+                "menu": "footer"
+              },
+              "type": "links"
+            },
+            "footer-0": {
+              "settings": {
+                "title": "About the shop",
+                "show_social_media": true,
+                "content": "<p>Use this text area to tell your customers about your brand and vision. You can change it in the theme settings.<\/p>"
+              },
+              "type": "text"
+            }
+          },
+          "type": "footer",
+          "block_order": [
+            "footer-0",
+            "footer-1",
+            "footer-2"
+          ]
+        },
+        "featured-product": {
+          "settings": {
+            "show_inventory_quantity": false,
+            "show_vendor": true,
+            "show_description": true,
+            "show_color_swatch": true,
+            "inventory_quantity_threshold": 3,
+            "show_color_carousel": false,
+            "title": "Featured product",
+            "show_quantity_selector": true
+          },
+          "type": "featured-product"
+        },
+        "featured-collections": {
+          "settings": {
+            "show_product_info": true,
+            "grid_desktop_items_per_row": 4,
+            "layout_mode": "grid",
+            "grid_mobile_items_per_row": "2",
+            "title": "Featured collection"
+          },
+          "blocks": {
+            "featured-collection-0": {
+              "settings": {
+                "grid_items_count": 8,
+                "button_text": "View all products"
+              },
+              "type": "collection"
+            }
+          },
+          "type": "featured-collections",
+          "block_order": [
+            "featured-collection-0"
+          ]
+        },
+        "collection-template": {
+          "settings": {
+            "show_layout_switch": false,
+            "filter_position": "sidebar",
+            "show_filter_color_swatch": true,
+            "grid_desktop_items_per_row": 4,
+            "show_collection_image": false,
+            "show_sort_by": true,
+            "show_collection_info": true,
+            "filter_mode": "tag",
+            "grid_mobile_items_per_row": "2",
+            "toolbar_position": "bottom",
+            "grid_items_per_page": 16
+          },
+          "type": "collection-template"
+        },
+        "collection-footer": {
+          "settings": {
+            "text_color": "#ffffff",
+            "apply_overlay": true,
+            "title": "Our story",
+            "content": "<p>Add your own custom content to explain your processes...<\/p>",
+            "show_section": false
+          },
+          "type": "collection-footer"
+        },
+        "product-template": {
+          "settings": {
+            "show_inventory_quantity": false,
+            "show_thumbnails": false,
+            "show_vendor": true,
+            "show_share_buttons": true,
+            "show_color_swatch": true,
+            "image_size": "large",
+            "inventory_quantity_threshold": 3,
+            "enable_image_zoom": true,
+            "show_color_carousel": false,
+            "show_quantity_selector": true,
+            "reviews_enabled": false
+          },
+          "type": "product-template"
+        },
+        "header": {
+          "settings": {
+            "enable_transparent_header": true,
+            "navigation_menu": "main-menu",
+            "logo_max_width": 140,
+            "transparent_text_color": "#ffffff",
+            "navigation_style": "center",
+            "use_sticky_header": true
+          },
+          "type": "header"
+        },
+        "timeline": {
+          "settings": {
+            "text_color": "#ffffff"
+          },
+          "blocks": {
+            "item-2": {
+              "settings": {
+                "heading": "Heading",
+                "apply_overlay": true,
+                "title": "2002",
+                "subheading": "Sub-heading",
+                "content": "<p>Add your own custom content to give more information about your store, availability details...<\/p>"
+              },
+              "type": "item"
+            },
+            "item-1": {
+              "settings": {
+                "heading": "Heading",
+                "apply_overlay": true,
+                "title": "2001",
+                "subheading": "Sub-heading",
+                "content": "<p>Add your own custom content to give more information about your store, availability details...<\/p>"
+              },
+              "type": "item"
+            },
+            "item-0": {
+              "settings": {
+                "heading": "Heading",
+                "apply_overlay": true,
+                "title": "2000",
+                "subheading": "Sub-heading",
+                "content": "<p>Add your own custom content to give more information about your store, availability details...<\/p>"
+              },
+              "type": "item"
+            }
+          },
+          "type": "timeline",
+          "block_order": [
+            "item-0",
+            "item-1",
+            "item-2"
+          ]
+        },
+        "slideshow": {
+          "settings": {
+            "show_fullscreen": true,
+            "button_color": "#363636",
+            "cycle_speed": 5,
+            "text_color": "#ffffff",
+            "show_arrow": false,
+            "autoplay": true
+          },
+          "blocks": {
+            "slide-0": {
+              "settings": {
+                "apply_overlay": true,
+                "title": "Tell your story",
+                "subheading": "Slide title",
+                "content_position": "bottomLeft"
+              },
+              "type": "image"
+            },
+            "slide-1": {
+              "settings": {
+                "apply_overlay": true,
+                "title": "Tell your story",
+                "subheading": "Slide title",
+                "content_position": "bottomLeft"
+              },
+              "type": "image"
+            }
+          },
+          "type": "slideshow",
+          "block_order": [
+            "slide-0",
+            "slide-1"
+          ]
+        },
+        "collection-list": {
+          "settings": {
+            "expand_collection": false,
+            "button_color": "#363636",
+            "add_spacing": true,
+            "text_color": "#ffffff"
+          },
+          "blocks": {
+            "collection-0": {
+              "settings": {
+                "image_alignment": "center center",
+                "button_text": "View products",
+                "apply_overlay": true,
+                "subheading": "Sub-heading"
+              },
+              "type": "collection"
+            },
+            "collection-1": {
+              "settings": {
+                "image_alignment": "center center",
+                "button_text": "View products",
+                "apply_overlay": true,
+                "subheading": "Sub-heading"
+              },
+              "type": "collection"
+            },
+            "collection-2": {
+              "settings": {
+                "image_alignment": "center center",
+                "button_text": "View products",
+                "apply_overlay": true,
+                "subheading": "Sub-heading"
+              },
+              "type": "collection"
+            }
+          },
+          "type": "collection-list",
+          "block_order": [
+            "collection-0",
+            "collection-1",
+            "collection-2"
+          ]
+        },
+        "sidebar-menu": {
+          "settings": {
+            "show_social_media": true,
+            "primary_menu": "main-menu"
+          },
+          "type": "sidebar-menu"
+        },
+        "announcement": {
+          "settings": {
+            "background": "#f3f3f3",
+            "text_color": "#5c5c5c",
+            "content": "Announce something here"
+          },
+          "type": "announcement"
+        },
+        "related-products": {
+          "settings": {
+            "show_product_info": true,
+            "title": "Related Products",
+            "show_section": true
+          },
+          "type": "related-products"
+        }
+      },
+      "newsletter_popup_text_color": "#1c1b1b",
+      "content_for_index": [
+        "slideshow",
+        "featured-collections",
+        "collection-list",
+        "featured-product",
+        "timeline",
+        "blog-posts",
+        "shop-the-look"
+      ],
+      "newsletter_popup_background": "#ffffff",
+      "background": "#ffffff",
+      "header_background": "#ffffff",
+      "checkout_logo_position": "center",
+      "checkout_logo_size": "small",
+      "text_color": "#5c5c5c",
+      "header_heading_color": "#5c5c5c",
+      "checkout_button_color": "#5c5c5c",
+      "navigation_background": "#ffffff",
+      "footer_heading_color": "#5c5c5c",
+      "checkout_sidebar_background_color": "#fafafa",
+      "cart_type": "drawer",
+      "checkout_input_background_color_mode": "white",
+      "secondary_elements_background": "#5c5c5c",
+      "product_list_horizontal_spacing": "small",
+      "footer_text_color": "#939393",
+      "base_text_font_size": 15,
+      "product_on_sale_color": "#f94c43",
+      "button_background": "#5c5c5c",
+      "product_image_size": "natural",
+      "currency_conversion_round_amounts": true,
+      "heading_size": "large",
+      "show_page_transition": true,
+      "product_info_alignment": "left",
+      "button_text_color": "#ffffff",
+      "header_light_color": "#939393",
+      "text_light_color": "#939393",
+      "secondary_elements_text_color": "#ffffff",
+      "currency_conversion_enabled": false,
+      "cart_show_free_shipping_threshold": false
+    }
+  }
+}

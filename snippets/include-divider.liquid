@@ -1,0 +1,30 @@
+{% if type == 'block' %}
+  {% assign id = "divider_" | append: block.id %}
+  {% assign show_border = block.show_border %}
+  {% assign divider_border = block.settings.divider_border %}
+  {% assign divider_spacing = block.settings.divider_spacing %}
+  {% assign mobile_divider_spacing = block.settings.mobile_divider_spacing %}
+
+{% else %}
+  {% assign id = "divider_" | append: section.id %}
+  {% assign show_border = section.show_border %}
+  {% assign divider_border = section.settings.divider_border %}
+  {% assign divider_spacing = section.settings.divider_spacing %}
+  {% assign mobile_divider_spacing = section.settings.mobile_divider_spacing %}
+{% endif %}
+
+
+<style type="text/css">
+  #{{id}} .page-divider{
+    {% if divider_spacing %}margin-top: {{ divider_spacing | minus: 2 }}px; margin-bottom:0;{% endif %}
+  }
+   @media screen and (max-width: 640px) {
+     #{{id}} .page-divider{
+      {% if mobile_divider_spacing %}margin-top: {{ mobile_divider_spacing | minus: 2  }}px; margin-bottom:0;{% endif %}
+    }
+</style>
+<div class="Grid" style="padding: 0;" id="{{id}}">
+  <div class="Grid__Cell">
+    <hr class="page-divider {% if divider_border %}active-divider{% endif %}">
+  </div>
+</div>

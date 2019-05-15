@@ -1,0 +1,160 @@
+{%- if section.settings.show_popup -%}
+  {%- unless section.settings.show_only_on_index and template != 'index' -%}
+    {%- unless section.settings.show_only_for_visitors and customer -%}
+      {% capture section_settings %}
+        {
+          "apparitionDelay": {{ section.settings.apparition_delay | json }},
+          "showOnlyOnce": {{ section.settings.show_only_once | json }}
+        }
+      {% endcapture %}
+
+      <aside class="NewsletterPopup" data-section-id="{{ section.id }}" data-section-type="newsletter-popup" data-section-settings='{{ section_settings }}' aria-hidden="true">
+        <button class="NewsletterPopup__Close" data-action="close-popup">{% include 'icon' with 'close' %}</button>
+
+        {%- if section.settings.title != blank -%}
+          <h2 class="NewsletterPopup__Heading Heading u-h2">{{ section.settings.title | escape }}</h2>
+        {%- endif -%}
+
+        {%- if section.settings.content != blank -%}
+          <div class="NewsletterPopup__Content">
+            {{ section.settings.content }}
+          </div>
+        {%- endif -%}
+
+        {%- if section.settings.show_newsletter -%}
+          {%- form 'customer', id: 'newsletter-popup', action: '/contact#newsletter-popup', class: 'NewsletterPopup__Form' -%}
+          <div class="Js-Popup-SectionHeader"></div>
+            {%- if form.posted_successfully? -%}
+              <p class="Form__Alert Alert Alert--success">{{ 'general.popup.success' | t }}</p>
+            {%- else -%}
+            <div class="Js-Popup-Newsletter">
+              <input type="hidden" name="contact[tags]" value="newsletter">
+
+              <input type="email" name="contact[email]" class="Form__Input" required="required" aria-label="{{ 'general.popup.email_placeholder' | t }}" placeholder="{{ 'general.popup.email_placeholder' | t }}">
+              <button class="Form__Submit Button Button--primary Button--full" type="submit">{{ 'general.popup.submit' | t }}</button>
+              </div>
+            {%- endif -%}
+          {%- endform -%}
+          <script>
+          window.addEventListener("load", function(){
+            if (window.jQuery) {
+              (function ($) {
+                var mc_url = '{{settings.mailchimp_url}}post-json?u={{settings.mailchimp_userid}}&id={{section.settings.mailchimp_list_id}}&c=?';
+
+                var successMsg = '<p class="Form__Alert Alert Alert--success">{{ 'general.popup.success' | t }}</p>';
+                var errorAlreadySubscribed = '<p class="Form__Alert Alert Alert--error">{{ 'home_page.newsletter.already_subscribed' | t }}</p>';
+                var errorContactSupport = '<p class="Form__Alert Alert Alert--error">{{ 'home_page.newsletter.error' | t }}</p>';
+                var errorEmailRequired = '<p class="Form__Alert Alert Alert--error">{{ 'home_page.newsletter.email_required' | t }}</p>';
+
+                $("#newsletter-popup").on('submit', function (e) {
+                  e.preventDefault();
+                  var form = $(this);
+                  var EMAIL = form.find('input[name="contact[email]"]').val();
+                  form.find('input[name="contact[email]"]').val('');
+
+                  if (!EMAIL) {
+                    $("#newsletter-popup .SectionHeader__Description").html(errorEmailRequired);
+                    return false;
+                  }
+                
+                  $.ajax({
+                    url: mc_url,
+                    method: 'get',
+                    type: 'get',
+                    cache: false,
+                    dataType: 'json',
+                    data: {
+                          EMAIL: EMAIL
+                    },
+                    success: function (response) {
+                      if (typeof response == 'object' && response.hasOwnProperty('result') && response.result == 'success') {
+                        $("#newsletter-popup .Js-Popup-SectionHeader").html(successMsg);
+                        $("#newsletter-popup .Js-Popup-Newsletter").hide();
+                      } else if (typeof response == 'object' && response.hasOwnProperty('result') && response.result == 'error' && response.hasOwnProperty('msg') && response.msg.match(/^.*is already subscribed to list.*$/g)) {
+                        $("#newsletter-popup .Js-Popup-SectionHeader").html(errorAlreadySubscribed);
+                      } else {
+                        $("#newsletter-popup .Js-Popup-SectionHeader").html(errorContactSupport);
+                      }
+                    },
+                    error: function (response) {
+                      $("#newsletter-popup .Js-Popup-SectionHeader").html(errorContactSupport);
+                    }
+                  })
+                  return false;
+                });
+              })(jQuery);
+            }
+          });
+      </script>
+        {%- endif -%}
+      </aside>
+    {%- endunless -%}
+  {%- endunless -%}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Popup",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_popup",
+      "label": "Enable",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_only_on_index",
+      "label": "Show only on home page",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_only_for_visitors",
+      "label": "Show only for visitors",
+      "info": "Customers who have created an account on your shop won't see it.",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_only_once",
+      "label": "Show only once per customer",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Popup"
+    },
+    {
+      "type": "richtext",
+      "id": "content",
+      "label": "Text",
+      "default": "<p>You can use this popup to display some useful information to your customers.</p>"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_newsletter",
+      "label": "Show newsletter form",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "mailchimp_list_id",
+      "label": "MailChimp List ID",
+      "info": "Enter MailChimp List ID"
+    },
+    {
+      "type": "range",
+      "id": "apparition_delay",
+      "min": 0,
+      "max": 15,
+      "step": 1,
+      "unit": "sec",
+      "label": "Delay until the popup appears",
+      "default": 5
+    }
+  ]
+}
+{% endschema %}

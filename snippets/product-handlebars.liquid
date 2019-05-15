@@ -1,0 +1,120 @@
+<div class="ProductItem {% if use_horizontal %}ProductItem--horizontal{% endif %}">
+  {%- comment -%}    OAKIFY-38 WISHLIST LINK    {%- endcomment -%}
+
+ {%raw%}
+  <div class="ProductItem__Wrapper">
+      <span class="smartwishlist" data-product="{{ id }}" data-variant="{{ first_variant_id }}"></span>
+{%endraw%}
+    {%- comment -%}
+    We are using LazySizes to efficiently choose the most appropriate image in the set. However, because internally LazySizes uses srcset, we need to make
+    sure that the image sizes we offer is not larger than the max size uploaded by the merchants.
+    {%- endcomment -%}
+
+    {%- if settings.product_image_size == 'natural' or use_horizontal -%}
+      {%- assign use_natural_size = true -%}
+    {%- else -%}
+      {%- assign use_natural_size = false -%}
+    {%- endif -%}
+
+    {%- if settings.product_show_secondary_image and product.images[1] != blank and use_horizontal != true -%}
+      {%- assign has_alternate_image = true -%}
+    {%- else -%}
+      {%- assign has_alternate_image = false -%}
+    {%- endif -%}
+
+    <a href="{%raw%}{{ url }}{% endraw %}" class="ProductItem__ImageWrapper {%raw%}{{#if images.has_alternate_image }}ProductItem__ImageWrapper--withAlternateImage{{/if}}{%endraw%}">
+      {%- if use_horizontal -%}
+        {%- assign max_width = 125 -%}
+      {%- else -%}
+        {%- assign max_width = product.featured_image.width -%}
+      {%- endif -%}
+
+      <div class="AspectRatio AspectRatio--{% if use_natural_size %}withFallback{% else %}{{ settings.product_image_size }}{% endif %}" {%raw%} style="max-width: {{ images.max_width }}px; padding-bottom: {{images.image_padding_bottom}}%; --aspect-ratio: {{ images.aspect_ratio }}" {%endraw%}>
+        {%- comment -%}
+        IMPLEMENTATION NOTE: The alternate image (not visible by default) should be the first in the DOM, as the spinner (Image__Loader element) is
+        displayed based on the immediately previously shown image.
+        {%- endcomment -%}
+
+        {%raw%}
+        {{#if images.has_alternate_image }}
+          <img class="ProductItem__Image ProductItem__Image--alternate Image--lazyLoad Image--fadeIn" data-src="{{ images.alt_image }}" data-widths="[{{ images.supported_sizes_alt }}]" data-sizes="auto" alt="{{ images.alt_image_alt }}" data-image-id="{{ images.alt_image_id }}">
+        {{/if}}
+        {%endraw%}
+
+        {%- include 'image-size', sizes: '200,400,600,700,800,900,1000,1200', image: product.featured_image -%}
+        {%- assign image_url = product.featured_image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+
+        {%raw%}
+        <img class="ProductItem__Image Image--lazyLoad Image--fadeIn" data-src="{{ images.featured_image }}" data-widths="[{{ images.supported_sizes_featured }}]" data-sizes="auto" alt="{{ images.featured_image_alt }}" data-image-id="{{ images.featured_image_id }}">
+        <span class="Image__Loader"></span>
+        
+        <noscript>
+          <img class="ProductItem__Image ProductItem__Image--alternate" src="{{ images.alt_image }}" alt="{{ images.alt_image_alt }}">
+          <img class="ProductItem__Image" src="{{ images.featured_image }}" alt="{{ images.featured_image_alt }}">
+        </noscript>
+        {%endraw%}
+      </div>
+    </a>
+
+    {%- if show_labels -%}
+      {%- capture product_labels -%}
+      {%raw%}
+         {{#each labels}}
+            <span class="ProductItem__Label Heading Text--subdued">{{this}}</span>
+           {{/each}}
+    
+
+        {{#if available}}
+           {{#if onSale}}
+            <span class="ProductItem__Label Discount Heading Text--subdued">-{{saleLabel}}%</span>
+          {{/if}}  
+        {{else}}
+          {%endraw%}
+          <span class="ProductItem__Label Heading Text--subdued">{{ 'product.labels.sold_out' | t }}</span>
+          {%raw%}
+        {{/if}}
+            {%endraw%}
+      {%- endcapture -%}
+
+      {%- if product_labels != blank -%}
+        <div class="ProductItem__LabelList">
+          {{ product_labels }}
+        </div>
+      {%- endif -%}
+    {%- endif -%}
+
+    {%- if show_product_info -%}
+      <div class="ProductItem__Info {% unless use_horizontal %}ProductItem__Info--{{ settings.product_info_alignment }}{% endunless %}">
+        <h2 class="ProductItem__Title Heading u-h6">
+          <a href="{{ product.url | within: collection }}">{%raw%}{{ title }}{%endraw%}</a>
+        </h2>
+
+        {%- if show_price_on_hover == nil -%}
+          {%- assign show_price_on_hover = settings.product_show_price_on_hover -%}
+        {%- endif -%}
+
+        {%- if show_price_on_hover and color_swatch_list != blank -%}
+          {{- color_swatch_list -}}
+        {%- endif -%}
+
+        {% raw %}
+        <div class="ProductItem__PriceList {% if show_price_on_hover %}ProductItem__PriceList--showOnHover{% endif %} Heading u-h6">
+          {{#if onSale}}
+            <span class="ProductItem__Price Price Price--highlight Text--subdued" data-money-convertible>{{ price }}</span>
+            <span class="ProductItem__Price Price Price--compareAt Text--subdued" data-money-convertible>{{ compare_at_price }}</span>
+           {{else}}
+            <span class="ProductItem__Price Price Text--subdued" data-money-convertible>{{ price }}</span>
+           {{/if}}
+        </div>
+        {% endraw %}
+        {%- if show_price_on_hover == false and color_swatch_list != blank -%}
+          {{- color_swatch_list -}}
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+
+  {%- if use_horizontal -%}
+    <a href="{{ associated_product.url }}" class="ProductItem__ViewButton Button Button--secondary hidden-pocket">{{ 'collection.product.view_product' | t }}</a>
+  {%- endif -%}
+</div>

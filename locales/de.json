@@ -1,0 +1,543 @@
+{
+  "general": {
+    "meta": {
+      "tags": "Markiert \"{{ tags }}\"",
+      "page": "Page {{ page }} "
+    },
+    "popup": {
+      "submit": "Anmelden",
+      "success": "Du hast dich zu unserem Newsletter angemeldet",
+      "email_placeholder": "Gib Deine E-Mail ein"
+    },
+    "password": {
+      "enter_password": "Passwort eingeben",
+      "password_input": "Dein Passwort",
+      "password_submit": "Bestätigen",
+      "newsletter_input": "Deine Email-Adresse",
+      "newsletter_submit": "Benachrichtige mich",
+      "newsletter_success": "Vielen Dank für die Anmeldung",
+      "login_title": "Sind Sie der Store-Besitzer?",
+      "login_link": "Hier anmelden",
+      "powered_by_html": "Dieser Shop wird von {{shopify_link}} unterstützt"
+    },
+    "pagination": {
+      "previous_page": "Letzte Seite",
+      "next_page": "Nächste Seite",
+      "go_to_page": "Gehe zu Seite {{page}} "
+    },
+    "announcement_bar": {
+      "close": "Schließen"
+    },
+    "jobs": {
+      "all_jobs": "Alle Jobs anzeigen"
+    }
+  },
+  "header": {
+    "navigation": {
+      "title": "Hauptmenü",
+      "account": "Konto",
+      "search": "Suche",
+      "cart": "Warenkorb",
+      "open_cart": "Warenkorb öffnen",
+      "close_cart": "Warenkorb schließen",
+      "skip_to_content": "Inhalt überspringen",
+      "wishlist": "Wunschliste",
+      "sidebar_title": "Seitenmenü",
+      "open_sidebar": "Menü öffnen",
+      "close_sidebar": "Menü schließen"
+    }
+  },
+  "footer": {
+    "general": {
+      "credits_html": "Theme by {{maestrooo_link}} "
+    },
+    "newsletter": {
+      "success": "Du hast dich zu unserem Newsletter angemeldet.",
+      "input": "Deine Email Adresse",
+      "submit": "Anmelden"
+    }
+  },
+  "search": {
+    "general": {
+      "title": "Suche",
+      "content": "Gib ein Wort ein um unsere Produkte zu suchen",
+      "input_placeholder": "Tippen um zu suchen...",
+      "view_all": "Alles ansehen",
+      "no_results": "Es konnten keine Ergebnisse gefunden werden",
+      "no_results_with_terms": "Es konnten dafür keine Ergebnisse gefunden werden {{terms}} ",
+      "pages": "Seiten",
+      "articles": "Artikel",
+      "results_count": {
+        "zero": "Produkte",
+        "one": "1 Ergebnis",
+        "other": "{{count}} Ergebnisse"
+      },
+      "results_with_terms_count": {
+        "zero": "0 Ergebnisse für \"{{terms}}\" ",
+        "one": "1 Ergebnis für \"{{terms}}\"",
+        "other": "{{count}} Ergebnisse für \"{{terms}}\""
+      },
+      "pages_and_articles": "Seiten & Artikel"
+    }
+  },
+  "404": {
+    "general": {
+      "title": "404",
+      "content": "Die gesuchte Seite kann nicht gefunden werden",
+      "button": "Zurück zur Startseite"
+    }
+  },
+  "home_page": {
+    "onboarding": {
+      "vendor_title": "Marke",
+      "product_title": "Produkttitel",
+      "article_category": "Kategorie",
+      "product_description": "A product description can be used to showcase the features and advantages of your product. You can check out Shopify's ecommerce blog for inspiration and advice for properly market your products.",
+      "collection_title": "Katalog",
+      "article_name": "Artikelname",
+      "article_excerpt": "Your store hasn’t published any blog posts yet. A blog can be used to talk about new product launches, tips, or other news you want to share with your customers. You can check out Shopify’s ecommerce blog for inspiration and advice for your own store and blog."
+    },
+    "featured_product": {
+      "view_product": "Produktdetails anzeigen"
+    },
+    "shop_the_look": {
+      "view_product": "Dieses Produkt anzeigen",
+      "view_products": "Produkte anzeigen",
+      "popover_title": "Könnte Dir auch gefallen"
+    },
+    "featured_video": {
+      "play": "Video abspielen"
+    },
+    "newsletter": {
+      "input": "Deine Email Adresse",
+      "submit": "Anmelden",
+      "success": "Du hast dich zu unserem Newsletter angemeldet.",
+      "error": "Ein Fehler ist aufgetreten. Bitte kontaktiere unseren Support.",
+      "already_subscribed": "Diese Email-Adresse ist bereits registriert.",
+      "email_required": "Diese Email-Adresse ist ungültig."
+    }
+  },
+  "collection_list": {
+    "general": {
+      "title": "Alle Kataloge",
+      "empty_title": "Keine Kataloge",
+      "empty_button": "Zurück zur Startseite"
+    }
+  },
+  "collection": {
+    "general": {
+      "all_products": "Alle Produkte",
+      "no_products": "Keine Produkte",
+      "empty": "Katalog {{collection_title}} ist leer",
+      "empty_button": "Zurück zur Startseite",
+      "reset": "Filter zurücksetzen",
+      "view_products": "Produkte anzeigen"
+    },
+    "filter": {
+      "title": "Filter",
+      "show_filter": "Filter anzeigen",
+      "all": "Filter",
+      "reset": "Zurücksetzen",
+      "apply": "Anwenden",
+      "size_filter": "Größe"
+    },
+    "sorting": {
+      "title": "Sortierung",
+      "best_selling": "Topseller",
+      "title_ascending": "Alphabetisch: A-Z",
+      "title_descending": "Alphabetisch: Z-A",
+      "price_ascending": "Preis - aufsteigend",
+      "price_descending": "Preis - absteigend",
+      "created_ascending": "Älteste zuerst",
+      "created_descending": "Neueste zuerst",
+      "manual": "Gekennzeichnet",
+      "show_sort": "Sortieren"
+    },
+    "layout": {
+      "show_one_per_row": "Zeige ein Produkt pro Seite",
+      "show_two_per_row": "Zeige zwei Produkte pro Seite",
+      "show_four_per_row": "Zeige vier Produkte pro Seite"
+    },
+    "product": {
+      "from_price_html": "Von {{min_price}} ",
+      "view_product": "Produkt anzeigen"
+    }
+  },
+  "customer": {
+    "account": {
+      "title": "Mein Benutzerkonto",
+      "welcome": "Willkommen zurück, {{first_name}}! ",
+      "logout": "Abmelden",
+      "back_to_account": "Zurück zum Benutzerkonto",
+      "no_orders_title": "Meine Bestellungen",
+      "no_orders_content": "Du hast noch keine Bestellung",
+      "no_addresses_title": "Keine Adressen",
+      "no_addresses_content": "Du hast noch keine gespeicherten Adressen",
+      "default_address": "Hauptadresse",
+      "edit_addresses": "Adressen löschen",
+      "manage_addresses": "Adressen verwalten"
+    },
+    "login": {
+      "title": "Anmelden",
+      "description": "Bitte gebe Email und Passwort ein",
+      "email": "E-Mail",
+      "password": "Passwort",
+      "forgot": "Passwort vergessen?",
+      "submit": "Anmelden",
+      "resend_account_invite": "Hinweis: Wir verwenden seit kurzem ein neues Shopsystem. Falls Du vorher ein Kundenkonto hattest, solltest Du eine Aktivierungs-Email erhalten haben. Prüfe dafür bitte Deinen Posteingang.",
+      "resend_account_invite_link": "Aktivierung erneut senden",
+      "register_label": "Du hast noch kein Benutzerkonto? ",
+      "register_link": "Erstelle jetzt eins!"
+    },
+    "orders": {
+      "order_number": "Bestellung",
+      "date": "Datum",
+      "payment_status": "Bezahlstatus",
+      "total": "Summe",
+      "fulfillment_status": "Versandstatus"
+    },
+    "order": {
+      "title": "Bestellung {{order_number}}",
+      "back_to_account": "Zurück zum Benutzerkonto",
+      "cancelled_at": "Bestellung storniert am {{ date }} ",
+      "fulfillment_html": "Deine Bestellung wurde versendet. Verfolge Deine Sendung mit der Nummer {{tracking_number}} oder klicke hier: <a href=\"{{tracking_url}}\" class=\"Link Link--underlineNative\" target=\"_blank\">{{tracking_url}}<\/a> ",
+      "line_fulfillment_html": "Dein Produkt \"{{product_title}}\" wurde versendet. Verfolge Deine Sendung mit der Nummer {{tracking_number}} oder klicke hier: <a href=\"{{tracking_url}}\" class=\"Link Link--underlineNative\" target=\"_blank\">{{tracking_url}}<\/a> ",
+      "product": "Produkt",
+      "quantity": "Menge",
+      "line_price": "Summe",
+      "subtotal": "Zwischensumme",
+      "discount": "Rabatt",
+      "shipping": "Versand",
+      "tax": "Steuern",
+      "total": "Summe",
+      "shipping_address": "Versandadresse",
+      "billing_address": "Rechnungsadresse",
+      "no_shipping_address": "Für diese Bestellung war keine Versandadresse erforderlich.",
+      "placed_at": "Bestellung vom {{ date }}"
+    },
+    "activate_account": {
+      "title": "Konto aktivieren",
+      "description": "Bitte gib ein Passwort ein um Dein Konto zu erstellen:",
+      "password": "Passwort",
+      "password_confirmation": "Passwort bestätigen",
+      "submit": "Aktivieren",
+      "decline": "Ablehnen"
+    },
+    "recover_password": {
+      "title": "Passwort wiederherstellen",
+      "description": "Bitte gib Deine E-Mail ein:",
+      "email": "E-Mail",
+      "submit": "Wiederherstellung",
+      "login_label": "Erinnerst Du Dich an dein Passwort ?",
+      "login_link": "Zurück zur Anmeldung",
+      "success": "Wir haben Dir eine Email mit Informationen zum Zurücksetzen Deines Passworts gesendet."
+    },
+    "reset_password": {
+      "title": "Passwort zurücksetzen",
+      "description": "Bitte gib ein neues Passwort ein:",
+      "password": "Passwort",
+      "password_confirmation": "Passwort bestätigen",
+      "submit": "Zurücksetzen"
+    },
+    "addresses": {
+      "title": "Meine Adressen",
+      "empty": "Es wurden bisher keine Adressen gespeichert",
+      "edit": "Bearbeiten",
+      "delete": "Löschen",
+      "add_address": "Neue Adresse hinzufügen",
+      "edit_address": "Adresse bearbeiten",
+      "form_subtitle": "Bitte fülle die folgenden Informationen aus:",
+      "address_label": "Adresse {{position}} ",
+      "default_address_label": "Standardadresse",
+      "first_name": "Vorname",
+      "last_name": "Nachname",
+      "company": "Firma",
+      "address1": "Adresse 1",
+      "address2": "Adresse 2",
+      "city": "Stadt",
+      "country": "Land",
+      "province": "Ort",
+      "zip": "Postleitzahl",
+      "phone": "Telefon",
+      "set_default": "Als Standardadresse festlegen"
+    },
+    "register": {
+      "title": "Registrieren",
+      "description": "Bitte fülle die folgenden Informationen aus:",
+      "first_name": "Vorname",
+      "last_name": "Nachname",
+      "email": "E-Mail",
+      "password": "Passwort",
+      "submit": "Konto erstellen"
+    }
+  },
+  "cart": {
+    "general": {
+      "title": "Warenkorb",
+      "view_cart": "Warenkorb",
+      "empty": "Dein Warenkorb ist leer",
+      "add_note": "Bestellschein hinzufügen",
+      "edit_note": "Bestellschein bearbeiten",
+      "save_note": "Speichern",
+      "note_placeholder": "Wie können wir Dir helfen?",
+      "free_shipping": "Du hast Anspruch auf kostenlosen Versand!",
+      "free_shipping_remaining_html": "Kaufe für {{remaining_amount}} ein und erhalte kostenlosen Versand!",
+      "shipping_and_taxes_notice": "Kostenloser Versand",
+      "total": "Summe",
+      "checkout": "Zur Kasse",
+      "continue_shopping": "Weiter shoppen",
+      "empty_button": "Unsere Produkte shoppen",
+      "coupon_notice": "Gutscheine im Checkout einlösen",
+      "currency_notice": "Alle Bestellungen werden in {{shop_currency}} verarbeitet. Der Inhalt des Warenkorbs wird ggfs. in einer anderen Währung zum aktuellen Umrechnungskurs angezeigt."
+    },
+    "items": {
+      "product": "Produkt",
+      "quantity": "Menge",
+      "total": "Summe",
+      "remove": "Entfernen",
+      "set_quantity": "Menge ändern zu {{new_quantity}}"
+    },
+    "shipping_estimator": {
+      "title": "Versandzeit berechnen",
+      "country": "Land",
+      "province": "Ort",
+      "zip_code": "Postleitzahl",
+      "one_result_title": "Eine Option verfügbar:",
+      "no_results_title": "Es konnte keine Lieferung gefunden werden",
+      "estimate": "Berechnen",
+      "more_results_title": "{{count}} Optionen verfügbar:"
+    }
+  },
+  "product": {
+    "labels": {
+      "sold_out": "Ausverkauft",
+      "on_sale": "Im Angebot"
+    },
+    "slideshow": {
+      "close": "Schließen (Esc)",
+      "previous": "Zurück (linker Pfeil) ",
+      "next": "Weiter (rechter Pfeil)",
+      "image_loading_error": "Dieses Bild konnte nicht geladen werden. Bitte versuche die Seite neu zu laden."
+    },
+    "form": {
+      "variant_label": "Variante",
+      "price": "Preis",
+      "quantity": "Menge",
+      "from_price_html": "Von {{min_price}} ",
+      "select_model": "Wähle dieses Modell",
+      "shipping": "Kostenloser Versand & Retoure",
+      "select_size": "Bitte auswählen",
+      "size_chart": "Größentabelle",
+      "inventory_quantity_count": {
+        "one": "{{count}} Stück auf Lager. ",
+        "other": "{{count}} Stück auf Lager"
+      },
+      "low_inventory_quantity_count": {
+        "one": "Nur {{count}} Stück auf Lager",
+        "other": "Nur {{count}} Stück auf Lager"
+      },
+      "colors_count": {
+        "one": "{{count}} Farbe",
+        "other": "{{count}} Farben "
+      },
+      "add_to_cart": "IN DEN WARENKORB",
+      "sold_out": "Ausverkauft",
+      "pre_order": "Vorbestellen",
+      "unavailable": "Nicht verfügbar",
+      "view_info": "Mehr Information",
+      "view_images": "Bilder anzeigen ",
+      "notify_back_in_stock": "Größe anfragen",
+      "back_in_stock_modal_title": "Sende mir eine Benachrichtigung, wenn meine Größe wieder auf Lager ist",
+      "back_in_stock_hint": "Leider werden nicht alle Artikel wieder vorrätig sein. Deine Anfrage wird für drei Monate gespeichert und danach automatisch gelöscht.",
+      "back_in_stock_email": "E-Mail-Adresse",
+      "back_in_stock_success": "Du erhälst eine E-Mail, wenn Dein Produkt wieder verfügbar ist.",
+      "color": "Farbe",
+      "back_in_stock_mailchimp": "Sende mir exklusive IVY & OAK Angebote und Neuigkeiten zu",
+      "back_in_stock_cta": "Notify Me"
+    },
+    "tabs": {
+      "reviews": "Bewertungen"
+    },
+    "buy_it_with": {
+      "title": "Kaufe es mit"
+    }
+  },
+  "gift_card": {
+    "issued": {
+      "subtext": "Hier ist Dein Geschenkkarte!",
+      "disabled": "Deine Geschenkkarte ist deaktiviert.",
+      "expired": "Deine Geschenkkarte ist abgelaufen am {{ expiry }}. ",
+      "expires_on": "Deine Geschenkkarte läuft ab am {{ expiry }}. ",
+      "shop_link": "Beginn mit dem Einkauf",
+      "print": "ausdrucken",
+      "initial_amount_html": "Betrag: {{initial_amount}} ",
+      "add_to_apple_wallet": "Zu Apple Wallet hinzufügen",
+      "remaining_balance_html": "Restbetrag: {{balance}} ",
+      "illustration_alt": "Geschenkkarte",
+      "redeem_html": "Nutze diesen Code im Checkout um den Geschenkgutschein einzulosen, oder drucke diese Seite aus: {{print_link}}."
+    }
+  },
+  "send_account_invite": {
+    "settings": {
+      "title": "Kontoaktivierung senden",
+      "description": "Bitte Email-Adresse eingeben",
+      "submit": "Aktkvierung senden",
+      "login_text": "Zurück zum",
+      "login_link": "Login",
+      "server": "Es ist ein technischer Fehleraufgetreten. Bitte wende Dich an unseren Kundenservice",
+      "empty": "Bitte eine Email-Adresse eintragen",
+      "error": "Email-Adresse nicht bekannt. Bitte wende Dich an unseren Kundenservice",
+      "success": "Bitte prüfe deinen Email-account"
+    }
+  },
+  "transparency": {
+    "story_behind": {
+      "title": "#TheStoryBehind",
+      "phrase_1": "Für uns ist Nachhaltigkeit sehr wichtig.",
+      "phrase_2": "Und daher fokussieren wir uns darauf Schritt für Schritt noch nachhaltiger werden.Noch sind wir nicht perfekt, aber wir arbeiten an spannenden Zielen, so dass unsere Vision wahr wird:",
+      "phrase_3": "Wir möchten Bewusstsein schärfen und volle Verantwortung übernehmen. Von nachhaltigen Rohstoffen über ethische Arbeitsbedingungen in der Produktion bis hin zu hochwertiger Qualität, die mehr als eine Saison überdauert und das alles zu einem fairen Preis.",
+      "phrase_4": "Als Erstes schaffen wir Transparenz und Klarheit.",
+      "phrase_5": "Das Produkt steht bei uns im Mittelpunkt. Wir machen kein Geheimnis aus den tatsächlichen Kosten und schlüsseln sie nach einzelnen Produktionsbereichen auf.",
+      "phrase_6": "Wir richten uns nicht nach den Preisen traditioneller Einzelhändler, sondern unsere Kundinnen zahlen nur das, was ein Produkt auch wirklich wert ist.",
+      "phrase_7": "Wir gehen neue Wege und haben viel vor und glauben fest daran, dass wir gemeinsam etwas verändern können."
+    },
+    "infographic_one": {
+      "name": "HOCHZEITSKLEID",
+      "url_desktop": "https:\/\/cdn.shopify.com\/s\/files\/1\/0078\/6255\/0643\/files\/WEDDING_DRESS_DESKTOP_DE.png?2262057766839085919",
+      "url_mobile_up": "https:\/\/cdn.shopify.com\/s\/files\/1\/0078\/6255\/0643\/files\/WEDDING_DRESS_MOBILE_1_DE.png?2262057766839085919",
+      "url_mobile_down": "https:\/\/cdn.shopify.com\/s\/files\/1\/0078\/6255\/0643\/files\/WEDDING_DRESS_MOBILE_2_DE.png?2262057766839085919"
+    },
+    "infographic_two": {
+      "name": "MANTEL",
+      "url_desktop": "https:\/\/cdn.shopify.com\/s\/files\/1\/0078\/6255\/0643\/files\/COAT_DESKTOP_DE.png?2262057766839085919",
+      "url_mobile_up": "https:\/\/cdn.shopify.com\/s\/files\/1\/0078\/6255\/0643\/files\/COAT_MOBILE_1_DE.png?2262057766839085919",
+      "url_mobile_down": "https:\/\/cdn.shopify.com\/s\/files\/1\/0078\/6255\/0643\/files\/COAT_MOBILE_2_DE.png?2262057766839085919"
+    },
+    "infographic_three": {
+      "name": "ABENDKLEID",
+      "url_desktop": "https:\/\/cdn.shopify.com\/s\/files\/1\/0078\/6255\/0643\/files\/EVENING_DRESS_DESKTOP_DE.png?8092180210919591547",
+      "url_mobile_up": "https:\/\/cdn.shopify.com\/s\/files\/1\/0078\/6255\/0643\/files\/EVENING_DRESS_MOBILE_1_DE.png?8092180210919591547",
+      "url_mobile_down": "https:\/\/cdn.shopify.com\/s\/files\/1\/0078\/6255\/0643\/files\/EVENING_DRESS_MOBILE_2_DE.png?8092180210919591547"
+    },
+    "description": {
+      "title_1": "HANDELS&shy;AUFSCHLAG",
+      "phrase_1": "Traditionelle Marken kalkulieren ihre Verkaufspreise mit 6 bis 10 Mal der Produktionskosten um bei Saisonende hohe Rabatte geben zu können. Unsere Preise sind von vornherein richtig kalkuliert (2 bis 4 Mal der Produktionskosten) und wir veranstalten dafür weniger Rabattaktionen über das Jahr – einfach ein faireres Modell für alle.",
+      "title_2": "ZWISCHEN&shy;HÄNDLERMARGE",
+      "phrase_2": "Verzicht auf Zwischenhändler: Anders als die meisten Modemarken haben wir direkte Beziehungen zu unseren Lieferanten und verzichten komplett auf teure Zwischenhändler. Das verbessert nicht nur die Transparenz, sondern erlaubt uns auch, die erzielten Einsparungen in das zu investieren, was letztendlich zählt: unser Produkt.",
+      "title_3": "„Echte“ Kosten",
+      "phrase_3": "Unsere Produkte werden aus denselben hochqualitativen Materialen hergestellt und unterliegen in der Fertigung den gleichen oder besseren Qualitätsstandards wie die Produkte von anderen Luxusmarken."
+    }
+  },
+  "add_express_sending_phone": {
+    "error": "Für Express-Versand benötigen wir Deine Telefonnummer."
+  },
+  "blog": {
+    "general": {
+      "empty_button": "Zurück zur Startseite",
+      "all_tag": "Alles",
+      "no_articles": "Artikel {{blog_title}} ist leer"
+    },
+    "article": {
+      "read_more": "Weiterlesen",
+      "written_by": "Geschrieben von {{author}}",
+      "now_reading": "Jetzt lesen:",
+      "share": "Teilen",
+      "previous": "Vorherige",
+      "next": "Nächste",
+      "comments_count": {
+        "zero": "{{count}} Kommentare ",
+        "one": "{{count}} Kommentar",
+        "other": "{{count}} Kommentare "
+      }
+    },
+    "comments": {
+      "form_title": "Hinterlasse einen Kommentar",
+      "name_placeholder": "Name",
+      "email_placeholder": "E-Mail",
+      "comment_placeholder": "Inhalt",
+      "approval_notice": "Alle Kommentare werden moderiert, bevor sie veröffentlicht werden",
+      "submit": "Kommentar hinzufügen",
+      "success": "Dein Kommentar wurde veröffentlicht.",
+      "success_moderated": "Dein Kommentar wurde gesendet. Sobald der Besitzer ihn freigegeben hat, ist er für alle sichtbar."
+    }
+  },
+  "contact": {
+    "form": {
+      "name": "Dein Name",
+      "email": "Deine E-Mail",
+      "message": "Deine Nachricht",
+      "submit": "Nachricht senden",
+      "successfully_sent": "Deine Nachricht wurde erfolgreich verschickt."
+    }
+  },
+  "date_formats": {
+    "month_day_year": "%d %B %Y ",
+    "month_day_year_time": "%d. %B %Y",
+    "month_day_year_short": "%d\/%m\/%Y "
+  },
+  "shopify": {
+    "checkout": {
+      "order_summary": {
+        "discount_placeholder": "Gutscheincode eingeben",
+        "shipping_pending_value": "Kostenlos",
+        "shipping_pending_message": "Kostenlos"
+      },
+      "thank_you": {
+        "return_to_store_link_label": "Zurück zum Shop",
+        "contact_us_html": "Fragen oder Feedback? {{ contact_us }}",
+        "contact_us": "Kontaktiere uns",
+        "contact_us_lowercase": "kontaktiere uns",
+        "thank_you_title": "Deine Bestellung ist bestätigt",
+        "thank_you_description": "Lehne Dich zurück und freue Dich auf Dein neues Outfit! Wir melden uns bei Dir sobald Deine Artikel versendet wurden.",
+        "customer_information_title": "Deine Details",
+        "order_updates_subscribe_to_email_notifications": "Erhalte Updates zum Versand via Email",
+        "order_updates_subscribe_to_phone_notifications": "Erhalte Updates zum Versand via SMS",
+        "order_updates_subscribe_to_email_or_phone_notifications": "Erhalte Updates zum Versand via Email oder SMS",
+        "order_updates_description_email_html": "Du erhältst zur Bestätigung in Kürze eine Email mit der Bestellnummer. Alle Updates werden an {{ customer_contact }} geschickt.",
+        "order_updates_description_phone_html": "Du erhältst zur Bestätigung in Kürze eine SMS mit der Bestellnummer. Alle Updates werden an {{ customer_contact }} geschickt.",
+        "failed_contact_merchant": "Laut {{ company }} konnte Deine Bestellung nicht wie vorgesehen geliefert werden. Bitte kontaktiere {{ company }} um einen neuen Zustellversuch zu vereinbaren.",
+        "failed_contact_merchant_no_company": "Deine Bestellung konnte nicht wie geplant geliefert werden. Kontaktiere uns bitte, um eine erneute Lieferung zu vereinbaren."
+      },
+      "customer_account": {
+        "have_an_account_label": "Nachfolgend Deinen Kauf als Gast abschließen oder ",
+        "sign_in_link_label": "hier als Kunde anmelden."
+      },
+      "contact": {
+        "address_title": "Adresse, Hausnummer",
+        "address1_label": "Adresse, Hausnummer",
+        "optional_phone_label": "Telefon (optional aber notwendig für Express-Versand)"
+      },
+      "alternative_payment_method_banner": {
+        "or": "Paypal Express-Checkout ODER gewohnter Checkout"
+      },
+      "payment": {
+        "offsite_gateway_redirect_hint": "Nachdem Du “{{ button_label }}” geklickt hast, wirst Du zu {{ gateway_label }} weitergeleitet, um Deinen Einkauf sicher abzuschließen.",
+        "no_js_credit_card_fields_redirect_hint": "Du wirst für die Angabe Deiner Zahlungsdaten an ein Payment Gateway zurückgeleitet.",
+        "technical_error": "Auf Grund technischer Probleme können im Moment keine Zahlungen abgewickelt werden. Bitte versuche es später noch einmal.",
+        "amazon_payments_login_hint": "Nachdem Du “Kaufen” geklickt hast, wirst Du zu Amazon weitergeleitet, um Deinen Einkauf sicher abzuschließen."
+      },
+      "processing": {
+        "wait": {
+          "no_auto_refresh_html": "Wenn Du nicht automatisch weitergeleitet wirst, {{ link }}."
+        }
+      },
+      "marketing": {
+        "unsubscribe": {
+          "description": "Du wirst keine Einkaufswagen-Erinnerungen mehr von uns erhalten."
+        },
+        "accept_marketing_checkbox_label": "Ich möchte mehr über IVY & OAK und eure Produkte erfahren (Abmeldung vom Newsletter jederzeit möglich)"
+      },
+      "tnc_checkbox": {
+        "before": "Hiermit akzeptiere ich die ",
+        "after": " Neuigkeiten über IVY & OAK Produkte kann ich jederzeit abbestellen.",
+        "cta": "Allgemeinen Geschäftsbedingungen."
+      },
+      "structured_checkout": {
+        "text": "Wähle Deine bevorzugte Checkout-Methode aus",
+        "guest": "Als Gast einkaufen",
+        "login": "Anmelden",
+        "more_options": "MEHR OPTIONEN"
+      }
+    }
+  }
+}

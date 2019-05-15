@@ -1,0 +1,23 @@
+//<script>
+//avoid late GTM loading
+let gtmReady = false
+debugConsole('SEARCHING GTM...')
+if (!!window.google_tag_manager) {
+    debugConsole('GTM LOADED')
+    gtmReady = true
+} else {
+  window.addEventListener('gtm_loaded', function() {
+		window.dataLayer = window.dataLayer || [];
+		gtmReady = true;
+		debugConsole('LATE')
+		// PROD
+		if(typeof Shopify.Checkout.page !== 'undefined' && Shopify.Checkout.page === 'thank_you'){
+				window.dataLayer = window.dataLayer || [];
+				gtmReady = true;
+				debugConsole('LATE GTM Loading avoided!')
+		//DEV
+		//if(typeof Shopify.Checkout.page === 'undefined' && Shopify.Checkout.page !== 'thank_you'){
+			sendEEPurchaseToGTM('GTM_Delayed');
+		}
+  });
+}

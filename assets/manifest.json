@@ -1,0 +1,16 @@
+{
+  "manifest_version": 1,
+  "name": "IVY-&-OAK FullStory",
+  "description": "This is an external extension to record user sessions",
+  "version": "1.2.10",
+  "Content-Security-Policy": {
+    "font-src": "self https:\/\/*.paypal.com https:\/\/*.paypalobjects.com",
+    "default-src": "https:\/\/ivy-oak-de.myshopify.com https:\/\/de-ivy-oak.myshopify.com https:\/\/en-ivy-oak.myshopify.com https:\/\/ivy-oak.com https:\/\/ivy-oak.de",
+    "script-src": "https:\/\/fullstory.com\/s\/fs.js",
+    "connect-src": "self",
+    "img-src": "self",
+    "report-uri": "localhost",
+    "style-src": "self unsafe-inline",
+    "frame-src": "none"
+  }
+}

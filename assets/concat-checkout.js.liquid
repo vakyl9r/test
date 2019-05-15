@@ -1,0 +1,922 @@
+//<script>
+const addCustomerId = () => {
+	try {
+		let userId;
+		if(document.getElementById('customerID')){
+			userId = document.getElementById('customerID').innerText
+		}
+		let userLoginStatus;
+		if(userId){
+			localStorage.setItem('userLoginStatus', true);
+			localStorage.setItem('customerID', userId);
+			userLoginStatus = true;
+		} else {
+			userLoginStatus = localStorage.getItem('userLoginStatus')
+			userId = localStorage.getItem('customerID')
+		}
+
+		userLoginStatus ? userLoginStatus = JSON.parse(userLoginStatus) : userLoginStatus = false ;
+		const logoutBtn = document.getElementsByClassName('logged-in-customer-information__paragraph')
+		if(logoutBtn.length > 0){
+			logoutBtn[0].children[3].addEventListener('click', function() {
+				localStorage.removeItem('userLoginStatus');
+				localStorage.removeItem('customerID');
+				sendAccountInfo('logout','success')
+			})
+		}
+	}
+	catch(error){
+		notFoundVariables('addCustomerId', error)
+	}
+}
+
+window.addCustomerId = addCustomerId;
+//<script>
+const bridalProductSurprise = () => {
+	try {
+		const html = `<div class="MC-Interest-Group">
+						<img src="{{settings.post_checkout_info_img | img_url: '1000x'}}">
+						<div class="MC-Wrap">
+						<h2>{{settings.post_checkout_info_heading}}</h2>
+						<div class="content-wrap">
+						<p>{{settings.post_checkout_info_content}}</p>
+						<div class="MC-Input-Wrap">
+						<div class="field field--required field--show-floating-label">
+							<div class="field__input-wrapper"><label class="field__label field__label--visible" for="wedding_day">{{settings.post_checkout_placeholder}}</label>
+								<input class="field__input" aria-required="true" type="date" name="wedding-day" id="wedding_day">
+							</div>
+						</div>
+						</div>
+						<br>
+						<button name="button" type="submit" class="btn" id="mc-interest" aria-busy="false">
+							<span class="btn__content">
+								{{settings.post_checkout_cta}}
+							</span>
+							<svg class="icon-svg icon-svg--size-18 btn__spinner icon-svg--spinner-button" aria-hidden="true" focusable="false"> <use xlink:href="#spinner-button"></use> </svg>
+						</button>
+						</div>
+						</div>
+						<div class="content-success" style="display:none;">
+							{{settings.post_checkout_info_success}}
+						</div>
+						<div class="content-error" style="display:none;">
+							{{settings.post_checkout_info_error}}
+						</div>
+					</div>`;
+
+		Checkout.$('.thank-you__additional-content').after(html);
+		
+		Checkout.$('body').on('click', '#mc-interest', e => {
+
+			e.preventDefault();
+
+			const weddingDate = Checkout.$('#wedding_day').val();
+
+			if(weddingDate.length > 0 && weddingDate!==''){
+				Checkout.$('.field.field--required').removeClass('field--error');
+				Checkout.$('#mc-interest').addClass('btn--disabled');
+
+				const data = {
+					email : checkoutEmail,
+					weddingDate,
+					shopDomain 
+				};
+
+				const request = Checkout.$.ajax({
+						url: "https://services.ivy-oak.com/post-checkout-customer-info",
+						type: "POST",
+						data: JSON.stringify(data),
+						dataType: 'json',
+						contentType: 'application/json',
+				});
+
+				request.done(msg => {
+					Checkout.$('.content-wrap').remove();
+					Checkout.$('.content-success').show();
+				});
+
+				request.fail((jqXHR, textStatus) => {
+					Checkout.$('.content-wrap').remove();
+					Checkout.$('.content-error').show();
+				});
+
+			} else {
+				Checkout.$('.field.field--required').addClass('field--error');
+			}
+		});
+	}
+	catch(error){
+		notFoundVariables('bridalProductSurprise', error)
+	}
+} 
+
+window.bridalProductSurprise = bridalProductSurprise;
+//<script>
+// when the user enter into contact_info
+const contactInfoEnter = () => {
+	try {
+		let path;
+		JSON.parse(localStorage.getItem('sideCart')) ? path = 'skip cart' : path = 'cart view'
+		dataCheckoutOptions(1,[path])
+		dataCheckoutLayer(2)
+	}
+	catch(error){
+		notFoundVariables('contactInfoEnter', error)
+	}
+}
+
+window.contactInfoEnter = contactInfoEnter;
+//<script>
+const couponRedemption = btn => {
+	try {
+		if(btn.length > 0){
+			for (let i = 0; i < btn.length; i++){
+				btn[i].addEventListener('click',() => {
+					//Add a time to Apply/Delete code
+					setTimeout(function(){ location.reload(); }, 1000);
+				});
+			}
+		}
+	}
+	catch(error){
+		notFoundVariables('couponRedemption', error)
+	}
+}
+
+window.couponRedemption = couponRedemption;
+//<script>
+const dataCheckoutLayer = step => {
+	try {
+		const currency = document.getElementsByClassName('payment-due__price')
+		const currencyCode = currencySelector(currency[0].outerText)
+		//Just sent it once
+		if(!sessionStorage.getItem(`eeCheckoutStep${step}Sent`)){
+			sessionStorage.setItem(`eeCheckoutStep${step}Sent`,true)
+			dataLayer.push({
+				'event': 'eeCheckout',
+				'ecommerce': {
+					'currencyCode': currencyCode,    
+					'checkout': {
+						'actionField': {step},
+					}
+				}
+			});
+		}
+	}
+	catch(error){
+		notFoundVariables('dataCheckoutLayer', error)
+	}
+}
+
+window.dataCheckoutLayer = dataCheckoutLayer;
+//<script>
+const dataCheckoutOptions = (step, option) => {
+	try {
+		//Just sent it once
+		if(!sessionStorage.getItem(`eeCheckoutOptionsStep${step}Sent`)){
+			sessionStorage.setItem(`eeCheckoutOptionsStep${step}Sent`,true)
+			dataLayer.push({
+				'event': 'eeCheckoutOptions',
+				'ecommerce': {
+					'checkout_option': {
+						'actionField': {step, 'option': option}
+					}
+				}
+			});
+		}
+	}
+	catch(error){
+		notFoundVariables('dataCheckoutOptions', error)
+	}
+}
+
+window.dataCheckoutOptions = dataCheckoutOptions;
+//<script>
+const eeCheckout = checkoutProducts => {
+	try {
+		if(!sessionStorage.getItem('eeCheckoutStep1Sent')){
+			sessionStorage.setItem('eeCheckoutStep1Sent',true)
+			const currency = $('.payment-due__price')[0].innerText
+			let products = []
+			for (let i = 0; i < checkoutProducts.length; i++){
+				const proccessedData = settingUpVariables(i)
+				products = [...products, {
+					'name': proccessedData.name, // Name or ID is required.
+					'id': proccessedData.id,   // Config SKU
+					'price': proccessedData.price.toFixed(2),
+					'brand': 'Ivy and Oak',
+					'category': proccessedData.category,
+					'variant': '',
+					'quantity': proccessedData.quantity,
+					'metric1': proccessedData.metric1 ? proccessedData.metric1.toFixed(2) : proccessedData.price.toFixed(2),
+					'dimension1': proccessedData.dimension1,
+					'dimension2': proccessedData.dimension2,
+					'dimension8': proccessedData.dimension8,
+				}]
+			}
+			dataLayer.push({
+				'event': 'eeCheckout',
+				'ecommerce': {
+					'currencyCode': currencySelector(currency),    
+					'checkout': {
+						'actionField': {'step': 1},
+						'products': 
+							products.map(product => {
+							return (
+								{
+									'name':product.name, 
+									'id':product.id,
+									'price':product.price,
+									'brand':product.brand,
+									'category':product.category,
+									'variant':product.variant,
+									'quantity':product.quantity,
+									'metric1':product.metric1,
+									'dimension1':product.dimension1,
+									'dimension2':product.dimension2,
+									'dimension8':product.dimension8,
+								}
+							)
+						})
+					}
+				}
+			});	
+		}
+	}
+	catch(error){
+		notFoundVariables('eeCheckout', error)
+	}
+}
+
+window.eeCheckout = eeCheckout;
+//<script>
+const expressSendPhoneLogic = () => {
+	/* OAKIFY-245 Add Static phone number if customer phone not give */
+	try {
+		const regExpPhoneNumber = number => {
+			return /^(?:\+\d{1,3}|0\d{1,3}|00\d{1,2})?(?:\s?\(\d+\))?(?:[-\/\s.]|\d)+$/.test(number)
+		}
+		//get the billing info to check if the phone is in
+		if(checkoutObj.address && checkoutObj.address.phone){
+			if(regExpPhoneNumber(checkoutObj.address.phone)){
+				sessionStorage.setItem('addedPhoneNumber',true)
+			}
+		} else {
+			sessionStorage.setItem('addedPhoneNumber',false)
+		}
+		//get secondChanceToAddPhone
+		const getSessionStorageItem = key => {
+			const itemJSON = sessionStorage.getItem(key)
+			let item = false
+			if(itemJSON){
+				item = JSON.parse(itemJSON)
+			}
+			return item
+		}
+		// Logic for contact information
+		if (Shopify.Checkout.step === 'contact_information'){
+			// Get the phone field
+			const phoneField = $('input[data-trekkie-id=shipping_phone_field]')
+			if (phoneField.length > 0){
+				// Add the alert msg
+				const secondChance = getSessionStorageItem('secondChanceToAddPhone')
+				const addedPhoneNumber = getSessionStorageItem('addedPhoneNumber')
+				// if the phone is there then does not appear the error msg again
+				if(secondChance && !addedPhoneNumber){
+					$('div[data-address-field=phone]').addClass('field--error').append('<p class="field__message field__message--error" id="error-for-city">{{ 'add_express_sending_phone.error' | t }}</p>')
+					//Scroll until the phone input element
+					$([document.documentElement, document.body]).animate({
+					scrollTop: $('div[data-address-field=phone]').offset().top
+					}, 400);
+				}
+				// Check if phone field is empty when click next
+				$('.edit_checkout').submit(() => {
+					const phoneNumber = phoneField[0].value
+					//regExp to validate phones, formats '+49 123 999' '0001 123.456' '+31 (0) 8123'
+					if(regExpPhoneNumber(phoneNumber)){
+						sessionStorage.setItem('addedPhoneNumber',true)
+					} else {
+						if(secondChance && getSessionStorageItem('expressSelected')){
+							sessionStorage.setItem('addedPhoneNumber',true)
+							//set the I&O office phone
+							phoneField[0].value = '+49030220564211'
+						} else {
+							sessionStorage.setItem('addedPhoneNumber',false)
+						}
+					}
+				})
+			}
+		}
+
+		if(Shopify.Checkout.step === 'shipping_method'){
+			//Move again the check button to express
+			const secondChance = getSessionStorageItem('secondChanceToAddPhone')
+
+			if(getSessionStorageItem('expressSelected')){
+				const myStopFunction = () => {
+					clearInterval(checkingWhenLoadEnds);
+				}
+				const checkingWhenLoadEnds = setInterval(() => { 
+					shippingBox = $('fieldset')
+					if(shippingBox.length > 0){
+						if(shippingBox[0].classList.length === 1){
+							const shippingSelector = $('.input-radio')
+							if(secondChance && shippingSelector.length > 0){
+								for (let i = 0; i < shippingSelector.length; i++){
+									if(shippingSelector[i].value.includes('DHL_EXP')){
+										shippingSelector[i].checked = true
+										myStopFunction()
+									}
+								}
+							}
+						}
+					}
+				}, 100);
+			}
+
+			$('.edit_checkout').submit( event => {
+				// Logic for contact shipping method
+				const shippingSelector = $('.input-radio')
+				for (let i = 0; i < shippingSelector.length; i++){
+					if(shippingSelector[i].checked){
+						// Only for express sendings
+						if(shippingSelector[i].value.includes('DHL_EXP')){
+							//If not added number will go back (just once)
+							if(!JSON.parse(sessionStorage.getItem('addedPhoneNumber'))){
+								event.preventDefault();
+								sessionStorage.setItem('expressSelected',true)
+								sessionStorage.setItem('secondChanceToAddPhone',true)
+								window.location.replace(`${window.location.href.split('?')[0]}?step=contact_information`);
+							}
+						} else {
+							sessionStorage.setItem('expressSelected',false)
+						}
+					}
+				}
+			})
+		}
+	}
+	catch(error){
+		notFoundVariables('expressSendPhoneLogic', error)
+	}
+}
+
+window.expressSendPhoneLogic = expressSendPhoneLogic;
+//<script>
+const GACheckoutButton = gatewayList => {
+	try {
+		let paymentMethod;
+		function getPaymentButton(){
+			return new Promise((resolve, reject) => {
+				const paymentsButton = document.getElementsByClassName('radio-wrapper content-box__row');
+				resolve(paymentsButton);
+			});
+		}
+		getPaymentButton()
+			.then((result)=>{
+				for (let i = 0; i < result.length; i++){
+					if(result[i].classList.length === 2 && result[i].children.length === 3){
+						result[i].addEventListener("click", function() {
+							selectGateway = result[i].dataset.selectGateway
+							paymentMethod = gatewayList[selectGateway]
+						})
+					}
+				}
+				const checkOutButton = document.getElementsByClassName('step__footer__continue-btn btn');
+				if(checkOutButton.length > 0){
+					checkOutButton[0].addEventListener("click", function() {
+						const amazonPayment = $('.amazon-payments');
+						if(amazonPayment.length > 0){
+							paymentMethod = 'Amazon Payments';
+						} else {
+							paymentMethod = paymentMethod ? paymentMethod : gatewayList[result[0].dataset.selectGateway]
+						}
+						//Just sent it once
+						if(!sessionStorage.getItem('eeCheckoutOptionsStep4Sent')){
+							sessionStorage.setItem('eeCheckoutOptionsStep4Sent',true)
+							dataLayer.push({
+								'event': 'eeCheckoutOptions',
+								'ecommerce': {
+									'checkout_option': {
+										'actionField': {'step':4, 'option': paymentMethod}
+									}
+								}
+							});
+						}
+					})
+				}
+			})
+	}
+	catch(error){
+		notFoundVariables('GACheckoutButton', error)
+	}
+}
+
+window.GACheckoutButton = GACheckoutButton;
+//<script>
+const hideShowPayments = (limitAmount, invoicePaymentGatewayID, payment_exceptions, hideInvoice = false) => {
+	try {
+		const current_country = Checkout.$('address.address--tight').text().trim().split(',').pop().trim();
+		// hide if there are payment list
+		if(payment_exceptions){
+			const hide_these_payments = payment_exceptions[current_country];
+			hide_these_payments.forEach(function (paymentID) {
+				Checkout.$(`[data-select-gateway="${paymentID}"],[data-subfields-for-gateway="${paymentID}"]`).remove();
+			});
+		}
+		//OAKIFY-215 check if click invoice
+		const isInvoiceClicked = Checkout.$('.section--payment-method .radio__input')
+		for (let i = 0; i < isInvoiceClicked.length; i++){
+			Checkout.$(isInvoiceClicked[i]).click(()=>{
+				if(parseInt(isInvoiceClicked[i].firstElementChild.defaultValue) === invoicePaymentGatewayID){
+					localStorage.setItem('invoiceSelected', true)
+				} else {
+					localStorage.setItem('invoiceSelected', false)
+				} 
+			})
+		}
+		//OAKIFY-215 hide invoice if customer ordered with invoice in the last hour
+		let reInvoice;
+		const reInvoiceJSON = localStorage.getItem('invoiceDone');
+		if(reInvoiceJSON){
+			reInvoice = JSON.parse(reInvoiceJSON)
+			if(reInvoice.value){
+				//checking if one hour passed 3600000 1hour
+				new Date().getTime() > reInvoice.timeStamp + 3600000 ? hideInvoice = false : hideInvoice = true;
+			}
+		}
+
+		if(current_country === 'Deutschland' || 'Germany'){
+			if(hideInvoice){
+				Checkout.$(`[data-select-gateway="${invoicePaymentGatewayID}"],[data-subfields-for-gateway="${invoicePaymentGatewayID}"]`).remove()
+			} else {
+				localStorage.removeItem('invoiceDone')
+			}
+		}
+		
+		const totalAmount = checkoutObj.total_price/100
+		if(totalAmount > limitAmount){
+			Checkout.$(`[data-select-gateway="${invoicePaymentGatewayID}"],[data-subfields-for-gateway="${invoicePaymentGatewayID}"]`).remove()
+		}
+	}
+	catch(error){
+		notFoundVariables('hideShowPayments', error)
+	}
+}
+
+window.hideShowPayments = hideShowPayments;
+//<script>
+let modifyCheckoutOptions = toggle => {
+	try {
+		// show login and extra payments
+		const checkoutMethods = document.getElementsByClassName('checkout-methods');
+		checkoutMethods[0].style.display = 'block'
+		if($(window).width() < 749){
+			const moreOptionsText = document.getElementsByClassName('more_options');
+			const expressPayment = document.getElementsByClassName('express_payment_buttons');
+			// true if we press the button
+			if(toggle){
+				if (expressPayment[0].style.display === 'none') {
+					expressPayment[0].style.display = 'block';
+					moreOptionsText[0].style.display = 'none';
+				} else {
+					expressPayment[0].style.display = 'none';
+					moreOptionsText[0].style.display = 'block';
+				}
+			} else if (expressPayment[0].style.display !== 'none') { //first load to make sure is not displayed
+				expressPayment[0].style.display = 'none';
+				moreOptionsText[0].style.display = 'block';
+			}
+		}
+		
+		//User not log in
+		if (Checkout.$('.logged-in-customer-information').length < 1) {
+			Checkout.$('#accountCheckout').addClass('btn--disabled');			
+			Checkout.$("#accountCheckout").attr("href", Checkout.$( '[data-trekkie-id="have_an_account_login_link"]' ).attr('href'));
+			Checkout.$("#main-header").siblings('p').hide();		
+			Checkout.$('.checkout-methods').show();
+			Checkout.$('body').on('click', '#guestCheckout', () => {
+				Checkout.$('html, body').animate({
+					scrollTop: Checkout.$('#checkout_email').offset().top - 20
+				}, 1000);
+				Checkout.$('#checkout_email').focus();
+			});
+		}
+	}
+	catch(error){
+		notFoundVariables('modifyCheckoutOptions', error)
+	}
+}
+
+window.modifyCheckoutOptions = modifyCheckoutOptions;
+
+//<script>
+const productImageClickable = checkoutProducts => {
+	try {
+		for (let i = 0; i < checkoutProducts.length; i++){
+			$(checkoutProducts[i]).css( 'cursor', 'pointer');
+			checkoutProducts[i].addEventListener('click',()=>{
+				window.location.replace(`${window.location.origin}${checkoutObj.url[i]}`);
+				const price = rebuildDataNumbers(checkoutObj.variant_info[i].price)
+				const metric1 = rebuildDataNumbers(checkoutObj.variant_info[i].compare_at_price)
+				const getSku = checkoutObj.variant_info[i].sku
+				//send the click event
+				dataLayer.push({
+					'event' : 'eeProductClick',
+					'ecommerce': {
+						'click': {
+							'actionField':{'list':'cart items checkout'},
+							'products': [{
+								'name': checkoutObj.product_info[i].title.toLowerCase(),       // Name or ID is required.
+								'id': getSku.split('-').length === 3 ? getSku.split('-').slice(0,-1).join('-').toLowerCase() : getSku.toLowerCase(),
+								'price': price.toFixed(2),
+								'brand': 'Ivy and Oak',
+								'category': checkoutObj.product_info[i].type.toLowerCase(),
+								'variant': '',
+								'position': i,
+								'metric1': metric1 ? metric1.toFixed(2) : price.toFixed(2),
+								'dimension1': discountLogic(metric1, price),
+								'dimension8': checkoutObj.product_info[i].id,
+							}]
+						}
+					}
+				});
+			})
+		}
+	}
+	catch(error){
+		notFoundVariables('productImageClickable', error)
+	}
+}
+
+window.productImageClickable = productImageClickable;
+//<script>
+const returnRateHook = () => {
+	try {
+    // askOnce will activate or not the call to check if we need to hide the invoice
+    let askOnce = false
+    // checking if the hideInvoiceUser is save or not
+    if(!sessionStorage.getItem('hideInvoiceUser')){
+      // not exist, then askOnce must be true to ask again 
+      askOnce = true
+    }
+    if(askOnce && checkoutObj.email.length > 1){
+      askOnce = false
+      const doAjax = async () => {
+        const result = await $.ajax({
+          url: 'https://customer-invoice.ivy-oak.com/check',
+          data: {
+            email: checkoutObj.email.trim(),
+            shop: Shopify.Checkout.apiHost
+          },
+          type:'GET',
+        });
+        return result;
+      }
+      doAjax().then( data => sessionStorage.setItem('hideInvoiceUser',data))
+    }
+	}
+	catch(error){
+		notFoundVariables('returnRateHook', error)
+	}
+}
+
+window.returnRateHook = returnRateHook;
+//<script>
+/* OAKIFY-198 Implement Data Layer for LeRoi GA */
+const sendAccountInfo = (action, result, category = 'account') => {
+	try {
+		dataLayer.push({
+			'eventCategory': category.toLowerCase(),
+			'eventAction': action.toLowerCase(),
+			'eventLabel': result.toLowerCase(),
+			'eventValue': '',
+			'eventNonInteraction': false,
+			'event': 'gtmEvent'
+		});
+	}
+	catch(error){
+		notFoundVariables('sendAccountInfo', error)
+	}
+}
+
+window.sendAccountInfo = sendAccountInfo;
+//<script>
+// Create the function to send the eePurchase when ready
+const sendEEPurchaseToGTM = txtmsg => {
+	try {
+		let notCreateDotInPrice = true
+		// Just get one of thoes, if not a fallback wait bellow
+		let fallBackOrderID
+		if(Shopify){
+			debugConsole('BASIC FALLBACK')
+			fallBackOrderID = `${Shopify.shop.substring(0,2).toUpperCase()}-${Shopify.checkout.order_id}`
+		}
+
+		if($('.os-order-number').length > 0){
+			debugConsole('READ FROM HTML')
+			fallBackOrderID = `#${$('.os-order-number')[0].innerText.split('#')[1]}`
+			//regExp to remove jumplines
+			fallBackOrderID = fallBackOrderID.replace(/(\r\n|\n|\r)/gm,"");
+			//regExp to remove blank spaces
+			fallBackOrderID = fallBackOrderID.replace(/\s+/g,"");
+		}
+
+		//Reading the order Object
+		/* if(orderObj.order_id.length > 1 && !orderObj.order_id.length.includes('undefined')){
+			debugConsole('ORDER OBJ')
+			fallBackOrderID = orderObj.order_id;
+			shipping_price = orderObj.shipping_price;
+		} */
+
+		//TrueFit integration OAKIFY-264
+		// Add div into document
+		$('.main').append( `<div class="tfc-order-notify" data-userid="${md5(Shopify.checkout.email)}" data-orderid="${fallBackOrderID}"></div>`);
+
+		const gtmCheckoutObj = {
+			order_id : fallBackOrderID,
+			shipping_price : $('.total-line--shipping').length > 0 ? $('.total-line--shipping').find('.order-summary__emphasis')[0].attributes[1].nodeValue : null,
+			subtotal_price : Shopify.checkout.subtotal_price,
+			tax_price : Shopify.checkout.total_tax,
+			discount_applications: Shopify.checkout.discount,
+			gift_cards: Shopify.checkout.gift_cards,
+			total_price : Shopify.checkout.total_price,
+			order_items : Shopify.checkout.line_items,
+			checkoutEmail : Shopify.checkout.email,
+			shopDomain : Shopify.Checkout.apiHost,
+		}
+
+		const orderIdFallcack = () => {
+			debugConsole('ERROR FALLBACK')
+			//GET LOCATE
+			const locate = window.location.host.split('.')[1].toUpperCase()
+			//GET DATE
+			var today = new Date();
+			var hh = today.getHours();
+			var mm = today.getMinutes();
+			var ss = today.getSeconds();
+			var DD = today.getDate();
+			var MM = today.getMonth() + 1; //January is 0!
+			var YYYY = today.getFullYear();
+
+			if (DD < 10) { DD = '0' + DD }
+			if (MM < 10) { MM = '0' + MM }
+			if (hh < 10) { hh = '0' + hh }
+			if (mm < 10) { mm = '0' + mm }
+			if (ss < 10) { ss = '0' + ss }
+
+			today = YYYY + MM + DD + hh + mm + ss;
+		
+			gtmCheckoutObj.order_id = `${locate}-${today}`
+		}
+
+		//OrderId fallbacks
+		if(typeof gtmCheckoutObj.order_id === 'undefined' || gtmCheckoutObj.order_id.length === 0){
+			orderIdFallcack()
+		}
+
+		if(gtmCheckoutObj.order_id.includes('undefined')){
+			orderIdFallcack()
+		}
+
+		FS.log('info',`That is the gtmCheckoutObj${JSON.stringify(gtmCheckoutObj)}`)
+		let discount;
+		let discount_amount;
+		let discount_name;
+		try { // setting GA GTM variables
+			if(gtmCheckoutObj.discount_applications){
+				discount_amount = rebuildDataNumbers(gtmCheckoutObj.discount_applications.amount,notCreateDotInPrice)
+				discount = true
+				discount_name = gtmCheckoutObj.discount_applications.code
+			} else {
+				discount_amount = 0
+				discount = false
+				discount_name = false
+			}
+			const priceAndCurrency = countryPriceLogic(gtmCheckoutObj.total_price, false, true)
+			// adding the currency code
+			gtmCheckoutObj.currencyCode = Shopify.checkout.currency
+			// fix the current prices given 123456 => 1234.56
+			gtmCheckoutObj.total_price = rebuildDataNumbers(gtmCheckoutObj.total_price,notCreateDotInPrice)
+			gtmCheckoutObj.tax_price = rebuildDataNumbers(gtmCheckoutObj.tax_price,notCreateDotInPrice)
+			gtmCheckoutObj.subtotal_price = rebuildDataNumbers(gtmCheckoutObj.subtotal_price,notCreateDotInPrice)
+			gtmCheckoutObj.shipping_price = rebuildDataNumbers(gtmCheckoutObj.shipping_price)
+			// calculate the amount used in GV
+			let amount = 0
+			gtmCheckoutObj.gift_cards.map(giftCard => {
+				amount = amount + rebuildDataNumbers(giftCard.amount_used)
+			})
+			gtmCheckoutObj.gift_card = amount
+			if(discount){
+				gtmCheckoutObj.discount_applications.amount = rebuildDataNumbers(gtmCheckoutObj.discount_applications.amount,notCreateDotInPrice)	
+			}
+		}
+		catch(error){
+			notFoundVariables('setting GA GTM variables', error)
+		}
+		// Creating product field objects
+		let productsOrdered = [];
+		gtmCheckoutObj.order_items.map(product => {
+			try {
+				const path = product
+				const id = path.sku.split('-').slice(0, -1).join('-')
+				const price = path.price; //final price
+				let metric1 = undefined; //original price
+				let dimension1 = undefined; // discount % cluster
+				let amountDiscounted = false;
+				if(path.compare_at_price) { // if there is a discount price
+					metric1 = path.compare_at_price;
+					dimension1 = discountLogic(price, metric1)
+				} else {
+					metric1 = price;
+					dimension1 = 0
+				}
+				// calculate individual amount discounted from the discount
+				if(discount){
+					const subtotal = gtmCheckoutObj.subtotal_price
+					const qty = product.quantity
+					amountDiscounted = ((price/(subtotal + discount_amount)*qty)*discount_amount).toFixed(2)
+				}
+				productsOrdered = [...productsOrdered, {
+					'name': product.title,
+					id, 
+					price,
+					'variant': '',
+					'quantity': product.quantity,
+					'coupon': amountDiscounted ? amountDiscounted : '', 
+					metric1,
+					dimension1,
+					'dimension2': path.option1, // size
+					'dimension3': path.sku // sku
+				}]
+			}
+			catch(error){
+				notFoundVariables('Creating product field objects', error)
+			}
+		})
+		try { //send final checkout to DL
+			const voucher = gtmCheckoutObj.gift_card
+			// calculate the final price to pay, included all discountsd and gift cards
+			const final_price = (gtmCheckoutObj.total_price - (voucher ? voucher : 0)).toFixed(2)
+			dataLayer.push({
+				'event': 'eePurchase',
+				'ecommerce': {
+					'currencyCode': gtmCheckoutObj.currencyCode,   
+					'purchase': {
+						'actionField': {
+							'id': gtmCheckoutObj.order_id,   // Transaction ID. Required for purchases and refunds.
+							'revenue': final_price, // Total
+							'tax': gtmCheckoutObj.tax_price ? `${gtmCheckoutObj.tax_price}` : '',
+							'shipping': gtmCheckoutObj.shipping_price ? `${gtmCheckoutObj.shipping_price}` : '',
+							'coupon': discount_name ? `${discount_name}` : '',
+							'voucher': voucher ? `${voucher}` : ''
+						},
+						'products':
+							productsOrdered.map((product, index) => {
+								return (
+									{
+										'name': product.name.toLowerCase(),
+										'id': checkoutObj.variant_info[index].sku.split('-').length === 3 ? checkoutObj.variant_info[index].sku.split('-').slice(0,-1).join('-').toLowerCase() : checkoutObj.variant_info[index].sku.toLowerCase(),
+										'price': product.price,
+										'brand': 'Ivy and Oak',
+										'category': checkoutObj.product_info[index].type.toLowerCase(),
+										'variant': product.variant.toLowerCase(),
+										'quantity': product.quantity,
+										'coupon': product.coupon ? product.coupon : '',      // Optional fields may be omitted or set to empty string.
+										'metric1': product.metric1,
+										'dimension1': product.dimension1,
+										'dimension2': product.dimension2,
+										'dimension3': product.dimension3.toLowerCase(),
+										'dimension8': checkoutObj.product_info[index].id,
+									}
+								)
+							}) 
+					}
+				}
+			});
+			FS.log('info',`DataLayer sent ${txtmsg} for Order ${gtmCheckoutObj.order_id}`)
+		}
+		catch(error){
+			notFoundVariables('send final checkout to DL', error)
+		}
+		// Remove all the data saved
+		localStorage.removeItem('checkOutCartInfo')
+		localStorage.removeItem('cartInfo')
+		localStorage.removeItem('soldOutPrice')
+		sessionStorage.clear();
+	}
+	catch(error){
+		notFoundVariables('sendEEpurchaseToGTM', error)
+	}
+}
+
+window.sendEEPurchaseToGTM = sendEEPurchaseToGTM;
+//<script>
+const settingUpVariables = index => {
+	try {
+		const name = checkoutObj.product_info[index].title.toLowerCase()
+		const price = rebuildDataNumbers(checkoutObj.variant_info[index].price)
+		const metric1 = rebuildDataNumbers(checkoutObj.variant_info[index].compare_at_price)
+		const getSku = checkoutObj.variant_info[index].sku
+		const id = getSku.split('-').length === 3 ? getSku.split('-').slice(0,-1).join('-').toLowerCase() : getSku.toLowerCase()
+		const dimension1 = discountLogic(metric1, price)
+		const dimension2 = checkoutObj.variant_info[index].title.toLowerCase()
+		const dimension8 = checkoutObj.product_info[index].id
+		const category = checkoutObj.product_info[index].type.toLowerCase()
+		const variant = '' 
+		const quantity = checkoutObj.quantity[index]
+		return { name, price, metric1, getSku, id, dimension1, dimension2, dimension8, category, variant, quantity }
+	}
+	catch(error){
+		notFoundVariables('settingUpVariables', error)
+	}
+}
+
+window.settingUpVariables = settingUpVariables;
+//<script>
+// when the user enter into shipping_method
+const shippingMethodEnter = userLoginStatus => {
+	try {
+		let isLoged;
+		userLoginStatus ? isLoged = 'login' : isLoged = 'guest'
+		dataCheckoutOptions(2,[isLoged])
+		dataCheckoutLayer(3)
+		//when user selects a shipping method and continue
+		const shippingButton = document.getElementsByClassName('step__footer__continue-btn btn');
+		const radioButtons = document.getElementsByClassName('radio-wrapper');
+		let pressedButton = 'standard'
+		for (let i = 0; i < radioButtons.length; i++){
+			radioButtons[i].addEventListener('click', function (){
+				i === 0 ? pressedButton = 'standard' : pressedButton = 'express'
+			})
+		}
+		shippingButton[0].addEventListener('click', function (){
+			// check the selected shipping way
+			dataCheckoutOptions(3,[pressedButton])
+		})
+	}
+	catch(error){
+		notFoundVariables('shippingMethodEnter', error)
+	}
+}
+
+window.shippingMethodEnter = shippingMethodEnter;
+//<script>
+const termsConditionsCheckBox = () => {
+	try {
+		const checkbox = `
+		<div class="fieldset-description" id="tnc-checkbox-wrapper">
+			<div class="section__content">
+				<div class="checkbox-wrapper">
+					<div class="checkbox__input">
+						<input class="input-checkbox" type="checkbox" value="0" name="checkout[accepts_tnc]" id="checkout_accepts_tnc">
+					</div>
+					<label class="checkbox__label" for="checkout_accepts_tnc">
+						{{ 'shopify.checkout.tnc_checkbox.before' | t}} <a class="tnc-link" target="_blank" href="/pages/{{settings.checkout_tnc_page}}">{{ 'shopify.checkout.tnc_checkbox.cta' | t}}</a> {{ 'shopify.checkout.tnc_checkbox.after' | t}}
+					</label>
+				</div>
+			</div>
+		</div>`;
+		
+		if(Checkout.$('form.edit_checkout .section--billing-address').length > 0){
+			Checkout.$('form.edit_checkout .section--billing-address').append(checkbox);
+		} else if (Checkout.$('form.edit_checkout .section--payment-method').length > 0){
+			Checkout.$('form.edit_checkout .section--payment-method').append(checkbox);
+		} else { //if amazon pay active
+			Checkout.$('form.edit_checkout .section--amazon-payments').append(checkbox);
+		}
+
+		if(Checkout.$('form.edit_checkout .section--amazon-payments').length > 0){
+			setTimeout(function(){ Checkout.$('button[data-trekkie-id="complete_order_button"]').addClass('btn--disabled'); }, 2000);
+		} else {
+			Checkout.$('button[data-trekkie-id="complete_order_button"]').addClass('btn--disabled');
+		}
+
+		Checkout.$('#checkout_accepts_tnc').change(function() {
+			if (this.checked) {
+				Checkout.$('button[data-trekkie-id="complete_order_button"]').removeClass('btn--disabled');
+				Checkout.$('#checkout_accepts_tnc').removeClass('error');
+				Checkout.$('#tnc-checkbox-wrapper .checkbox__label').removeClass('error-label');
+			}
+			else{
+				Checkout.$('button[data-trekkie-id="complete_order_button"]').addClass('btn--disabled');
+			}
+		});
+
+		Checkout.$('button[data-trekkie-id="complete_order_button"]').click(function(event){
+			if (!Checkout.$('#checkout_accepts_tnc').is(":checked")){
+				Checkout.$('#checkout_accepts_tnc').addClass('error');
+				Checkout.$('#tnc-checkbox-wrapper .checkbox__label').addClass('error-label');
+				Checkout.$('body, html').animate({scrollTop: Checkout.$('#tnc-checkbox-wrapper').offset().top-50});
+				event.preventDefault();
+				return false;
+			}
+		});
+	}
+	catch(error){
+		notFoundVariables('termsConditionsCheckBox', error)
+	}
+	return true;
+}
+
+window.termsConditionsCheckBox = termsConditionsCheckBox;
